@@ -1,0 +1,73 @@
+% ====================================================================
+% DAFTAR PUSTAKA (BIBLIOGRAPHY)
+% ====================================================================
+% File ini berisi daftar referensi/pustaka yang digunakan dalam penelitian.
+% Format: APA Style (sesuai Juknis UNEJ)
+%
+% PETUNJUK PENGGUNAAN:
+% 1. Gunakan file references.bib untuk menyimpan semua referensi
+% 2. Uncomment baris di bawah untuk mengaktifkan daftar pustaka
+% 3. Compile dengan: pdflatex → bibtex → pdflatex → pdflatex
+% ====================================================================
+
+\setlength{\bibsep}{0pt} % Mengurangi spasi antar referensi (opsional)
+\renewcommand{\bibname}{%
+\begin{center}
+    {\normalfont\bfseries\fontsize{14pt}{16pt}\selectfont DAFTAR PUSTAKA}
+\end{center}
+\vspace*{-1cm}
+}
+\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
+
+% --- MENGGUNAKAN BIBTEX (AKTIF) ---
+% Gunakan file daftar_pustaka.bib untuk menyimpan semua referensi
+\bibliographystyle{apalike}
+\bibliography{daftar_pustaka}
+
+% ====================================================================
+% PANDUAN PENGUMPULAN REFERENSI:
+%
+% 1. MINIMAL REFERENSI:
+%    - Juknis: minimal 50% dari 10 tahun terakhir
+%    - Umumnya: 20-50 referensi untuk skripsi
+%
+% 2. JENIS SUMBER YANG BAIK:
+%    - Academic journals (50-70%)
+%    - Books (10-20%)
+%    - Conference proceedings (10-20%)
+%    - Internet sources (5-15%, hanya yang kredibel)
+%    - Grey literature (reports, theses) - minimal 5%
+%
+% 3. FORMAT MENGGUNAKAN BIBTEX:
+%    
+%    a) Buat file references.bib:
+%       @article{Author2020,
+%         title={Title of Paper},
+%         author={Author, A. and Others, B.},
+%         journal={Journal Name},
+%         volume={30},
+%         pages={100-115},
+%         year={2020},
+%         doi={10.xxxx/xxxxx}
+%       }
+%
+%    b) Cite dalam dokumen: \citet{Author2020} atau \citep{Author2020}
+%
+% 4. TOOLS UNTUK MANAJEMEN REFERENSI:
+%    - Mendeley (mendeley.com) - generate .bib file
+%    - Zotero (zotero.org) - open source
+%    - EndNote - commercial
+%    - RefWorks - web-based
+%
+% 5. GENERATOR BIB FORMAT:
+%    - Google Scholar: export ke BibTeX
+%    - Semantic Scholar: export BibTeX
+%    - CrossRef: provide DOI, convert ke BibTeX
+%
+% 6. TIPS PENTING:
+%    - Gunakan DOI jika tersedia
+%    - Pastikan spelling penulis dan tahun AKURAT
+%    - Urutan publikasi: Chronological atau Alphabetical
+%    - Dalam disiplin ilmu tertentu, format mungkin berbeda
+%      (tanyakan pembimbing tentang format yang diharapkan)
+% ====================================================================

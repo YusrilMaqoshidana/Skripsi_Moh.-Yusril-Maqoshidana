@@ -1,0 +1,67 @@
+\begin{thebibliography}{}
+
+\bibitem[Abdelrazek et~al., 2023]{ABDELRAZEK2023102131}
+Abdelrazek, A., Eid, Y., Gawish, E., Medhat, W., and Hassan, A. (2023).
+\newblock Topic modeling algorithms and applications: A survey.
+\newblock {\em Information Systems}, 112:102131.
+
+\bibitem[Churchill and Singh, 2022]{10.1145/3507900}
+Churchill, R. and Singh, L. (2022).
+\newblock The evolution of topic modeling.
+\newblock {\em ACM Comput. Surv.}, 54(10s).
+
+\bibitem[Egger and Yu, 2022]{10.3389/fsoc.2022.886498}
+Egger, R. and Yu, J. (2022).
+\newblock A topic modeling comparison between lda, nmf, top2vec, and bertopic to demystify twitter posts.
+\newblock {\em Frontiers in Sociology}, Volume 7 - 2022.
+
+\bibitem[Janssens et~al., 2025]{11271424}
+Janssens, W., Bogaert, M., and van~den Poel, D. (2025).
+\newblock A comparative analysis of topic reduction techniques for bertopic.
+\newblock {\em IEEE Access}, 13:204087--204103.
+
+\bibitem[Kharisudin and Masri'an, 2022]{kharisudin2022topic}
+Kharisudin, I. and Masri'an, H. (2022).
+\newblock Topic modeling on whatsapp user reviews using latent dirichlet allocation.
+\newblock {\em Scientific Journal of Informatics}, 9:51--62.
+
+\bibitem[Koto et~al., 2021]{koto2021indobertweet}
+Koto, F., Lau, J.~H., and Baldwin, T. (2021).
+\newblock Indobertweet: A pretrained language model for indonesian twitter with effective domain-specific vocabulary initialization.
+\newblock In {\em Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP 2021)}.
+
+\bibitem[Koto et~al., 2020]{Indobert2020}
+Koto, F., Rahimi, A., Lau, J., and Baldwin, T. (2020).
+\newblock Indolem and indobert: A benchmark dataset and pre-trained language model for indonesian nlp.
+
+\bibitem[Kumar and Naik, 2023]{10425363}
+Kumar, R.~P. and Naik, N.~M. (2023).
+\newblock Whatsapp chat analyzer using machine learning and natural language processing.
+\newblock In {\em 2023 2nd International Conference on Futuristic Technologies (INCOFT)}, pages 1--6.
+
+\bibitem[Mohta et~al., 2020]{9243443}
+Mohta, A., Jain, A., Saluja, A., and Dahiya, S. (2020).
+\newblock Pre-processing and emoji classification of whatsapp chats for sentiment analysis.
+\newblock In {\em 2020 Fourth International Conference on I-SMAC (IoT in Social, Mobile, Analytics and Cloud) (I-SMAC)}, pages 514--519.
+
+\bibitem[Muhajir et~al., 2025]{iaes2025indobert}
+Muhajir, M., Gunardi, G., Danardono, D., and Rosadi, D. (2025).
+\newblock Integrating indobert and balanced iterative reducing and clustering using hierarchies of bertopic in indonesian short text.
+\newblock {\em IAES International Journal of Artificial Intelligence (IJ-AI)}, 14:4192.
+
+\bibitem[Rani et~al., 2022]{rani2022whatsapp}
+Rani, S.~J., Prabhu, T., and Chellam, J. A.~I. (2022).
+\newblock Whatsapp sentiment analysis using r.
+\newblock In {\em 2022 3rd International Conference for Emerging Technology (INCET)}, pages 1--4. IEEE.
+
+\bibitem[Retna et~al., 2021]{9388596}
+Retna, V.~A., Brundha, P., and RajKumar, G. (2021).
+\newblock People’s behaviour analysis in chat message using natural language processing.
+\newblock In {\em 2021 Third International Conference on Intelligent Communication Technologies and Virtual Mobile Networks (ICICV)}, pages 1128--1133.
+
+\bibitem[{WhatsApp Inc.}, 2026]{WhatsAppAbout}
+{WhatsApp Inc.} (2026).
+\newblock Tentang whatsapp.
+\newblock Diakses pada 7 Januari 2026.
+
+\end{thebibliography}

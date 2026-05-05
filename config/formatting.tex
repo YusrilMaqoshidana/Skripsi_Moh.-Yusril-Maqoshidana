@@ -1,0 +1,89 @@
+% ====================================================================
+% KONFIGURASI FORMAT STRUKTUR DOKUMEN
+% ====================================================================
+% File ini mengatur format untuk chapter, section, subsection, dll.
+% Format disesuaikan dengan Juknis UNEJ Versi 2.0 (2023)
+%
+% Ketentuan:
+% - Chapter (BAB): 14pt, Bold, All Caps, Centered
+% - Section (bagian): Bold, Normal size, Penomoran
+% - Subsection & Subsubsection: Bold, Normal size
+% ====================================================================
+
+% --- KONFIGURASI CHAPTER (BAB) ---
+% Format: Centered, Bold, All Caps (14pt sesuai Juknis)
+% Spasi sebelum: -20pt, sesudah: 40pt
+\titleformat{\chapter}[display]
+  {\bfseries\fontsize{14pt}{16pt}\selectfont\centering}          % Style: Bold, Large (14pt), Centered
+  {\MakeUppercase{\chaptertitlename} \thechapter}  % Label: "BAB 1"
+  {0pt}                                % Space antara label dan title
+  {\MakeUppercase}                     % Formatting title: ALL CAPS
+
+\titlespacing*{\chapter}{0pt}{-20pt}{40pt}  % Spacing: normal, before=-20pt, after=40pt
+
+% --- KONFIGURASI SECTION (Bagian 1) ---
+% Format: Bold, Normal size (12pt), Bernomor
+\titleformat{\section}
+  {\bfseries\normalsize}               % Style: Bold, Normal size
+  {\thesection}                        % Label: "1", "1.1", dll
+  {1em}                                % Space antara label dan title
+  {}                                   % Formatting title (none)
+
+% --- KONFIGURASI SUBSECTION (Bagian 1.1) ---
+% Format: Bold, Normal size (12pt), Bernomor
+\titleformat{\subsection}
+  {\bfseries\normalsize}               % Style: Bold, Normal size
+  {\thesubsection}                     % Label: "1.1", "1.1.1", dll
+  {1em}                                % Space antara label dan title
+  {}                                   % Formatting title (none)
+
+% --- KONFIGURASI SUBSUBSECTION (Bagian 1.1.1) ---
+% Format: Bold, Normal size (12pt), Bernomor
+\titleformat{\subsubsection}
+  {\bfseries\normalsize}               % Style: Bold, Normal size
+  {\thesubsubsection}                  % Label: "1.1.1", dll
+  {1em}                                % Space antara label dan title
+  {}                                   % Formatting title (none)
+
+% --- KONFIGURASI PARAGRAPH ---
+% Untuk case yang lebih spesifik (jarang digunakan dalam juknis)
+\titleformat{\paragraph}[runin]
+  {\bfseries}
+  {\theparagraph}
+  {1em}
+  {}
+
+% --- KONFIGURASI IDENTASI ---
+\setlength{\parindent}{1.5cm}  % Atur jarak indentasi
+
+% --- KONFIGURASI DAFTAR ISI / TABEL / GAMBAR ---
+% Dipusatkan di file ini supaya styling tetap konsisten dengan struktur dokumen
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+
+% --- KONFIGURASI JUDUL DAFTAR ISI / TABEL / GAMBAR ---
+% Menyamakan format judul dengan \chapter: Bold, 14pt, Centered, ALL CAPS
+
+\renewcommand{\cfttoctitlefont}{%
+  \hfill\bfseries\fontsize{14pt}{16pt}\selectfont\MakeUppercase
+}
+\renewcommand{\cftaftertoctitle}{\hfill}
+
+\renewcommand{\cftlottitlefont}{%
+  \hfill\bfseries\fontsize{14pt}{16pt}\selectfont\MakeUppercase
+}
+\renewcommand{\cftafterlottitle}{\hfill}
+
+\renewcommand{\cftloftitlefont}{%
+  \hfill\bfseries\fontsize{14pt}{16pt}\selectfont\MakeUppercase
+}
+\renewcommand{\cftafterloftitle}{\hfill}
+
+
+
+% Hapus after-title skip default tocloft agar konsisten
+\setlength{\cftaftertoctitleskip}{40pt}
+\setlength{\cftafterlottitleskip}{40pt}
+\setlength{\cftafterloftitleskip}{40pt}
+\setlength{\cftbeforetoctitleskip}{-20pt}
+\setlength{\cftbeforelottitleskip}{-20pt}
+\setlength{\cftbeforeloftitleskip}{-20pt}

@@ -1,311 +1,141 @@
 % ====================================================================
-% ARSITEKTUR SKRIPSI FASILKOM UNEJ - LATEX TEMPLATE
-% Sesuai Juknis Versi 2.0 (2023)
-% Berdasarkan Keputusan Rektor UNEJ Nomor 5157/UN25/EP/2023
+% MAIN LaTeX FILE - SKRIPSI FASILKOM UNEJ
+% ====================================================================
+% STRUKTUR DOKUMENTASI SKRIPSI FASILKOM UNEJ - VERSI 2.0 (2023)
+% Berdasarkan Juknis dan Keputusan Rektor UNEJ Nomor 5157/UN25/EP/2023
+%
+% ARSITEKTUR MODULAR & CLEAN:
+% File ini adalah file utama (entry point) yang memanggil file-file
+% terpisah untuk konfigurasi dan konten. Struktur ini memudahkan
+% maintenance, kolaborasi, dan reusability.
+%
+% QUICK START:
+% 1. Edit metadata.tex dengan informasi Anda
+% 2. Compile: pdflatex main.tex (atau gunakan build tool)
+% 3. Generated: main.pdf
+%
 % ====================================================================
 
+% --- DOKUMEN CLASS & OPTIONS ---
+% report = style untuk skripsi/thesis
+% 12pt = ukuran font sesuai juknis
+% a4paper = ukuran kertas A4
+% oneside = single-sided printing
 \documentclass[12pt, a4paper, oneside]{report}
 
-% --- Paket Dasar ---
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[indonesian]{babel}
-\usepackage{times} % Menggunakan font Times New Roman
-\usepackage[top=4cm, left=4cm, bottom=3cm, right=3cm]{geometry}
-\usepackage{setspace}
-\setstretch{1.5} % Pengaturan spasi 1.5
+% ====================================================================
+% SECTION 1: LOAD METADATA & KONFIGURASI
+% ====================================================================
+% Metadata berisi semua variable/command yang dapat diubah
+% (judul, nama penulis, pembimbing, dll.)
 
-% --- Paket Kustomisasi Visual ---
-\usepackage{titlesec}
-\usepackage{fancyhdr}
-\usepackage{caption}
-\usepackage{lipsum} % Untuk teks pengisi placeholder
-
-% --- Paket Tambahan ---
-\usepackage{graphicx}   % Untuk menyisipkan gambar
-\usepackage{booktabs}   % Untuk tabel berkualitas tinggi
-\usepackage{amsmath}    % Untuk notasi matematika
-\usepackage{hyperref}   % Untuk hyperlink dalam PDF
-\usepackage{natbib}     % Untuk manajemen referensi (APA Style)
-
-% --- Konfigurasi Hyperref ---
-\hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-    citecolor=black,
-    urlcolor=black
-}
+\input{metadata.tex}
 
 % ====================================================================
-% KONFIGURASI JUDUL BAB
-% Centered, Bold, All Caps sesuai Juknis Versi 2.0 (14pt, Bold, Kapital)
+% SECTION 2: LOAD PACKAGES & KONFIGURASI GLOBAL
 % ====================================================================
-\titleformat{\chapter}[display]
-  {\bfseries\Large\centering}
-  {\MakeUppercase{\chaptertitlename} \thechapter}
-  {0pt}
-  {\MakeUppercase}
-\titlespacing*{\chapter}{0pt}{-20pt}{40pt}
+% Semua paket LaTeX diimport dari file terpisah untuk clarity
+
+% Packages: encoding, bahasa, font, layout
+\input{config/packages.tex}
+
+% Konfigurasi hyperref: metadata PDF, warna link, dll.
+\input{config/hyperref-config.tex}
+
+% Konfigurasi format chapter/section/subsection
+\input{config/formatting.tex}
+
+% Konfigurasi header/footer dan penomoran halaman
+\input{config/page-style.tex}
+
+% Custom commands & environments untuk DRY principle
+\input{config/custom-commands.tex}
 
 % ====================================================================
-% KONFIGURASI SUBBAB
-% Bold, normal size, penomoran berjenjang
+% SECTION 3: BEGIN DOCUMENT
 % ====================================================================
-\titleformat{\section}
-  {\bfseries\normalsize}
-  {\thesection}
-  {1em}
-  {}
 
-\titleformat{\subsection}
-  {\bfseries\normalsize}
-  {\thesubsection}
-  {1em}
-  {}
-
-\titleformat{\subsubsection}
-  {\bfseries\normalsize}
-  {\thesubsubsection}
-  {1em}
-  {}
-
-% ====================================================================
-% KONFIGURASI HEADER/FOOTER (Penomoran Halaman)
-% - Halaman bagian utama: angka Arab di kanan atas
-% - Halaman awal bab: angka Arab di tengah bawah
-% ====================================================================
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[R]{\thepage} % Nomor halaman di kanan atas
-\renewcommand{\headrulewidth}{0pt} % Menghilangkan garis header
-
-% Style 'plain' dipanggil otomatis pada halaman pertama setiap \chapter
-\fancypagestyle{plain}{
-  \fancyhf{}
-  \fancyfoot[C]{\thepage} % Nomor halaman di tengah bawah
-  \renewcommand{\headrulewidth}{0pt}
-}
-
-% ====================================================================
-% MEMULAI DOKUMEN
-% ====================================================================
 \begin{document}
 
-% --------------------------------------------------------------------
-% HALAMAN SAMPUL
-% --------------------------------------------------------------------
-\begin{titlepage}
-\begin{center}
-    \vspace*{1cm}
-    {\Large\bfseries JUDUL SKRIPSI DITULIS DI SINI\\
-    DENGAN FORMAT FRASA BUKAN KALIMAT}\\
-    \vspace{2cm}
-    % Logo UNEJ (diameter 5 cm sesuai Juknis)
-    % \includegraphics[width=5cm]{logo_unej.png}
-    \vspace{2cm}
-    {\normalsize\bfseries Oleh}\\
-    \vspace{0.5cm}
-    {\normalsize\bfseries NAMA MAHASISWA}\\
-    {\normalsize NIM XXXXXXXXXX}\\
-    \vspace{2cm}
-    {\normalsize\bfseries PROGRAM STUDI INFORMATIKA\\
-    FAKULTAS ILMU KOMPUTER\\
-    UNIVERSITAS JEMBER\\}
-    \vspace{0.5cm}
-    {\normalsize TAHUN}
-\end{center}
-\end{titlepage}
+% ====================================================================
+% BAGIAN 0: HALAMAN SAMPUL
+% ====================================================================
+% Halaman sampul adalah halaman pertama (tidak dinomori)
 
-% --------------------------------------------------------------------
-% BAGIAN AWAL (Front Matter)
+\input{frontmatter/00-cover.tex}
+
+% ====================================================================
+% BAGIAN 1: FRONT MATTER (BAGIAN AWAL)
+% ====================================================================
 % Penomoran: Angka Romawi kecil (i, ii, iii, ...) di tengah bawah
-% --------------------------------------------------------------------
+
 \pagenumbering{roman}
 \pagestyle{plain}
 
-% Halaman Persembahan
-\chapter*{PERSEMBAHAN}
-\addcontentsline{toc}{chapter}{PERSEMBAHAN}
-\lipsum[1-2]
-\newpage
+% Halaman Persembahan (Dedication)
+\input{frontmatter/01-dedication.tex}
 
 % Halaman Motto
-\chapter*{MOTTO}
-\addcontentsline{toc}{chapter}{MOTTO}
-\begin{center}
-    \textit{``In life, you either win or learn. When you lose, experience is the reward''} \\
-    (Nelson Mandela) \\
-    \vspace{1cm}
-    \textit{``Dan orang-orang yang berjihad untuk (mencari keridhaan) Kami, benar-benar akan
-    Kami tunjukkan kepada mereka jalan-jalan Kami.''} \\
-    (Al-Ankabut: 69)
-\end{center}
-\newpage
+\input{frontmatter/02-motto.tex}
 
-% Halaman Pernyataan Orisinalitas (bermaterai Rp10.000)
-\chapter*{PERNYATAAN ORISINALITAS}
-\addcontentsline{toc}{chapter}{PERNYATAAN ORISINALITAS}
-\lipsum[3-4]
-\newpage
+% Halaman Pernyataan Orisinalitas
+\input{frontmatter/03-originality.tex}
 
-% Halaman Persetujuan (tanda tangan pembimbing dan penguji)
-\chapter*{HALAMAN PERSETUJUAN}
-\addcontentsline{toc}{chapter}{HALAMAN PERSETUJUAN}
-\lipsum[5-6]
-\newpage
+% Halaman Persetujuan & Pengesahan (Approval & Sign-off)
+\input{frontmatter/04-approval.tex}
 
-% Abstrak Bahasa Indonesia (200-300 kata)
-\chapter*{ABSTRAK}
-\addcontentsline{toc}{chapter}{ABSTRAK}
-\lipsum[7]
-\vspace{1cm}
-\noindent \textbf{Kata Kunci:} \textit{Kata Kunci Satu, Kata Kunci Dua, Kata Kunci Tiga}
-\newpage
+% Abstrak Bahasa Indonesia
+\input{frontmatter/05-abstract-id.tex}
 
-% Abstract Bahasa Inggris (200-300 kata)
-\chapter*{ABSTRACT}
-\addcontentsline{toc}{chapter}{ABSTRACT}
-\lipsum[7]
-\vspace{1cm}
-\noindent \textbf{Keywords:} \textit{Keyword One, Keyword Two, Keyword Three}
-\newpage
+% Abstract Bahasa Inggris
+\input{frontmatter/06-abstract-en.tex}
 
-% Summary / Ringkasan (lebih naratif dari abstrak)
-\chapter*{RINGKASAN}
-\addcontentsline{toc}{chapter}{RINGKASAN}
-\lipsum[8-9]
-\newpage
+% Ringkasan (Summary)
+\input{frontmatter/07-summary.tex}
 
-% Prakata (ucapan terima kasih)
-\chapter*{PRAKATA}
-\addcontentsline{toc}{chapter}{PRAKATA}
-\lipsum[10-11]
-\newpage
+% Prakata (Preface)
+\input{frontmatter/08-preface.tex}
 
-% Daftar Isi
-\tableofcontents
-\newpage
+% Daftar Isi, Daftar Tabel, Daftar Gambar
+\input{frontmatter/09-toc.tex}
 
-% Daftar Tabel (opsional, jika ada tabel)
-\listoftables
-\addcontentsline{toc}{chapter}{DAFTAR TABEL}
-\newpage
-
-% Daftar Gambar (opsional, jika ada gambar)
-\listoffigures
-\addcontentsline{toc}{chapter}{DAFTAR GAMBAR}
-\newpage
-
-% --------------------------------------------------------------------
-% BAGIAN INTI (Main Body)
+% ====================================================================
+% BAGIAN 2: MAIN BODY (BAGIAN INTI)
+% ====================================================================
 % Penomoran: Angka Arab (1, 2, 3, ...) di kanan atas
-% Kecuali halaman pertama setiap bab: di tengah bawah
-% --------------------------------------------------------------------
+% Kecuali halaman pertama bab: di tengah bawah
+
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \pagestyle{fancy}
 
-% ====================================================================
 % BAB 1: PENDAHULUAN
-% ====================================================================
-\chapter{PENDAHULUAN}
+\input{chapters/01-introduction.tex}
 
-\section{Latar Belakang}
-\lipsum[11-15]
-
-\section{Rumusan Masalah}
-\lipsum[16]
-
-\section{Batasan Penelitian}
-\lipsum[17]
-
-\section{Tujuan Penelitian}
-\lipsum[18]
-
-\section{Manfaat Penelitian}
-\lipsum[19]
-
-% ====================================================================
 % BAB 2: TINJAUAN PUSTAKA
-% ====================================================================
-\chapter{TINJAUAN PUSTAKA}
+\input{chapters/02-literature.tex}
 
-\section{Penelitian Terdahulu}
-\lipsum[20-22]
-
-\section{Landasan Teori}
-\lipsum[23-26]
-
-% ====================================================================
 % BAB 3: METODOLOGI PENELITIAN
-% ====================================================================
-\chapter{METODOLOGI PENELITIAN}
+\input{chapters/03-methodology.tex}
 
-\section{Lokasi dan Waktu Penelitian}
-\lipsum[27]
-
-\section{Populasi dan Sampel}
-\lipsum[28]
-
-\section{Data Penelitian}
-\lipsum[29]
-\subsection{Jenis dan Sumber Data}
-\lipsum[30]
-\subsection{Teknik Pengumpulan Data}
-\lipsum[31]
-
-\section{Prosedur Penelitian}
-\lipsum[32]
-
-\section{Metode Analisis}
-\lipsum[33]
-
-% ====================================================================
 % BAB 4: HASIL DAN PEMBAHASAN
-% ====================================================================
-\chapter{HASIL DAN PEMBAHASAN}
+\input{chapters/04-results.tex}
 
-\section{Hasil Penelitian}
-\lipsum[34-40]
-
-\section{Pembahasan}
-% Pembahasan wajib dilakukan secara kritis (critical analysis)
-% dengan mengacu pada konsep teoretis atau tinjauan pustaka.
-\lipsum[41-45]
-
-% Contoh penggunaan notasi statistik
-% Berdasarkan hasil analisis diperoleh nilai $\beta = 0.268$ dan $p = 0.001$,
-% yang menunjukkan bahwa hipotesis diterima pada taraf signifikansi 0,05.
-
-% ====================================================================
 % BAB 5: KESIMPULAN DAN SARAN
+\input{chapters/05-conclusion.tex}
+
 % ====================================================================
-\chapter{KESIMPULAN DAN SARAN}
+% BAGIAN 3: BACK MATTER (BAGIAN AKHIR)
+% ====================================================================
 
-\section{Kesimpulan}
-\lipsum[46]
+% Daftar Pustaka (Bibliography)
+\input{backmatter/01-references.tex}
 
-\section{Saran}
-\lipsum[47]
+% Lampiran (Appendices)
+\input{backmatter/02-appendices.tex}
 
-% --------------------------------------------------------------------
-% BAGIAN AKHIR (Back Matter)
-% --------------------------------------------------------------------
-
-% Daftar Pustaka (APA Style, minimal 50% dari 10 tahun terakhir)
-% Gunakan Mendeley/Zotero untuk mengekspor file .bib, lalu ganti baris
-% \lipsum di bawah dengan:
-%   \bibliographystyle{apalike}
-%   \bibliography{references}   % merujuk ke file references.bib
-\chapter*{DAFTAR PUSTAKA}
-\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
-% \bibliographystyle{apalike}
-% \bibliography{references}
-\lipsum[48-50]
-
-% Lampiran (data mentah, kode sumber, tabel besar, dokumen pendukung)
-\appendix
-\chapter{LAMPIRAN}
-\lipsum[51-52]
+% ====================================================================
+% END DOCUMENT
+% ====================================================================
 
 \end{document}

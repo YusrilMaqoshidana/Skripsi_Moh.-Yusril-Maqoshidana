@@ -1,0 +1,71 @@
+% ====================================================================
+% DAFTAR ISI, DAFTAR TABEL, DAFTAR GAMBAR
+% ====================================================================
+% File ini berisi perintah untuk menggenerate daftar isi, tabel, dan
+% gambar secara otomatis dari dokumen.
+% LaTeX akan membuat daftar ini berdasarkan \chapter, \section dll
+% dan captions gambar/tabel.
+%
+% CATATAN: File ini TIDAK perlu diedit kecuali ada kustomisasi khusus.
+% ====================================================================
+
+% --- DAFTAR ISI (TABLE OF CONTENTS) ---
+% Judul otomatis "Daftar Isi", nomor halaman otomatis
+\begin{spacing}{1}
+\tableofcontents
+\end{spacing}
+\newpage
+
+% --- DAFTAR TABEL (LIST OF TABLES) ---
+% Hanya tampil jika ada tabel dalam dokumen (\begin{table})
+% Jika tidak ada tabel, comment baris berikut:
+\listoftables
+\addcontentsline{toc}{chapter}{DAFTAR TABEL}
+\newpage
+
+% --- DAFTAR GAMBAR (LIST OF FIGURES) ---
+% Hanya tampil jika ada gambar dalam dokumen (\begin{figure})
+% Jika tidak ada gambar, comment baris berikut:
+\listoffigures
+\addcontentsline{toc}{chapter}{DAFTAR GAMBAR}
+\newpage
+
+% ====================================================================
+% CATATAN PENTING:
+%
+% 1. DAFTAR INI DIBUAT OTOMATIS:
+%    - Daftar Isi dari \chapter, \section, \subsection
+%    - Daftar Tabel dari \caption dalam \begin{table}
+%    - Daftar Gambar dari \caption dalam \begin{figure}
+%
+% 2. JIKA TIDAK ADA TABEL/GAMBAR:
+%    Comment (gunakan %) kedua baris berikut:
+%    \listoftables
+%    \addcontentsline{toc}{chapter}{DAFTAR TABEL}
+%    dan
+%    \listoffigures
+%    \addcontentsline{toc}{chapter}{DAFTAR GAMBAR}
+%
+% 3. CARA MENGGUNAKAN DI DOKUMEN:
+%
+%    Untuk Tabel:
+%    \begin{table}[h]
+%    \centering
+%    \caption{Deskripsi tabel}
+%    \label{tab:label}
+%    \begin{tabular}{|c|c|}
+%    ...
+%    \end{tabular}
+%    \end{table}
+%
+%    Untuk Gambar:
+%    \begin{figure}[h]
+%    \centering
+%    \includegraphics[width=0.8\textwidth]{path/to/image}
+%    \caption{Deskripsi gambar}
+%    \label{fig:label}
+%    \end{figure}
+%
+% 4. COMPILE MULTIPLE TIMES:
+%    LaTeX perlu di-compile 2-3 kali agar daftar ini akurat
+% ====================================================================

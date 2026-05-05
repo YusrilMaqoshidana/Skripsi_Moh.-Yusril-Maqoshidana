@@ -1,0 +1,122 @@
+% ====================================================================
+% CUSTOM COMMANDS & ENVIRONMENTS
+% ====================================================================
+% File ini berisi custom command dan environment untuk mempermudah
+% penulisan dan membuat dokumen lebih konsisten dan DRY (Don't Repeat Yourself).
+%
+% Tambahkan custom command di sini untuk:
+% - Pengurangan kode yang berulang
+% - Konsistensi formatting
+% - Kemudahan modifikasi global
+% ====================================================================
+
+% --- COMMAND UNTUK CHAPTER TANPA NOMOR (Front Matter) ---
+% Penggunaan lebih mudah daripada menulis \chapter* setiap kali
+% Contoh: \frontmatterchapter{PERSEMBAHAN}
+\newcommand{\frontmatterchapter}[1]{
+  \chapter*{#1}
+  \addcontentsline{toc}{chapter}{#1}
+}
+
+% --- COMMAND UNTUK KEYWORDS/KATA KUNCI ---
+% Untuk konsistensi formatting kata kunci di abstrak
+% Contoh: \keywords{Kata Kunci Satu, Kata Kunci Dua, Kata Kunci Tiga}
+\newcommand{\keywords}[1]{
+  \vspace{1cm}
+  \noindent \textbf{Kata Kunci:} \textit{#1}
+}
+
+% --- COMMAND UNTUK KEYWORDS DALAM BAHASA INGGRIS ---
+% Contoh: \keywordsen{Keyword One, Keyword Two, Keyword Three}
+\newcommand{\keywordsen}[1]{
+  \vspace{1cm}
+  \noindent \textbf{Keywords:} \textit{#1}
+}
+
+% --- ENVIRONMENT UNTUK CENTERLINE (SHORTCUT) ---
+% Penggunaan lebih singkat dari \begin{center} ... \end{center}
+% Contoh: \mycenterline{\textit{``quoted text''}}
+\newcommand{\mycenterline}[1]{
+  \begin{center}
+    #1
+  \end{center}
+}
+
+% --- COMMAND UNTUK AUTHOR DENGAN AFFILIATION ---
+% Berguna jika diperlukan dalam cover atau halaman judul
+% Contoh: \authorWithAffiliation{Nama Mahasiswa}{NIM}{Program Studi}
+\newcommand{\authorWithAffiliation}[3]{
+  {\normalsize\bfseries #1}\\
+  {\normalsize #2}\\
+  {\normalsize #3}
+}
+
+% --- COMMAND UNTUK QUOTE YANG DIPUSATKAN ---
+% Untuk mengformat quote atau motto dengan mudah
+% Contoh: \quoteline{``In life, you either win or learn...''}{Nelson Mandela}
+\newcommand{\quoteline}[2]{
+  \begin{center}
+    \textit{#1}\\[0.5cm]
+    (\small\textit{#2})
+  \end{center}
+}
+
+% --- COMMAND UNTUK HORIZONTAL RULE DEKORATIF ---
+% Untuk separator visual dalam dokumen
+\newcommand{\decorativeHRule}{
+  \vspace{0.5cm}
+  \centerline{\hrulefill}
+  \vspace{0.5cm}
+}
+
+% --- COMMAND UNTUK TEMPAT TANDA TANGAN (SIGNATURE BLOCK) ---
+% Berguna untuk halaman persetujuan
+% Usage: \signatureBlock{Nama}{Tanggal}{Jabatan}
+\newcommand{\signatureBlock}[3]{
+  \vspace{1.5cm}
+  \noindent
+  #2\\
+  \vspace{3cm}
+  \noindent\line(1,0){100}\\
+  \noindent\small #1\\
+  \noindent\small #3
+}
+
+% --- COMMAND UNTUK INFORMASI PENELITIAN ---
+% Shortcut untuk menampilkan info pembimbing, penguji, dll
+% Contoh: \advisorInfo{Nama Pembimbing}{Gelar}
+\newcommand{\advisorInfo}[2]{
+  \noindent\textbf{#1}\\
+  {\normalsize #2}
+}
+
+% --- COMMAND UNTUK BARIS NAMA & NIP PENGUJI/PEMBIMBING ---
+\newcommand{\supervisorrow}[4]{%
+  % #1 = nomor
+  % #2 = jabatan (Pembimbing Utama / Penguji Utama / dst)
+  % #3 = nama
+  % #4 = NIP
+  
+  \quad #1. #2 & \\[0.3em]
+  
+  \quad \quad Nama : #3 & \signatureLine \\[0.3em]
+  \quad \quad NIP \; : #4 & \\[1em]
+}
+
+% --- ENVIRONMENT TABEL PEMBIMBING & PENGUJI ---
+\newenvironment{approvalboard}{%
+  \noindent
+  \begin{tabular}{@{} p{0.7\textwidth} p{0.3\textwidth} @{}}
+}{%
+  \end{tabular}
+}
+
+% --- GARIS TANDA TANGAN ---
+\newcommand{\signatureLine}{(\dotfill)}
+
+% ====================================================================
+% CATATAN PENGGUNAAN:
+% - Gunakan custom command ini secara konsisten di seluruh dokumen
+% - Jika perlu mengubah format, hanya perlu edit di sini (DRY principle)
+% - Tambahkan command baru sesuai kebutuhan dokumen Anda
+% ====================================================================

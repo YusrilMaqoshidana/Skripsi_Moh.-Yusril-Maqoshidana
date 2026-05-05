@@ -1,0 +1,276 @@
+% ====================================================================
+% MAIN LaTeX FILE - SKRIPSI FASILKOM UNEJ
+% ====================================================================
+% STRUKTUR DOKUMENTASI SKRIPSI FASILKOM UNEJ - VERSI 2.0 (2023)
+% Berdasarkan Juknis dan Keputusan Rektor UNEJ Nomor 5157/UN25/EP/2023
+%
+% ARSITEKTUR MODULAR & CLEAN:
+% File ini adalah file utama (entry point) yang memanggil file-file
+% terpisah untuk konfigurasi dan konten. Struktur ini memudahkan
+% maintenance, kolaborasi, dan reusability.
+%
+% QUICK START:
+% 1. Edit metadata.tex dengan informasi Anda
+% 2. Compile: pdflatex main.tex (atau gunakan build tool)
+% 3. Generated: main.pdf
+%
+% ====================================================================
+
+% --- DOKUMEN CLASS & OPTIONS ---
+% report = style untuk skripsi/thesis
+% 12pt = ukuran font sesuai juknis
+% a4paper = ukuran kertas A4
+% oneside = single-sided printing
+\documentclass[12pt, a4paper, oneside]{report}
+
+% ====================================================================
+% SECTION 1: LOAD METADATA & KONFIGURASI
+% ====================================================================
+% Metadata berisi semua variable/command yang dapat diubah
+% (judul, nama penulis, pembimbing, dll.)
+
+\input{metadata.tex}
+
+% ====================================================================
+% SECTION 2: LOAD PACKAGES & KONFIGURASI GLOBAL
+% ====================================================================
+% Semua paket LaTeX diimport dari file terpisah untuk clarity
+
+% Packages: encoding, bahasa, font, layout
+\input{config/packages.tex}
+
+% Konfigurasi hyperref: metadata PDF, warna link, dll.
+\input{config/hyperref-config.tex}
+
+% Konfigurasi format chapter/section/subsection
+\input{config/formatting.tex}
+
+% Konfigurasi header/footer dan penomoran halaman
+\input{config/page-style.tex}
+
+% Custom commands & environments untuk DRY principle
+\input{config/custom-commands.tex}
+
+% ====================================================================
+% SECTION 3: BEGIN DOCUMENT
+% ====================================================================
+
+\begin{document}
+
+% ====================================================================
+% BAGIAN 0: HALAMAN SAMPUL
+% ====================================================================
+% Halaman sampul adalah halaman pertama (tidak dinomori)
+
+\input{frontmatter/00-cover.tex}
+
+% ====================================================================
+% BAGIAN 1: FRONT MATTER (BAGIAN AWAL)
+% ====================================================================
+% Penomoran: Angka Romawi kecil (i, ii, iii, ...) di tengah bawah
+
+\pagenumbering{roman}
+\pagestyle{plain}
+
+% Halaman Persembahan (Dedication)
+\input{frontmatter/01-dedication.tex}
+
+% Halaman Motto
+\input{frontmatter/02-motto.tex}
+
+% Halaman Pernyataan Orisinalitas
+\input{frontmatter/03-originality.tex}
+
+% Halaman Persetujuan & Pengesahan (Approval & Sign-off)
+\input{frontmatter/04-approval.tex}
+
+% Abstrak Bahasa Indonesia
+\input{frontmatter/05-abstract-id.tex}
+
+% Abstract Bahasa Inggris
+\input{frontmatter/06-abstract-en.tex}
+
+% Ringkasan (Summary)
+\input{frontmatter/07-summary.tex}
+
+% Prakata (Preface)
+\input{frontmatter/08-preface.tex}
+
+% Daftar Isi, Daftar Tabel, Daftar Gambar
+\input{frontmatter/09-toc.tex}
+
+% ====================================================================
+% BAGIAN 2: MAIN BODY (BAGIAN INTI)
+% ====================================================================
+% Penomoran: Angka Arab (1, 2, 3, ...) di kanan atas
+% Kecuali halaman pertama bab: di tengah bawah
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{fancy}
+
+% BAB 1: PENDAHULUAN
+\input{chapters/01-introduction.tex}
+
+% BAB 2: TINJAUAN PUSTAKA
+\input{chapters/02-literature.tex}
+
+% BAB 3: METODOLOGI PENELITIAN
+\input{chapters/03-methodology.tex}
+
+% BAB 4: HASIL DAN PEMBAHASAN
+\input{chapters/04-results.tex}
+
+% BAB 5: KESIMPULAN DAN SARAN
+\input{chapters/05-conclusion.tex}
+
+% ====================================================================
+% BAGIAN 3: BACK MATTER (BAGIAN AKHIR)
+% ====================================================================
+
+% Daftar Pustaka (Bibliography)
+\input{backmatter/01-references.tex}
+
+% Lampiran (Appendices)
+\input{backmatter/02-appendices.tex}
+
+% ====================================================================
+% END DOCUMENT
+% ====================================================================
+
+\end{document}
+
+% ====================================================================
+% DOKUMENTASI & PANDUAN PENGGUNAAN
+% ====================================================================
+%
+% STRUKTUR FOLDER:
+% .
+% ├── main.tex                    ← File ini (entry point)
+% ├── metadata.tex                ← Edit di sini: judul, nama, pembimbing
+% ├── config/
+% │   ├── packages.tex            ← Semua \usepackage
+% │   ├── hyperref-config.tex     ← PDF metadata & hyperlink settings
+% │   ├── formatting.tex          ← Format chapter/section/subsection
+% │   ├── page-style.tex          ← Header/footer & page numbering
+% │   └── custom-commands.tex     ← Custom LaTeX commands & environments
+% ├── frontmatter/
+% │   ├── 00-cover.tex            ← Halaman sampul
+% │   ├── 01-dedication.tex       ← Persembahan
+% │   ├── 02-motto.tex            ← Motto
+% │   ├── 03-originality.tex      ← Pernyataan orisinalitas
+% │   ├── 04-approval.tex         ← Halaman persetujuan & pengesahan
+% │   ├── 05-abstract-id.tex      ← Abstrak Indonesia
+% │   ├── 06-abstract-en.tex      ← Abstract English
+% │   ├── 07-summary.tex          ← Ringkasan
+% │   ├── 08-preface.tex          ← Prakata
+% │   └── 09-toc.tex              ← Daftar Isi & Gambar & Tabel
+% ├── chapters/
+% │   ├── 01-introduction.tex     ← BAB 1: Pendahuluan
+% │   ├── 02-literature.tex       ← BAB 2: Tinjauan Pustaka
+% │   ├── 03-methodology.tex      ← BAB 3: Metodologi Penelitian
+% │   ├── 04-results.tex          ← BAB 4: Hasil & Pembahasan
+% │   └── 05-conclusion.tex       ← BAB 5: Kesimpulan & Saran
+% ├── backmatter/
+% │   ├── 01-references.tex       ← Daftar Pustaka
+% │   └── 02-appendices.tex       ← Lampiran
+% └── README.md                    ← Dokumentasi proyek
+%
+% ====================================================================
+% CARA COMPILE & GENERATE PDF:
+% ====================================================================
+%
+% OPSI 1: Menggunakan pdflatex (Command Line)
+% -------------------------------------------
+% $ pdflatex main.tex
+% $ pdflatex main.tex      # Compile 2x agar TOC, references akurat
+% $ pdflatex main.tex      # Compile 3x untuk hasil optimal
+%
+% Jika ada bibliography:
+% $ pdflatex main.tex
+% $ bibtex main            # Generate references
+% $ pdflatex main.tex
+% $ pdflatex main.tex
+%
+% OPSI 2: Menggunakan latexmk (Otomatis, Rekomendasi)
+% ----
+% $ latexmk -pdf main.tex  # Otomatis compile berapa kali diperlukan
+%
+% OPSI 3: Menggunakan VS Code dengan LaTeX Workshop Extension
+% ------
+% - Install extension: James Yu "LaTeX Workshop"
+% - Buka main.tex → Klik 'Build LaTeX project' atau Ctrl+Alt+B
+% - PDF akan generate otomatis di folder output/
+%
+% ====================================================================
+% WORKFLOW EDITING FILE:
+% ====================================================================
+%
+% UNTUK MENGUBAH METADATA (Nama, Judul, Pembimbing, dll):
+% → Edit file: metadata.tex
+%    Semua perubahan akan otomatis ter-update di seluruh dokumen
+%
+% UNTUK MENGEDIT ISI BAB SPESIFIK:
+% → Edit file: chapters/[nomor]-[nama].tex
+%    Misalnya untuk Bab 2, edit: chapters/02-literature.tex
+%
+% UNTUK MENAMBAH CUSTOM COMMAND:
+% → Edit file: config/custom-commands.tex
+%    Contoh: command untuk format tabel, quote, signature block, dll.
+%
+% UNTUK MENGUBAH GLOBAL STYLING:
+% → Edit file yang relevan di folder config/
+%    - Warna link: config/hyperref-config.tex
+%    - Font/margin: config/packages.tex
+%    - Format heading: config/formatting.tex
+%
+% ====================================================================
+% TIPS & BEST PRACTICES:
+% ====================================================================
+%
+% 1. JANGAN EDIT main.tex
+%    Gunakan main.tex hanya untuk structure. Semua content ada di
+%    file-file terpisah di folder chapters/, frontmatter/, dll.
+%
+% 2. GUNAKAN LABEL & REFERENCE
+%    Contoh: \label{sec:intro} di section, kemudian \ref{sec:intro}
+%    Ini membuat cross-reference otomatis dan robust.
+%
+% 3. COMPILE SECARA BERKALA
+%    Compile saat membuat perubahan besar untuk cek syntax error awal.
+%
+% 4. GUNAKAN CITATIONS
+%    \citet{Author2020} vs \citep{Author2020}
+%    Perlu file references.bib untuk bibliography.
+%
+% 5. COMMENT OUT BAGIAN
+%    Gunakan % untuk comment line, atau \iffalse ... \fi untuk block
+%    Berguna saat testing atau saat belum siap publish section tertentu.
+%
+% ====================================================================
+% TROUBLESHOOTING:
+% ====================================================================
+%
+% [ERROR] Undefined control sequence
+% → Pastikan semua \usepackage sudah diimport di config/packages.tex
+%
+% [ERROR] File not found
+% → Cek path ke file di \input{...} sudah benar relatif ke main.tex
+%
+% [ERROR] TOC tidak update
+% → Compile 2-3 kali, LaTeX perlu multiple pass untuk TOC
+%
+% [WARNING] Overfull hbox
+% → Bisa diabaikan jika minor, atau ubah text/spacing jika serius
+%
+% ====================================================================
+% RESOURCES & DOKUMENTASI:
+% ====================================================================
+%
+% - LaTeX Documentation: https://www.latex-project.org/help/documentation/
+% - Comprehensive TeX Archive (CTAN): https://ctan.org/
+% - Overleaf Documentation: https://www.overleaf.com/learn
+% - Juknis UNEJ: Lihat README.md di repository ini
+% - Untuk help LaTeX: tanya di community seperti TeX StackExchange
+%
+% ====================================================================

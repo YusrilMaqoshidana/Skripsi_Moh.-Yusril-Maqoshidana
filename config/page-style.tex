@@ -1,0 +1,45 @@
+% ====================================================================
+% KONFIGURASI HEADER, FOOTER, DAN PENOMORAN HALAMAN
+% ====================================================================
+% File ini mengatur penomoran halaman dan header/footer dokumen.
+%
+% Ketentuan Penomoran Juknis UNEJ:
+% - Bagian Awal (Front Matter): Roman kecil (i, ii, iii, ...) di tengah bawah
+% - Bagian Inti (Main Body): Angka Arab (1, 2, 3, ...) di kanan atas
+% - Halaman pertama setiap BAB: Angka di tengah bawah (tanpa header)
+% ====================================================================
+
+% === STYLE UNTUK HALAMAN REGULER ===
+% Nomor halaman di kanan atas, tanpa garis header
+\fancypagestyle{plain}{%
+	\fancyhf{}%
+	\fancyfoot[C]{\thepage}%
+	\renewcommand{\headrulewidth}{0pt}%
+	\renewcommand{\footrulewidth}{0pt}%
+}
+
+% Style untuk halaman biasa bagian utama: nomor di kanan atas
+\fancypagestyle{fancy}{%
+	\fancyhf{}%
+	\fancyhead[R]{\thepage}%
+	\renewcommand{\headrulewidth}{0pt}%
+	\renewcommand{\footrulewidth}{0pt}%
+}
+
+
+
+
+
+% ====================================================================
+% CATATAN IMPLEMENTASI DI main.tex:
+% 1. Bagian Front Matter harus menggunakan:
+%    \pagenumbering{roman}
+%    \pagestyle{plain}
+%    Untuk penomoran Romawi (i, ii, iii) di tengah bawah
+%
+% 2. Bagian Main Body harus menggunakan:
+%    \pagenumbering{arabic}
+%    \setcounter{page}{1}
+%    \pagestyle{fancy}
+%    Untuk penomoran Arab (1, 2, 3) di kanan atas
+% ====================================================================

@@ -1,0 +1,59 @@
+% ====================================================================
+% KONFIGURASI PAKET LaTeX
+% ====================================================================
+% File ini berisi semua paket (packages) yang digunakan dalam dokumen.
+% Paket-paket diorganisir berdasarkan fungsi untuk kemudahan pemeliharaan.
+% 
+% JANGAN MENAMBAHKAN \documentclass DI SINI - hanya \usepackage
+% ====================================================================
+
+% --- PAKET ENCODING & BAHASA ---
+% Paket untuk encoding karakter UTF-8 dan dukungan bahasa Indonesia
+\usepackage[utf8]{inputenc}                 % Encoding input UTF-8
+\usepackage[T1]{fontenc}                    % Encoding font
+\usepackage[indonesian]{babel}              % Dukungan bahasa Indonesia
+
+% --- PAKET FONT & FORMATASI DASAR ---
+% Mengatur jenis font dan margin sesuai juknis UNEJ
+\usepackage{times}                          % Font Times New Roman (sesuai juknis)
+\usepackage[top=4cm, left=4cm, bottom=3cm, right=3cm]{geometry}  % Margin sesuai juknis
+\usepackage{setspace}                       % Pengaturan spasi antar baris
+
+% --- PAKET KUSTOMISASI VISUAL STRUKTUR ---
+% Paket untuk mengatur format judul bab, section, dan elemen visual lainnya
+\usepackage{titlesec}                       % Kustomisasi judul chapter/section
+\usepackage{fancyhdr}                       % Header dan footer custom
+\usepackage{caption}                        % Pengaturan caption gambar/tabel
+
+% --- PAKET KONTEN & REFERENSI ---
+% Paket untuk menyisipkan berbagai elemen konten
+\usepackage{graphicx}                       % Menyisipkan gambar (PNG, JPG, PDF)
+\usepackage{booktabs}                       % Tabel berkualitas tinggi (profesi)
+\usepackage{tabularx}                       % Tabel dengan kolom yang fleksibel
+\usepackage{enumitem}                       % Kustomisasi list (mis. opsi [nosep])
+\usepackage{amsmath}                        % Notasi matematika advanced
+\usepackage{amssymb}                        % Simbol matematika tambahan
+\usepackage{natbib}                         % Manajemen referensi (APA Style)
+\usepackage{lipsum}                         % Teks dummy untuk placeholder (opsional)
+
+% --- PAKET HYPERLINK & INTERAKTIF ---
+% Paket untuk membuat dokumen PDF interaktif dengan hyperlink
+\usepackage{hyperref}                       % Hyperlink dalam PDF
+\usepackage{tocloft}                        % Kustomisasi daftar isi/tabel/gambar
+\usepackage{afterpage}                       % Menunda perintah sampai halaman berikutnya (untuk page style)
+\usepackage{indentfirst}                    % Indent paragraf pertama setelah heading
+
+% --- PAKET TAMBAHAN (OPSIONAL) ---
+% Paket tambahan yang mungkin diperlukan:
+% \usepackage{listings}                     % Untuk menampilkan kode sumber
+% \usepackage{xcolor}                       % Dukungan warna tambahan
+% \usepackage{tikz}                         % Menggambar diagram dan grafik
+% \usepackage{array}                        % Pengaturan array dan tabel lebih lanjut
+% \usepackage{multicol}                     % Multiple columns layout
+% \usepackage{appendix}                     % Paket untuk lampiran (sudah built-in)
+
+% ====================================================================
+% PENGATURAN SPASI GLOBAL
+% Sesuai juknis: 1.5 spasi untuk isi dokumen
+% ====================================================================
+\setstretch{1.5}
