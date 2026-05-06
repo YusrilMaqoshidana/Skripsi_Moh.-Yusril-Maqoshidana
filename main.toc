@@ -17,42 +17,49 @@
 \contentsline {section}{\numberline {1.5}Batasan Penelitian}{5}{section.1.5}%
 \contentsline {chapter}{\numberline {2}TINJAUAN PUSTAKA}{6}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Penelitian Terdahulu}{6}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Landasan Teori}{6}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Teori Pertama}{6}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Teori Kedua}{7}{subsection.2.2.2}%
-\contentsline {section}{\numberline {2.3}Kerangka Konseptual}{7}{section.2.3}%
-\contentsline {chapter}{\numberline {3}METODOLOGI PENELITIAN}{8}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Lokasi dan Waktu Penelitian}{8}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Populasi dan Sampel}{8}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Populasi}{8}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Sampel}{8}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Data Penelitian}{9}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Jenis dan Sumber Data}{9}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Teknik Pengumpulan Data}{9}{subsection.3.3.2}%
-\contentsline {section}{\numberline {3.4}Prosedur Penelitian}{10}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Metode Analisis}{10}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}Analisis Deskriptif}{10}{subsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.5.2}Analisis Inferensial}{10}{subsection.3.5.2}%
-\contentsline {subsection}{\numberline {3.5.3}Software Analisis}{11}{subsection.3.5.3}%
-\contentsline {chapter}{\numberline {4}HASIL DAN PEMBAHASAN}{12}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Hasil Penelitian}{12}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Karakteristik Responden}{12}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Hasil Analisis Deskriptif}{12}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}Hasil Analisis Inferensial}{12}{subsection.4.1.3}%
-\contentsline {section}{\numberline {4.2}Pembahasan}{13}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Interpretasi Hasil Utama}{13}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Makna Praktis dan Implikasi}{13}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Keterbatasan Penelitian}{13}{subsection.4.2.3}%
-\contentsline {chapter}{\numberline {5}KESIMPULAN DAN SARAN}{15}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Kesimpulan}{15}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Saran}{15}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Saran untuk Penelitian Selanjutnya}{15}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Saran untuk Praktisi dan Pengambil Kebijakan}{16}{subsection.5.2.2}%
-\contentsline {chapter}{DAFTAR PUSTAKA}{16}{Item.49}%
-\contentsline {chapter}{\numberline {A}LAMPIRAN}{19}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Lampiran A - Data Mentah}{19}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Lampiran B - Instrumen Penelitian}{20}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}Lampiran B.1 - Kuesioner}{20}{subsection.A.2.1}%
-\contentsline {section}{\numberline {A.3}Lampiran C - Output Analisis Statistik}{21}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Lampiran D - Kode Sumber}{22}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Lampiran E - Dokumen Pendukung}{23}{section.A.5}%
+\contentsline {section}{\numberline {2.2}Landasan Teori}{7}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Aplikasi WhatsApp}{7}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}BERTopic}{8}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}IndoBERTweet}{9}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}BIRCH Clustering}{10}{subsection.2.2.4}%
+\contentsline {subsection}{\numberline {2.2.5}Topic Representation Dengan BM25}{11}{subsection.2.2.5}%
+\contentsline {subsection}{\numberline {2.2.6}Topic Coherence}{12}{subsection.2.2.6}%
+\contentsline {subsection}{\numberline {2.2.7}Topic Diversity}{13}{subsection.2.2.7}%
+\contentsline {subsection}{\numberline {2.2.8}Embedding Density}{13}{subsection.2.2.8}%
+\contentsline {subsection}{\numberline {2.2.9}Intra-topic Similarity}{14}{subsection.2.2.9}%
+\contentsline {chapter}{\numberline {3}METODOLOGI PENELITIAN}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Jenis Penelitian}{15}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Objek Penelitian}{15}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Waktu Penelitian}{15}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Tahapan Penelitian}{15}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Identifikasi Masalah dan Studi Literatur}{16}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Pengumpulan Data}{16}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Praproses Data}{17}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}Pembuatan Model}{17}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.5}Evaluasi Model}{19}{subsection.3.4.5}%
+\contentsline {subsection}{\numberline {3.4.6}Implementasi Sistem}{20}{subsection.3.4.6}%
+\contentsline {subsection}{\numberline {3.4.7}Evaluasi Sistem}{20}{subsection.3.4.7}%
+\contentsline {subsection}{\numberline {3.4.8}Analisis Hasil}{21}{subsection.3.4.8}%
+\contentsline {subsection}{\numberline {3.4.9}Penarikan Kesimpulan}{21}{subsection.3.4.9}%
+\contentsline {chapter}{\numberline {4}HASIL DAN PEMBAHASAN}{22}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Hasil Penelitian}{22}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Karakteristik Responden}{22}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Hasil Analisis Deskriptif}{22}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Hasil Analisis Inferensial}{22}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}Pembahasan}{23}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Interpretasi Hasil Utama}{23}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Makna Praktis dan Implikasi}{23}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Keterbatasan Penelitian}{23}{subsection.4.2.3}%
+\contentsline {chapter}{\numberline {5}KESIMPULAN DAN SARAN}{25}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Kesimpulan}{25}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Saran}{25}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Saran untuk Penelitian Selanjutnya}{25}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Saran untuk Praktisi dan Pengambil Kebijakan}{26}{subsection.5.2.2}%
+\contentsline {chapter}{DAFTAR PUSTAKA}{26}{Item.51}%
+\contentsline {chapter}{\numberline {A}LAMPIRAN}{31}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Lampiran A - Data Mentah}{31}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Lampiran B - Instrumen Penelitian}{32}{section.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}Lampiran B.1 - Kuesioner}{32}{subsection.A.2.1}%
+\contentsline {section}{\numberline {A.3}Lampiran C - Output Analisis Statistik}{33}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Lampiran D - Kode Sumber}{34}{section.A.4}%
+\contentsline {section}{\numberline {A.5}Lampiran E - Dokumen Pendukung}{35}{section.A.5}%

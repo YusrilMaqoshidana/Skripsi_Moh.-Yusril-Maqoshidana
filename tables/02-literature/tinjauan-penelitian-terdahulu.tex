@@ -1,0 +1,63 @@
+\begingroup
+\pagestyle{fancy}
+\singlespacing
+\setlength{\extrarowheight}{4pt}
+% \setlength{\LTleft}{-2cm}
+% \setlength{\LTright}{-1cm}
+\setlength{\LTpre}{-10pt}
+\setlength{\LTpost}{1pt}
+
+\begin{scriptsize}
+	\begin{longtable}{>{\centering\arraybackslash}p{0.3cm} p{2.5cm} p{3cm} p{3cm} p{3cm}}
+
+		\caption{Tinjauan Penelitian Terdahulu} \label{tab:tinjauan}                                                                                                                                                                                                                                                                                                                              \\[6pt]
+		\hline
+		\textbf{No}                                                                                                                                                                                                                                                                          & \textbf{Judul Penelitian} & \textbf{Hasil Penelitian} & \textbf{Celah (\textit{Gap})} & \textbf{Kontribusi} \\
+		\hline
+		\endfirsthead
+
+		\caption*{\textbf{Tabel \ref{tab:tinjauan}} Tinjauan Penelitian Terdahulu}                                                                                                                                                                                                                                                                                                                \\[6pt]
+		\hline
+		\textbf{No}                                                                                                                                                                                                                                                                          & \textbf{Judul Penelitian} & \textbf{Hasil Penelitian} & \textbf{Celah (\textit{Gap})} & \textbf{Kontribusi} \\
+		\hline
+		\endhead
+
+		\hline
+		\endfoot
+
+		\hline
+		\endlastfoot
+
+		1                                                                                                                                                                                                                                                                                    &
+		\textit{A Topic Modeling Comparison Between LDA, NMF, Top2Vec, and BERTopic to Demystify Twitter Posts} \citep{10.3389/fsoc.2022.886498} (Jurnal Q1)                                                                                                                                 &
+		Penelitian ini membandingkan BERTopic, NMF, LDA, dan Top2Vec pada data Twitter. BERTopic direkomendasikan untuk pendekatan berbasis \textit{embedding}, sedangkan NMF menjadi alternatif tradisional yang lebih unggul untuk data media sosial.                                      &
+		Meskipun BERTopic menunjukkan performa yang baik, penggunaan \textit{embedding} multilingual dan \textit{clustering} default (HDBSCAN) masih memiliki keterbatasan dalam mengatasi \textit{outlier} dan meningkatkan stabilitas topik. Belum ada sistem aplikatif yang dikembangkan. &
+		Penelitian ini menggunakan IndoBERTweet sebagai model \textit{embedding} khusus bahasa Indonesia serta BIRCH sebagai alternatif HDBSCAN untuk meningkatkan stabilitas \textit{clustering} dan mengurangi \textit{outlier}. Selain itu, dikembangkan sistem berbasis \textit{web} untuk analisis percakapan WhatsApp.                                                                      \\
+		\hline
+		2                                                                                                                                                                                                                                                                                    &
+		\textit{Integrating IndoBERT and BIRCH in BERTopic for Indonesian short text} \citep{iaes2025indobert} (Jurnal Q2)                                                                                                                                                                   &
+		Penelitian ini memodifikasi BERTopic dengan IndoBERT, BM25, dan BIRCH dengan dataset dari X,
+		Google Reviews, dan YouTube yang bersifat teks monolog. Berhasil menurunkan \textit{outlier} secara signifikan serta meningkatkan stabilitas topik pada teks pendek.                                                                                                                 &
+		Pendekatan ini belum dieksplorasi pada data percakapan grup WhatsApp yang memiliki karakteristik lebih kompleks berupa \textit{multi-turn dialogue}, evolusi percakapan yang cepat dan volume pesan yang tinggi.
+		Selain itu, penelitian terdahulu belum menyediakan sistem aplikasi bagi pengguna akhir.                                                                                                                                                                                              &
+		Penelitian ini mengimplementasikan BERTopic dengan IndoBERTweet
+		dan BIRCH pada dataset WhatsApp yang diintegrasikan ke dalam sistem analisis
+		interaktif untuk memvisualisasikan dinamika topik secara otomatis.                                                                                                                                                                                                                                                                                                                        \\
+		\hline
+		3                                                                                                                                                                                                                                                                                    &
+		\textit{BERTopic Enhanced Bibliometric Insight Into Global South Higher Education} \citep{10643545} (Jurnal Q1)                                                                                                                                                                      &
+		Penelitian ini menyelidiki keragaman linguistik dan proses dekolonisasi dalam sistem pendidikan tinggi di wilayah Global South menggunakan kerangka kerja empiris tiga tingkat yang menggabungkan Analisis Ko-okurensi Bibliometrik (Bibliometric Co-occurrence Analysis), pemodelan topik LDA, dan pemodelan BERTopic.
+		BERTopic menunjukkan performa lebih baik dibanding LDA dalam koherensi dan jumlah topik yang dihasilkan pada data akademik.                                                                                                                                                          &
+		Penelitian tersebut belum mengeksplorasi alternatif algoritma klasterisasi yang dapat meminimalkan \textit{outlier} sejak awal proses, serta belum menguji efektivitas BERTopic pada bahasa Indonesia dengan karakteristik teks percakapan informal yang memiliki noise tinggi dan fenomena \textit{code-mixing}.
+		Penelitian tersebut juga belum menyediakan sistem aplikasi bagi pengguna akhir.                                                                                                                                                                                                                                         &
+		Penelitian ini berkontribusi dengan
+		mengganti HDBSCAN menggunakan BIRCH \textit{clustering} yang mampu mengakomodasi
+		dokumen \textit{outlier} secara dinamis tanpa penghapusan, sekaligus menggunakan
+		IndoBERTweet sebagai \textit{embedding} untuk dataset percakapan berbahasa Indonesia yang banyak mengandung kata informal dan \textit{code-mixing}.
+		Penelitian ini juga menyediakan sistem aplikasi bagi pengguna akhir.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+		\\
+	\end{longtable}
+\end{scriptsize}
+\setlength{\extrarowheight}{0pt}
+\endgroup
+% \newpage

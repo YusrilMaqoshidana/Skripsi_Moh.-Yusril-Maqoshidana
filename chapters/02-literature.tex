@@ -15,81 +15,228 @@
 \section{Penelitian Terdahulu}
 \label{sec:literature-related}
 
-% Jelaskan penelitian-penelitian sebelumnya yang relevan
-% Format: Peneliti (Tahun) melakukan penelitian tentang ...
-% Paparkan hasil, metodologi, dan bagaimana berbeda dengan penelitian Anda
+\input{tables/02-literature/tinjauan-penelitian-terdahulu.tex}
 
-\noindent Berbagai penelitian telah dilakukan mengenai topik yang berkaitan dengan penelitian ini.
-
-% \textbf{Penelitian Pertama}: \citet{Author2020} melakukan penelitian tentang (topik). 
-Hasil penelitian menunjukkan bahwa \ldots (Jelaskan temuan utama). 
-Metodologi yang digunakan adalah \ldots (Jelaskan metode penelitian mereka).
-
-% \textbf{Penelitian Kedua}: \citet{AuthorB2021} melakukan studi tentang (topik yang sama/mirip).
-Penelitian ini menemukan bahwa \ldots (Jelaskan temuan utama).
-Perbedaan dengan penelitian sebelumnya adalah \ldots (Jelaskan diferensiasi).
-
-% \textbf{Penelitian Ketiga}: \citet{AuthorC2022} dalam penelitiannya tentang (topik terkait).
-Kesimpulan dari penelitian tersebut adalah \ldots (Jelaskan kesimpulan).
-
-% --- RINGKASAN PENELITIAN TERDAHULU ---
-\noindent Berdasarkan tinjauan penelitian terdahulu di atas, dapat disimpulkan bahwa:
-\begin{itemize}[nosep]
-    \item Kesimpulan/insight pertama dari literature review
-    \item Kesimpulan/insight kedua dari literature review
-    \item Gap/celah yang belum diteliti dalam penelitian sebelumnya
-\end{itemize}
+Berdasarkan penelitian terdahulu yang telah diulas pada tabel \ref{tab:tinjauan}, dapat disimpulkan bahwa
+meskipun telah banyak penelitian yang membandingkan berbagai model \textit{topic modeling} untuk analisis teks pendek, hasil penelitian terdahulu menunjukkan bahwa BERTopic cenderung lebih unggul dibandingkan pendekatan konvensional pada data media sosial dan data akademik, tetapi masih memiliki keterbatasan ketika menggunakan \textit{embedding} multilingual dan algoritma \textit{clustering} bawaan seperti HDBSCAN.
+Pada sejumlah penelitian tersebut, penggunaan model yang lebih spesifik terhadap bahasa dan domain, seperti IndoBERT, serta algoritma BIRCH sebagai alternatif klasterisasi, terbukti menjanjikan dalam mengurangi \textit{outlier} dan meningkatkan stabilitas topik pada teks pendek.
+Selain itu, penelitian yang telah diulas belum banyak mengeksplorasi penerapan pipeline BERTopic pada percakapan grup WhatsApp berbahasa Indonesia yang bersifat \textit{multi-turn}, tidak terstruktur, dan kaya \textit{code-mixing}. Di sisi lain, mayoritas penelitian masih berfokus pada evaluasi metodologi tanpa menyediakan sistem aplikasi yang dapat digunakan langsung oleh pengguna akhir untuk menganalisis percakapan mereka sendiri.
 
 % --- BAGIAN 2.2: LANDASAN TEORI ---
 \section{Landasan Teori}
 \label{sec:literature-theory}
 
-% Jelaskan teori-teori yang mendukung penelitian Anda
-% Gunakan subsection untuk mengorganisir berbagai teori
-
-\subsection{Teori Pertama}
+\subsection{Aplikasi WhatsApp}
 \label{subsec:theory-first}
 
-% Jelaskan teori pertama yang mendukung penelitian
-\noindent Teori pertama yang menjadi landasan penelitian ini adalah \ldots
-(Jelaskan teori secara detail, sejarah, dan aplikasinya).
+WhatsApp merupakan aplikasi pesan instan yang memungkinkan pengguna berkomunikasi melalui pesan teks, suara, gambar, video, serta fitur grup yang mendukung komunikasi banyak pengguna dalam satu ruang diskusi \citep{prayogi2025dinamika}.
+Fitur grup memungkinkan pengguna tergabung dalam banyak kelompok sekaligus untuk kepentingan personal, bisnis, maupun keamanan, sehingga volume pesan sering menjadi besar dan tumpang tindih. Kondisi ini membuat percakapan grup bersifat tidak terstruktur, melibatkan banyak partisipan, dan topik pembahasan dapat berubah dengan cepat \citep{rani2022whatsapp}.
+Akibatnya, pengguna sering kesulitan mengikuti arah percakapan secara menyeluruh. Permasalahan inilah yang menjadi latar belakang penelitian ini, yaitu mengembangkan sistem analisis percakapan grup WhatsApp yang dapat mengidentifikasi dan memetakan topik pembahasan secara otomatis.
 
-% Menurut \citet{Theorist2020}, teori ini menyatakan bahwa \ldots (Jelaskan konsep utama).
-
-% --- SUB-BAGIAN UNTUK TEORI PERTAMA ---
-Konsep kunci dalam teori ini meliputi:
-\begin{enumerate}
-    \item Konsep 1: Penjelasan singkat
-    \item Konsep 2: Penjelasan singkat
-    \item Konsep 3: Penjelasan singkat
-\end{enumerate}
-
-\subsection{Teori Kedua}
+\subsection{BERTopic}
 \label{subsec:theory-second}
 
-\noindent Teori kedua yang relevan adalah \ldots (Jelaskan teori, konteks, dan aplikasi).
+BERTopic adalah \textit{framework topic modeling} berbasis \textit{transformer}
+yang membentuk \textit{embedding} dokumen dan merepresentasikan topik melalui
+prosedur TF-IDF berbasis kelas, sehingga dokumen dengan makna semantik serupa
+dapat dipetakan saling berdekatan dalam ruang vektor \citep{grootendorst2022bertopic}.
+Pendekatan ini relevan untuk percakapan grup WhatsApp yang umumnya berupa teks
+pendek, berisik (\textit{noisy}), dan tidak terstruktur, yang cenderung menimbulkan
+masalah kelangkaan data (\textit{data sparsity}) pada metode pemodelan topik konvensional.
 
-% \citet{TheoryAuthor2021} menjelaskan bahwa \ldots (Jelaskan proposisi utama teori).
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.45\textwidth]{images/framework-bertopic-modifikasi-indobert-birch-bm25.png}
+	\caption{Framework BERTopic dengan modifikasi IndoBERT, BIRCH, dan BM25 \citep{iaes2025indobert}}
+	\label{fig:framework-bertopic}
+\end{figure}
 
-Model atau framework dari teori ini dapat digambarkan sebagai berikut: \ldots
-(Jelaskan dengan detail atau gunakan diagram jika diperlukan).
+Berdasarkan Gambar \ref{fig:framework-bertopic}, \textit{framework} BERTopic terdiri dari empat tahap utama. Tahap pertama adalah
+\textit{document embedding} yang mengubah dokumen menjadi representasi vektor
+numerik menggunakan model bahasa seperti IndoBERTweet yang dikembangkan untuk variasi bahasa Indonesia pada ranah media sosial \citep{koto2021indobertweet}. Tahap kedua adalah
+\textit{dimensionality reduction} menggunakan UMAP untuk mereduksi dimensi vektor
+hasil \textit{embedding} agar proses klasterisasi lebih efisien \citep{mcinnes2018umap}.
+Tahap ketiga adalah \textit{clustering} yang mengelompokkan dokumen berdasarkan
+kemiripan semantik, di mana setiap klaster merepresentasikan satu topik dengan
+dukungan model yang bersifat modular seperti HDBSCAN, BIRCH, dan K-Means.
+Tahap keempat adalah \textit{topic representation} yang mengekstrak kata kunci paling
+representatif dari setiap klaster. Secara bawaan BERTopic menggunakan c-TF-IDF,
+namun tahap ini dapat dimodifikasi karena bersifat modular \citep{grootendorst2022bertopic}.
+Dalam penelitian ini, komponen yang digunakan pada tiap tahap meliputi IndoBERTweet
+untuk \textit{embedding}, BIRCH untuk klasterisasi, dan BM25 untuk representasi topik.
 
 % --- BAGIAN 2.3: KERANGKA KONSEPTUAL (OPSIONAL) ---
-\section{Kerangka Konseptual}
-\label{sec:literature-framework}
+\subsection{IndoBERTweet}
+\label{sec:indobertweet}
 
-% Jelaskan hubungan antar variabel/konsep dalam penelitian Anda
-% Gunakan deskripsi atau diagram
+Model IndoBERTweet merupakan model bahasa pra-latih berskala besar pertama yang dirancang khusus untuk memproses data Twitter (X) berbahasa Indonesia.
+Model ini dikembangkan melalui pendekatan \textit{domain-adaptive pretraining} dengan fondasi IndoBERT yang semula dilatih pada korpus formal, kemudian diadaptasi ke domain Twitter yang lebih informal.
+Dalam proses adaptasi tersebut, peneliti melakukan penyesuaian kosakata domain-spesifik dan melaporkan 14.584 kosakata baru (46\% dari total kosakata) yang tidak tercakup pada IndoBERT umum \citep{koto2021indobertweet}.
 
-\noindent Berdasarkan teori-teori di atas, kerangka konseptual penelitian ini 
-dapat dideskripsikan sebagai berikut:
+\input{tables/02-literature/tabel-indobertweet-kinerja.tex}
 
-\textbf{Variabel Independen}: \ldots (Jelaskan variabel/faktor yang mempengaruhi)
+Berdasarkan Tabel \ref{tab:kinerja-indobertweet} yang diadaptasi dari \cite{koto2021indobertweet}, model IndoBERTweet dan variannya secara konsisten mencapai performa tinggi pada tujuh tugas NLP berbahasa Indonesia, meliputi \textit{sentiment analysis}, \textit{emotion classification}, \textit{hate speech detection}, dan \textit{named entity recognition}.
+Hasil terbaik secara rata-rata ditunjukkan oleh varian IndoBERT dengan adaptasi kosakata dan pelatihan lanjutan 200K langkah (86{,}5), sedangkan IndoBERTweet yang dilatih dari awal juga menunjukkan kinerja kompetitif (86{,}1).
+Temuan ini memperkuat asumsi bahwa model berbasis domain media sosial berpotensi lebih sesuai untuk teks pendek, informal, dan bising seperti percakapan grup WhatsApp berbahasa Indonesia, meskipun efektivitas akhirnya tetap perlu divalidasi pada penelitian ini.
 
-\textbf{Variabel Dependen}: \ldots (Jelaskan variabel/outcome yang dipengaruhi)
 
-\textbf{Hubungan antar Variabel}: 
-Penelitian ini mengasumsikan bahwa \ldots (Jelaskan hipotesis atau hubungan kausal yang diteliti).
+\subsection{BIRCH Clustering}
+\label{sec:birch}
+
+BIRCH (\textit{Balanced Iterative Reducing and Clustering using Hierarchies}) merupakan algoritma \textit{clustering}
+hierarkis yang dirancang untuk menangani dataset berskala besar secara efisien dengan cara meringkas data ke dalam
+struktur \textit{Clustering Feature} (CF) yang disusun dalam CF-Tree di memori, sehingga mengurangi kebutuhan komputasi
+dibandingkan pendekatan yang memproses setiap titik data secara individual \citep{10.1145/235968.233324}.
+Algoritma ini memiliki keunggulan dalam efisiensi komputasi, penggunaan memori yang rendah, serta ketahanan
+terhadap \textit{noise}, namun tetap memiliki keterbatasan, seperti sensitivitas terhadap parameter \textit{threshold},
+kesulitan dalam menangani klaster dengan bentuk kompleks, serta kurang optimal pada dataset berdimensi tinggi \citep{10.1023/A:1009783824328}.
+Dalam konteks framework BERTopic, keterbatasan terkait dimensi tinggi tersebut dapat diminimalkan melalui
+penerapan UMAP sebagai teknik reduksi dimensi sebelum proses klasterisasi dilakukan.
+
+Pada implementasi BIRCH di \textit{scikit-learn}, ringkasan tiap subklaster disimpan
+dalam bentuk \textit{Clustering Feature} (CF) sebagaimana didefinisikan pada BIRCH
+orisinil dan dipaparkan kembali pada kajian implementasi matematis modern
+\citep{10.1145/235968.233324,IJECE25896}:
+
+\begin{equation}
+	CF = (N, LS, SS)
+\end{equation}
+
+\noindent dengan $N$ jumlah titik data, $LS = \sum_{i=1}^{N} x_i$, dan
+$SS = \sum_{i=1}^{N} \lVert x_i \rVert^2$.
+
+Centroid subklaster dihitung sebagai:
+
+\begin{equation}
+	\mu = \frac{LS}{N}
+\end{equation}
+
+Radius subklaster digunakan sebagai dasar keputusan pemisahan/penggabungan node.
+Bentuk komputasional berikut ekuivalen dengan definisi radius BIRCH
+\citep{10.1145/235968.233324,IJECE25896}:
+
+\begin{equation}
+	R = \sqrt{\frac{SS}{N} - \left\lVert \frac{LS}{N} \right\rVert^2}
+\end{equation}
+
+Ketika titik baru $x$ ditambahkan ke subklaster, radius baru dihitung menggunakan
+prinsip aditivitas CF, lalu dibandingkan dengan \textit{threshold} ($T$)
+\citep{10.1145/235968.233324,IJECE25896}:
+
+\begin{equation}
+	R' = \sqrt{\frac{SS + \lVert x \rVert^2}{N+1} - \left\lVert \frac{LS + x}{N+1} \right\rVert^2}, \quad R' \le T
+\end{equation}
+
+Parameter \textit{branching factor} ($B$) mengontrol jumlah maksimum anak pada tiap
+node CF-Tree, sedangkan $T$ mengontrol kekompakan subklaster.
+
+
+\subsection{Topic Representation Dengan BM25}
+\label{sec:bm25}
+
+% TODO: Revisi menambahkan penjelasan mengenai kenapa kok BM25 ini dipakai pada penelitian ini
+\hl{
+    Pada data teks pendek dan bising, c-TF-IDF dapat mengalami keterbatasan dalam
+merepresentasikan kepentingan kata secara stabil. Oleh karena itu, sejumlah
+penelitian menerapkan BM25 pada tahap \textit{topic representation}, baik sebagai
+pengganti penuh maupun sebagai modifikasi dari skema c-TF-IDF.
+}
+
+Pada penelitian \citep{iaes2025indobert}, c-TF-IDF bawaan BERTopic digantikan
+sepenuhnya dengan BM25 pada level klaster, dengan skor kata dirumuskan sebagai:
+
+\begin{equation}
+	w_{t,c_k} = \sum_{d \in C_k} IDF(t) \cdot
+	\frac{f(t,d)(k_1 + 1)}
+	{f(t,d) + k_1 \left(1 - b + b \cdot \frac{|d|}{avgdl}\right)},
+\end{equation}
+
+dengan fungsi \textit{inverse document frequency} didefinisikan sebagai
+$IDF(t) = \log \left( \frac{N - n(t) + 0.5}{n(t) + 0.5} \right)$.
+
+\noindent dengan:
+\begin{itemize}[nosep]
+	\item $C_k$ = himpunan dokumen pada klaster ke-$k$
+	\item $f(t,d)$ = frekuensi kata $t$ pada dokumen $d$
+	\item $|d|$ = panjang dokumen $d$
+	\item $avgdl$ = rata-rata panjang dokumen dalam korpus
+	\item $n(t)$ = jumlah dokumen yang memuat kata $t$
+	\item $N$ = jumlah total dokumen
+	\item $k_1$ dan $b$ = parameter pengatur saturasi frekuensi istilah dan normalisasi panjang dokumen
+\end{itemize}
+
+Dalam konteks studi tersebut, pendekatan ini dilaporkan memberikan representasi
+topik yang lebih stabil dibandingkan c-TF-IDF pada korpus teks pendek berbahasa
+Indonesia \citep{iaes2025indobert}.
+
+\subsection{Topic Coherence}
+\label{sec:topic-coherence}
+
+\textit{Topic coherence} mengukur keterkaitan semantik antar kata teratas dalam topik. Dalam penelitian ini,
+koherensi dievaluasi menggunakan \textit{Normalized Pointwise Mutual Information} (NPMI) \citep{rahimi2023coherencemetrics}:
+
+\begin{equation}
+	\text{NPMI}(w_i, w_j) = \frac{\ln \left( \dfrac{P(w_i, w_j)}{P(w_i) \cdot P(w_j)} \right)}{-\ln(P(w_i, w_j))}
+\end{equation}
+
+\noindent dengan $P(w_i,w_j)$ sebagai probabilitas ko-okurensi, serta $P(w_i)$ dan $P(w_j)$ sebagai probabilitas
+marjinal kemunculan kata. Nilai NPMI model diperoleh dari rata-rata pasangan kata pada tiap topik dan
+dirata-ratakan lagi antar topik. Skor yang lebih tinggi menunjukkan topik lebih koheren dan umumnya lebih
+mudah diinterpretasikan, meskipun metrik ini tetap sensitif terhadap pola ko-okurensi pada korpus
+\citep{lau2014machine,doogan2021topic}.
+
+\subsection{Topic Diversity}
+\label{sec:topic-diversity}
+
+\textit{Topic diversity} menilai seberapa unik kata-kata representatif antar topik, sehingga dapat
+menggambarkan tingkat perbedaan topik yang dihasilkan model \citep{dieng2020topic}. Nilainya dihitung
+sebagai proporsi kata unik pada himpunan kata teratas seluruh topik \citep{terragni2021octis}:
+
+\begin{equation}
+	TD = \frac{|\text{unique words in top } N \text{ words of all topics}|}{N \times K}
+\end{equation}
+
+\noindent dengan rentang nilai $0$--$1$. Nilai yang mendekati $1$ menunjukkan tumpang tindih kata antar topik
+lebih rendah, sedangkan nilai kecil mengindikasikan topik cenderung redundan \citep{ABDELRAZEK2023102131}.
+Meskipun sederhana dan intuitif, nilai diversitas tinggi tidak selalu berarti kualitas topik lebih baik, sehingga
+perlu dibaca bersama metrik lain \citep{dieng2020topic}.
+
+\subsection{Embedding Density}
+\label{sec:embedding-density}
+
+\textit{Embedding density} mengukur kekompakan dokumen dalam klaster topik pada ruang embedding.
+Semakin dekat dokumen terhadap pusat klaster, semakin tinggi kepadatan yang menunjukkan konsistensi
+semantik internal yang lebih baik \citep{2009-00672}. Salah satu formulasi yang digunakan adalah:
+
+\begin{equation}
+	\mathrm{ED}_k = \frac{1}{1 + \frac{1}{|C_k|} \sum_{x_i \in C_k} \lVert x_i - \mu_k \rVert_2}
+\end{equation}
+
+\noindent dengan $C_k$ himpunan dokumen pada topik ke-$k$, $x_i$ vektor dokumen, dan $\mu_k$ centroid klaster.
+Nilai lebih tinggi berarti klaster lebih padat. Kelebihan metrik ini adalah kemampuannya menangkap kualitas
+pengelompokan pada teks pendek, tetapi ia hanya merefleksikan aspek geometris dan tidak langsung menjamin
+topik lebih mudah dipahami manusia \citep{iaes2025indobert,9953874}.
+
+\subsection{Intra-topic Similarity}
+\label{sec:intra-topic-similarity}
+
+\textit{Intra-topic similarity} mengukur rata-rata kesamaan semantik antar dokumen dalam satu topik,
+sehingga merepresentasikan homogenitas internal klaster \citep{zhao2018inter,iaes2025indobert}. Pengukuran
+umumnya menggunakan \textit{cosine similarity}:
+
+\begin{equation}
+	\mathrm{sim}(x_i, x_j) = \frac{x_i \cdot x_j}{\lVert x_i \rVert \; \lVert x_j \rVert}
+\end{equation}
+
+\noindent Skor topik ke-$k$ dihitung dari rata-rata seluruh pasangan dokumen dalam klaster:
+
+\begin{equation}
+	\mathrm{ITS}_k = \frac{2}{|C_k|(|C_k|-1)} \sum_{i<j,\, x_i,x_j \in C_k} \mathrm{sim}(x_i, x_j)
+\end{equation}
+
+\noindent Nilai ITS yang lebih tinggi menunjukkan dokumen dalam topik makin seragam secara semantik.
+Metrik ini efektif untuk menangkap kedekatan makna pada teks pendek, namun sangat bergantung pada kualitas
+model embedding yang digunakan \citep{10.1007/s11257-022-09351-w,iaes2025indobert}.
 
 % Gunakan diagram jika tersedia (lihat contoh di bawah):
 % \begin{figure}[h]

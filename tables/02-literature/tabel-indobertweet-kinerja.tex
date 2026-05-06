@@ -1,0 +1,24 @@
+\begingroup
+\pagestyle{fancy}
+\renewcommand{\arraystretch}{1}
+\begin{table}[H]
+	\centering
+	\caption{Perbandingan Kinerja Model pada Tujuh Tugas}\label{tab:kinerja-indobertweet}
+	\setlength{\tabcolsep}{4pt}
+	\scriptsize
+	\begin{tabular}{>{\arraybackslash}p{3.8cm}ccccccc>{\centering\arraybackslash}p{1.5cm}}
+		\toprule
+		\multirow{2}{*}{{\textbf{Model}}}                                          & \multicolumn{2}{c}{\textbf{Sentiment}} & \textbf{Emotion} & \multicolumn{2}{c}{\textbf{Hate Speech}} & \multicolumn{2}{c}{\textbf{NER}} & \multirow{2}{*}{\parbox{2cm}{\textbf{Average}}}                                                       \\
+		\cmidrule(lr){2-3}\cmidrule(lr){4-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+		                                                                           & \textbf{IndoLEM}                       & \textbf{SmSA}    & \textbf{EmoT}                            & \textbf{HS1}                     & \textbf{HS2}                                    & \textbf{Formal} & \textbf{Informal} &               \\
+		\midrule
+		mBERT                                                                      & 76.6                                   & 84.7             & 67.5                                     & 85.1                             & 75.1                                            & 85.2            & 83.2              & 79.6          \\
+		malayBERT                                                                  & 82.0                                   & 84.1             & 74.2                                     & 85.0                             & 81.9                                            & 81.9            & 81.3              & 81.5          \\
+		IndoBERT \citep{wilie2020indonlu}                                          & 84.1                                   & 88.7             & 73.3                                     & 86.8                             & 80.4                                            & 86.3            & 84.3              & 83.4          \\
+		IndoBERT \citep{Indobert2020}                                              & 84.1                                   & 87.9             & 71.0                                     & 86.4                             & 79.3                                            & 88.0            & 86.9              & 83.4          \\
+		IndoBERTweet (1M steps from scratch) \citep{koto2021indobertweet}          & 86.2                                   & 90.4             & 76.0                                     & \textbf{88.8}                    & \textbf{87.5}                                   & \textbf{88.1}   & 85.4              & 86.1          \\
+		IndoBERT + Vocabulary adaptation + 200K steps \citep{koto2021indobertweet} & \textbf{86.6}                          & \textbf{92.7}    & \textbf{79.0}                            & 88.4                             & 84.0                                            & 87.7            & \textbf{86.9}     & \textbf{86.5} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+\endgroup

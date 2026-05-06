@@ -13,11 +13,11 @@
 % --- KONFIGURASI CHAPTER (BAB) ---
 % Format: Centered, Bold, All Caps (14pt sesuai Juknis)
 % Spasi sebelum: -20pt, sesudah: 40pt
-\titleformat{\chapter}[display]
-  {\bfseries\fontsize{14pt}{16pt}\selectfont\centering}          % Style: Bold, Large (14pt), Centered
-  {\MakeUppercase{\chaptertitlename} \thechapter}  % Label: "BAB 1"
-  {0pt}                                % Space antara label dan title
-  {\MakeUppercase}                     % Formatting title: ALL CAPS
+\titleformat{\chapter}[block]
+  {\bfseries\fontsize{14pt}{16pt}\selectfont\centering}
+  {\MakeUppercase{\chaptertitlename} \thechapter.\hspace{0.5em}}
+  {0pt}
+  {\MakeUppercase}
 
 \titlespacing*{\chapter}{0pt}{-20pt}{40pt}  % Spacing: normal, before=-20pt, after=40pt
 
@@ -26,7 +26,7 @@
 \titleformat{\section}
   {\bfseries\normalsize}               % Style: Bold, Normal size
   {\thesection}                        % Label: "1", "1.1", dll
-  {1em}                                % Space antara label dan title
+  {0.5em}                                % Space antara label dan title
   {}                                   % Formatting title (none)
 
 % --- KONFIGURASI SUBSECTION (Bagian 1.1) ---
@@ -34,7 +34,7 @@
 \titleformat{\subsection}
   {\bfseries\normalsize}               % Style: Bold, Normal size
   {\thesubsection}                     % Label: "1.1", "1.1.1", dll
-  {1em}                                % Space antara label dan title
+  {0.5em}                                % Space antara label dan title
   {}                                   % Formatting title (none)
 
 % --- KONFIGURASI SUBSUBSECTION (Bagian 1.1.1) ---
@@ -42,7 +42,7 @@
 \titleformat{\subsubsection}
   {\bfseries\normalsize}               % Style: Bold, Normal size
   {\thesubsubsection}                  % Label: "1.1.1", dll
-  {1em}                                % Space antara label dan title
+  {0.5em}                                % Space antara label dan title
   {}                                   % Formatting title (none)
 
 % --- KONFIGURASI PARAGRAPH ---
@@ -50,7 +50,7 @@
 \titleformat{\paragraph}[runin]
   {\bfseries}
   {\theparagraph}
-  {1em}
+  {0.5em}
   {}
 
 % --- KONFIGURASI IDENTASI ---

@@ -5,25 +5,59 @@ Abdelrazek, A., Eid, Y., Gawish, E., Medhat, W., and Hassan, A. (2023).
 \newblock Topic modeling algorithms and applications: A survey.
 \newblock {\em Information Systems}, 112:102131.
 
+\bibitem[Alzu'bi and Barham, 2022]{IJECE25896}
+Alzu'bi, A. and Barham, M. (2022).
+\newblock Automatic birch thresholding with features transformation for hierarchical breast cancer clustering.
+\newblock {\em International Journal of Electrical and Computer Engineering (IJECE)}, 12(2):1498--1507.
+
+\bibitem[Banerjee and Pan, 2024]{10643545}
+Banerjee, S. and Pan, A. (2024).
+\newblock From colonial legacies to linguistic inclusion: A bertopic enhanced bibliometric insight into global south higher education.
+\newblock {\em IEEE Access}, 12:117418--117435.
+
 \bibitem[Churchill and Singh, 2022]{10.1145/3507900}
 Churchill, R. and Singh, L. (2022).
 \newblock The evolution of topic modeling.
 \newblock {\em ACM Comput. Surv.}, 54(10s).
+
+\bibitem[Dieng et~al., 2020]{dieng2020topic}
+Dieng, A.~B., Ruiz, F. J.~R., and Blei, D.~M. (2020).
+\newblock Topic modeling in embedding spaces.
+\newblock {\em Transactions of the Association for Computational Linguistics}, 8:439--453.
+
+\bibitem[Doogan and Buntine, 2021]{doogan2021topic}
+Doogan, C. and Buntine, W. (2021).
+\newblock Topic model or topic twaddle? re-evaluating semantic interpretability measures.
+\newblock In Toutanova, K., Rumshisky, A., Zettlemoyer, L., Hakkani-Tur, D., Beltagy, I., Bethard, S., Cotterell, R., Chakraborty, T., and Zhou, Y., editors, {\em Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies}, pages 3824--3848, Online. Association for Computational Linguistics.
 
 \bibitem[Egger and Yu, 2022]{10.3389/fsoc.2022.886498}
 Egger, R. and Yu, J. (2022).
 \newblock A topic modeling comparison between lda, nmf, top2vec, and bertopic to demystify twitter posts.
 \newblock {\em Frontiers in Sociology}, Volume 7 - 2022.
 
+\bibitem[Grootendorst, 2022]{grootendorst2022bertopic}
+Grootendorst, M. (2022).
+\newblock Bertopic: Neural topic modeling with a class-based tf-idf procedure.
+
 \bibitem[Janssens et~al., 2025]{11271424}
 Janssens, W., Bogaert, M., and van~den Poel, D. (2025).
 \newblock A comparative analysis of topic reduction techniques for bertopic.
 \newblock {\em IEEE Access}, 13:204087--204103.
 
+\bibitem[Jesse et~al., 2022]{10.1007/s11257-022-09351-w}
+Jesse, M., Bauer, C., and Jannach, D. (2022).
+\newblock Intra-list similarity and human diversity perceptions of recommendations: the details matter.
+\newblock {\em User Modeling and User-Adapted Interaction}, 33(4):769–802.
+
 \bibitem[Kharisudin and Masri'an, 2022]{kharisudin2022topic}
 Kharisudin, I. and Masri'an, H. (2022).
 \newblock Topic modeling on whatsapp user reviews using latent dirichlet allocation.
 \newblock {\em Scientific Journal of Informatics}, 9:51--62.
+
+\bibitem[Khodorchenko et~al., 2022]{9953874}
+Khodorchenko, M., Butakov, N., and Nasonov, D. (2022).
+\newblock Towards better evaluation of topic model quality.
+\newblock In {\em 2022 32nd Conference of Open Innovations Association (FRUCT)}, pages 128--134.
 
 \bibitem[Koto et~al., 2021]{koto2021indobertweet}
 Koto, F., Lau, J.~H., and Baldwin, T. (2021).
@@ -39,6 +73,16 @@ Kumar, R.~P. and Naik, N.~M. (2023).
 \newblock Whatsapp chat analyzer using machine learning and natural language processing.
 \newblock In {\em 2023 2nd International Conference on Futuristic Technologies (INCOFT)}, pages 1--6.
 
+\bibitem[Lau et~al., 2014]{lau2014machine}
+Lau, J.~H., Newman, D., and Baldwin, T. (2014).
+\newblock Machine reading tea leaves: Automatically evaluating topic coherence and topic model quality.
+\newblock In Wintner, S., Goldwater, S., and Riezler, S., editors, {\em Proceedings of the 14th Conference of the {E}uropean Chapter of the Association for Computational Linguistics}, pages 530--539, Gothenburg, Sweden. Association for Computational Linguistics.
+
+\bibitem[McInnes et~al., 2018]{mcinnes2018umap}
+McInnes, L., Healy, J., and Melville, J. (2018).
+\newblock Umap: Uniform manifold approximation and projection for dimension reduction.
+\newblock {\em arXiv preprint arXiv:1802.03426}.
+
 \bibitem[Mohta et~al., 2020]{9243443}
 Mohta, A., Jain, A., Saluja, A., and Dahiya, S. (2020).
 \newblock Pre-processing and emoji classification of whatsapp chats for sentiment analysis.
@@ -48,6 +92,16 @@ Mohta, A., Jain, A., Saluja, A., and Dahiya, S. (2020).
 Muhajir, M., Gunardi, G., Danardono, D., and Rosadi, D. (2025).
 \newblock Integrating indobert and balanced iterative reducing and clustering using hierarchies of bertopic in indonesian short text.
 \newblock {\em IAES International Journal of Artificial Intelligence (IJ-AI)}, 14:4192.
+
+\bibitem[Prayogi et~al., 2025]{prayogi2025dinamika}
+Prayogi, A., Novriyenny, N., and Prahmana, I.~G. (2025).
+\newblock Dinamika sentimen komunikasi mahasiswa dan dosen dengan pemanfaatan analisis pesan whatsapp akademis menggunakan machine learning.
+\newblock {\em Repeater: Publikasi Teknik Informatika dan Jaringan}, 3(2):45--54.
+
+\bibitem[Rahimi et~al., 2024]{rahimi2023coherencemetrics}
+Rahimi, H., Mimno, D., Hoover, J., Naacke, H., Constantin, C., and Amann, B. (2024).
+\newblock Contextualized topic coherence metrics.
+\newblock In Graham, Y. and Purver, M., editors, {\em Findings of the Association for Computational Linguistics: EACL 2024}, pages 1760--1773, St. Julian{'}s, Malta. Association for Computational Linguistics.
 
 \bibitem[Rani et~al., 2022]{rani2022whatsapp}
 Rani, S.~J., Prabhu, T., and Chellam, J. A.~I. (2022).
@@ -59,9 +113,39 @@ Retna, V.~A., Brundha, P., and RajKumar, G. (2021).
 \newblock People’s behaviour analysis in chat message using natural language processing.
 \newblock In {\em 2021 Third International Conference on Intelligent Communication Technologies and Virtual Mobile Networks (ICICV)}, pages 1128--1133.
 
+\bibitem[Rushkin, 2020]{2009-00672}
+Rushkin, I. (2020).
+\newblock Document similarity from vector space densities.
+\newblock {\em CoRR}, abs/2009.00672.
+
+\bibitem[Terragni et~al., 2021]{terragni2021octis}
+Terragni, S., Fersini, E., Galuzzi, B.~G., Tropeano, P., and Candelieri, A. (2021).
+\newblock Octis: Comparing and optimizing topic models is simple!
+\newblock In {\em Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: System Demonstrations}, pages 263--270.
+
 \bibitem[{WhatsApp Inc.}, 2026]{WhatsAppAbout}
 {WhatsApp Inc.} (2026).
 \newblock Tentang whatsapp.
 \newblock Diakses pada 7 Januari 2026.
+
+\bibitem[Wilie et~al., 2020]{wilie2020indonlu}
+Wilie, B., Vincentio, K., Winata, G.~I., Cahyawijaya, S., Li, X., Lim, Z.~Y., Soleman, S., Mahendra, R., Fung, P., Bahar, S., and Purwarianti, A. (2020).
+\newblock Indonlu: Benchmark and resources for evaluating indonesian natural language understanding.
+\newblock In {\em Proceedings of the 1st Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and the 10th International Joint Conference on Natural Language Processing}.
+
+\bibitem[Zhang et~al., 1996]{10.1145/235968.233324}
+Zhang, T., Ramakrishnan, R., and Livny, M. (1996).
+\newblock Birch: an efficient data clustering method for very large databases.
+\newblock {\em SIGMOD Rec.}, 25(2):103–114.
+
+\bibitem[Zhang et~al., 1997]{10.1023/A:1009783824328}
+Zhang, T., Ramakrishnan, R., and Livny, M. (1997).
+\newblock Birch: A new data clustering algorithm and its applications.
+\newblock {\em Data Min. Knowl. Discov.}, 1(2):141–182.
+
+\bibitem[Zhao et~al., 2018]{zhao2018inter}
+Zhao, H., Du, L., Buntine, W., and Zhou, M. (2018).
+\newblock Inter and intra topic structure learning with word embeddings.
+\newblock In {\em International Conference on Machine Learning}, pages 5892--5901. PMLR.
 
 \end{thebibliography}
