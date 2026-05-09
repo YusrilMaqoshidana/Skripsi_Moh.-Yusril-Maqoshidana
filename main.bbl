@@ -49,6 +49,11 @@ Jesse, M., Bauer, C., and Jannach, D. (2022).
 \newblock Intra-list similarity and human diversity perceptions of recommendations: the details matter.
 \newblock {\em User Modeling and User-Adapted Interaction}, 33(4):769–802.
 
+\bibitem[Jian et~al., 2020]{doi.org/10.1111/coin.12248}
+Jian, F., Huang, J.~X., Zhao, J., Ying, Z., and Wang, Y. (2020).
+\newblock A topic-based term frequency normalization framework to enhance probabilistic information retrieval.
+\newblock {\em Computational Intelligence}, 36(2):486--521.
+
 \bibitem[Kharisudin and Masri'an, 2022]{kharisudin2022topic}
 Kharisudin, I. and Masri'an, H. (2022).
 \newblock Topic modeling on whatsapp user reviews using latent dirichlet allocation.
@@ -117,6 +122,11 @@ Retna, V.~A., Brundha, P., and RajKumar, G. (2021).
 Rushkin, I. (2020).
 \newblock Document similarity from vector space densities.
 \newblock {\em CoRR}, abs/2009.00672.
+
+\bibitem[Shan et~al., 2020]{DBLP:journals/corr/abs-2007-05186}
+Shan, X., Liu, C., Xia, Y., Chen, Q., Zhang, Y., Luo, A., and Luo, Y. (2020).
+\newblock {BISON:} bm25-weighted self-attention framework for multi-fields document search.
+\newblock {\em CoRR}, abs/2007.05186.
 
 \bibitem[Terragni et~al., 2021]{terragni2021octis}
 Terragni, S., Fersini, E., Galuzzi, B.~G., Tropeano, P., and Candelieri, A. (2021).

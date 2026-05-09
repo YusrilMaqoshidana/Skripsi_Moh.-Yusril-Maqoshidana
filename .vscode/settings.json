@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "[tex]": {
+    "editor.defaultFormatter": "James-Yu.latex-workshop",
+    "editor.formatOnSave": true
+  },
+  "[latex]": {
+    "editor.defaultFormatter": "James-Yu.latex-workshop",
+    "editor.formatOnSave": true
+  },
+  "latex-workshop.formatting.latex": "latexindent",
+  "latex-workshop.latex.autoBuild.run": "onSave"
+}

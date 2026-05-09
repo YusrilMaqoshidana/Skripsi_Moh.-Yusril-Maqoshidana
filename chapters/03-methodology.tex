@@ -19,19 +19,14 @@
 
 Penelitian ini termasuk kategori kuantitatif eksperimental dengan pendekatan Research and Development (R\&D).
 Aspek R\&D terletak pada pengembangan sistem analisis topik percakapan WhatsApp berbasis web,
-sedangkan aspek eksperimental kuantitatif digunakan untuk memvalidasi performa pipeline BERTopic dengan modifikasi IndoBERTweet sebagai model embedding dan BIRCH sebagai model clustering yang diimplementasikan dalam sistem.
+sedangkan aspek eksperimental kuantitatif digunakan untuk memvalidasi performa pipeline BERTopic dengan modifikasi IndoBERTweet sebagai model embedding dan BIRCH sebagai model clustering.
 
 % --- BAGIAN 3.2: POPULASI DAN SAMPEL ---
 \section{Objek Penelitian}
 \label{sec:method-object}
 
-Objek penelitian fokus pada data percakapan grup WhatsApp yang berisi
-interaksi antar pengguna dalam bahasa Indonesia. Data ini dipilih karena
-mewakili karakteristik percakapan yang umumnya berupa teks pendek, tidak
-terstruktur, mengandung \textit{noise}, serta fenomena \textit{code-mixing}.
-Karakteristik tersebut menjadikan data percakapan grup WhatsApp relevan untuk
-menguji kemampuan pipeline BERTopic yang dimodifikasi dalam menghasilkan topik
-yang koheren dan stabil.
+Objek penelitian fokus pada data percakapan grup WhatsApp dari komunitas buku bernama \textit{Book Clan}, yang berisi interaksi antar pengguna dalam bahasa Indonesia. Data ini dipilih karena mewakili karakteristik percakapan yang umumnya berupa teks pendek, tidak terstruktur, mengandung \textit{noise}, serta fenomena \textit{code-mixing}.
+
 
 \section{Waktu Penelitian}
 \label{sec:time}
@@ -116,21 +111,20 @@ dua skenario, yaitu mengacu pada \textit{baseline} dari penelitian terdahulu dan
 eksperimen penalaan parameter untuk memperoleh kinerja terbaik berdasarkan metrik
 evaluasi. Alur pembuatan model ini terdiri dari empat komponen utama:
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{images/framework-BERTopic-modifikasi.png}
 	\caption{Rancangan framework BERTopic yang dimodifikasi pada tahap pembuatan model}\label{fig:framework-bertopic-modifikasi}
 \end{figure}
-
 \begin{enumerate}[nosep]
-	\item \textbf{\textit{Document Embedding} menggunakan IndoBERTweet} \\
+	\item \textit{Document Embedding} menggunakan IndoBERTweet \\
 	      Setiap dokumen (pesan) diubah menjadi representasi vektor numerik
 	      berdimensi tinggi menggunakan model IndoBERTweet yang telah diadaptasi
 	      untuk teks media sosial berbahasa Indonesia. Representasi \textit{embedding} ini
 	      mampu menangkap makna semantik dan konteks kata secara lebih akurat
 	      dibandingkan model \textit{multilingual} \citep{koto2021indobertweet}.
 
-	\item \textbf{\textit{Dimensionality Reduction} menggunakan UMAP} \\
+	\item \textit{Dimensionality Reduction} menggunakan UMAP \\
 	      Vektor \textit{embedding} berdimensi tinggi direduksi menggunakan
 	      \textit{Uniform Manifold Approximation and Projection} (UMAP) untuk
 	      mengurangi kompleksitas komputasi sambil mempertahankan struktur lokal
@@ -138,7 +132,7 @@ evaluasi. Alur pembuatan model ini terdiri dari empat komponen utama:
 	      digunakan meliputi \textit{n\_neighbors}, \textit{n\_components},
 	      \textit{min\_dist}, dan \textit{metric}.
 
-	\item \textbf{\textit{Clustering} menggunakan BIRCH} \\
+	\item \textit{Clustering} menggunakan BIRCH \textit{Algorithm} \\
 	      Dokumen yang telah direduksi dimensinya dikelompokkan menggunakan
 	      algoritma BIRCH (\textit{Balanced Iterative Reducing and Clustering
 		      using Hierarchies}) sebagai pengganti HDBSCAN standar. BIRCH dipilih
@@ -148,7 +142,7 @@ evaluasi. Alur pembuatan model ini terdiri dari empat komponen utama:
 	      BIRCH yang digunakan meliputi \textit{threshold},
 	      \textit{branching\_factor}, dan \textit{n\_clusters}.
 
-	\item \textbf{\textit{Topic Representation} menggunakan BM25} \\
+	\item \textit{Topic Representation} menggunakan BM25 \\
 	      Setiap klaster yang terbentuk direpresentasikan menggunakan skema
 	      pembobotan BM25 sebagai pengganti c-TF-IDF bawaan BERTopic. BM25
 	      menerapkan saturasi frekuensi istilah dan normalisasi panjang dokumen,
@@ -164,16 +158,20 @@ Tahap evaluasi model bertujuan untuk mengukur kualitas topik yang dihasilkan
 oleh model BERTopic secara kuantitatif. Evaluasi dilakukan menggunakan empat
 metrik utama, yaitu:
 \begin{enumerate}[nosep]
-	\item \textit{Topic Coherence} (NPMI) untuk mengukur sejauh mana
+	\item \textit{Topic Coherence} \\
+	Topic Coherence digunakan untuk mengukur sejauh mana
 	      kata-kata teratas dalam setiap topik memiliki hubungan semantik satu
 	      sama lain. Nilai yang lebih tinggi menunjukkan topik yang lebih koheren.
-	\item \textit{Topic Diversity} (TD) untuk mengukur keunikan kata-kata
+	\item \textit{Topic Diversity} \\
+	Topic Diversity digunakan untuk mengukur keunikan kata-kata
 	      teratas antar topik. Nilai mendekati 1 menunjukkan tidak ada tumpang
 	      tindih kata antar topik.
-	\item \textit{Embedding Density} untuk mengukur tingkat kekompakan
+	\item \textit{Embedding Density} \\
+	Embedding Density digunakan untuk mengukur tingkat kekompakan
 	      dokumen dalam tiap klaster pada ruang \textit{embedding}. Nilai yang
 	      lebih tinggi menunjukkan klaster yang semakin padat.
-	\item \textit{Intra-topic Similarity} untuk mengukur rata-rata
+	\item \textit{Intra-topic Similarity} \\
+	Intra-topic Similarity digunakan untuk mengukur rata-rata
 	      kesamaan semantik antar dokumen dalam satu topik. Nilai yang lebih
 	      tinggi menunjukkan homogenitas topik yang lebih baik.
 \end{enumerate}
@@ -183,21 +181,23 @@ metrik utama, yaitu:
 
 Tahap pengembangan sistem bertujuan untuk mengimplementasikan seluruh alur
 pemodelan topik ke dalam sebuah aplikasi berbasis web yang dapat digunakan
-secara praktis oleh pengguna. Sistem ini memungkinkan pengguna untuk mengunggah
-data ekspor percakapan grup WhatsApp, melakukan analisis topik secara otomatis,
-serta menampilkan hasil pemodelan topik dalam bentuk visualisasi yang intuitif
-dan informatif. Implementasi dilakukan dengan arsitektur \textit{client-server},
-dengan Vue.js sebagai \textit{client} (antarmuka pengguna) dan FastAPI sebagai
-\textit{server} (layanan API pemrosesan analisis topik). Pengembangan sistem
-dilakukan menggunakan pendekatan terstruktur dengan memperhatikan aspek
-fungsionalitas, kemudahan penggunaan (\textit{usability}), dan efisiensi
-pemrosesan.
+secara praktis oleh pengguna.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/alur-implementasi-sistem.png}
+	\caption{Alur implementasi sistem analisis topik WhatsApp}\label{fig:alur-implementasi-sistem}
+\end{figure}
+
+Pada Gambar \ref{fig:alur-implementasi-sistem}, sistem memungkinkan pengguna untuk mengunggah data ekspor WhatsApp, divalidasi formatnya, lalu diproses oleh backend dengan pipeline BERTopic. Pengguna dapat memantau progress pemrosesan di halaman progress, dan setelah selesai, hasil analisis topik ditampilkan dalam bentuk daftar topik dengan kata kunci representatif. Pengguna dapat memilih cluster tertentu untuk melihat pesan-pesan yang termasuk dalam topik tersebut, serta mengklik pesan individual untuk mendapatkan konteks pesan asli.
+
+Implementasi dilakukan dengan arsitektur \textit{client-server}, menggunakan Vue.js sebagai \textit{client} (antarmuka pengguna) dan FastAPI sebagai \textit{server} (layanan API). Pengembangan sistem berfokus pada aspek fungsionalitas, kemudahan penggunaan (\textit{usability}), dan efisiensi pemrosesan.
 
 \subsection{Evaluasi Sistem}
 \label{subsec:system-evaluation}
 
-Tahap evaluasi sistem dilakukan untuk mengukur kinerja dan efektivitas aplikasi	yang telah dikembangkan. Evaluasi dilakukan dengan menggunakan metode black-box testing, di mana fokusnya adalah pada input dan output sistem tanpa memperhatikan proses internalnya. Pengujian dilakukan dengan menggunakan dataset percakapan grup WhatsApp yang berbeda dari dataset yang digunakan untuk pelatihan model, untuk memastikan bahwa sistem dapat bekerja secara umum dan tidak hanya pada data tertentu. Hasil evaluasi ini akan memberikan gambaran tentang seberapa baik sistem dapat mengidentifikasi dan merepresentasikan topik dalam percakapan grup WhatsApp secara otomatis, serta memberikan umpan balik untuk perbaikan lebih lanjut jika diperlukan.
-
+\hl{Tahap evaluasi sistem dilakukan untuk mengukur kinerja dan efektivitas aplikasi	yang telah dikembangkan. Evaluasi dilakukan dengan menggunakan metode black-box testing, di mana fokusnya adalah pada input dan output sistem tanpa memperhatikan proses internalnya. Pengujian dilakukan dengan menggunakan dataset percakapan grup WhatsApp yang berbeda dari dataset yang digunakan untuk pelatihan model, untuk memastikan bahwa sistem dapat bekerja secara umum dan tidak hanya pada data tertentu. Hasil evaluasi ini akan memberikan gambaran tentang seberapa baik sistem dapat mengidentifikasi dan merepresentasikan topik dalam percakapan grup WhatsApp secara otomatis, serta memberikan umpan balik untuk perbaikan lebih lanjut jika diperlukan.
+}
 \subsection{Analisis Hasil}
 \label{subsec:result}
 
@@ -207,10 +207,33 @@ berdasarkan metrik evaluasi yang telah ditentukan, serta menginterpretasikan
 topik-topik yang dihasilkan.
 
 \subsection{Penarikan Kesimpulan}
+\label{subsec:conclusion}
 
 Berdasarkan hasil analisis, dilakukan penarikan kesimpulan yang menjawab
 rumusan masalah penelitian serta penyusunan saran untuk pengembangan penelitian
 di masa mendatang.
+
+\section{Etika Penelitian}
+\label{sec:ethics}
+
+\noindent Penelitian ini mematuhi prinsip-prinsip etika penelitian, termasuk:
+\begin{enumerate}[nosep]
+	\item Anonimisasi \& Pseudo-anonimisasi
+	
+Data percakapan yang dikumpulkan dalam penelitian ini telah melalui proses anonimisasi pada tahap pra-pemrosesan untuk menghapus atau menyamarkan informasi yang dapat mengidentifikasi individu (PII - Personally Identifiable Information) seperti nama, NIK, alamat, atau nomor telepon sebelum dianalisis. Informasi yang berpotensi mengidentifikasi individu, seperti nama pengguna yang tercantum dalam pesan, digantikan dengan token anonim \textit{(@USER)}, sedangkan identitas pengirim pesan disamarkan dengan hanya menampilkan karakter awal diikuti tanda bintang (\textit{****}) pada bagian selanjutnya. Langkah ini diterapkan untuk memastikan bahwa data yang digunakan dalam proses analisis tidak dapat dikaitkan kembali kepada individu tertentu.
+
+	\item Informed Consent
+
+Penelitian ini telah mendapatkan persetujuan dari admin grup yang terlibat, dengan memberikan informasi yang jelas mengenai tujuan penelitian, prosedur yang akan dilakukan, serta hak dan kewajiban partisipan selama penelitian berlangsung. Partisipan diberikan kesempatan untuk bertanya dan menyatakan persetujuan secara sukarela sebelum data dikumpulkan.
+
+	\item Pembatasan Tujuan
+
+Data yang dikumpulkan dan dianalisis dalam penelitian ini hanya digunakan untuk tujuan penelitian yang telah disepakati, yaitu analisis topik percakapan grup WhatsApp. Data tidak akan digunakan untuk tujuan lain, diperjualbelikan, atau disalahgunakan tanpa persetujuan lebih lanjut dari pihak terkait.
+
+	\item Keamanan Data
+
+Data percakapan dan hasil analisis disimpan di server aman dengan enkripsi dan kontrol akses yang ketat untuk mencegah kebocoran data dan akses tidak sah. Seluruh data akan dihapus setelah periode penelitian berakhir sesuai dengan kebijakan manajemen data penelitian institusi.
+\end{enumerate}
 
 % ====================================================================
 % CATATAN PENGISIAN BAB METODOLOGI:

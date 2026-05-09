@@ -348,6 +348,11 @@ INPUT ./images/framework-BERTopic-modifikasi.png
 INPUT ./images/framework-BERTopic-modifikasi.png
 INPUT /nix/store/hz0nlm4732dzb8i0bdpvxz68ghr1k9qr-texlive-2025-env-texmfdist/fonts/vf/adobe/times/ptmbi8t.vf
 INPUT /nix/store/hz0nlm4732dzb8i0bdpvxz68ghr1k9qr-texlive-2025-env-texmfdist/fonts/tfm/adobe/times/ptmbi8r.tfm
+INPUT ./images/alur-implementasi-sistem.png
+INPUT ./images/alur-implementasi-sistem.png
+INPUT ./images/alur-implementasi-sistem.png
+INPUT ./images/alur-implementasi-sistem.png
+INPUT ./images/alur-implementasi-sistem.png
 INPUT ./chapters/04-results.tex
 INPUT ./chapters/04-results.tex
 INPUT chapters/04-results.tex

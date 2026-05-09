@@ -135,12 +135,10 @@ node CF-Tree, sedangkan $T$ mengontrol kekompakan subklaster.
 \label{sec:bm25}
 
 % TODO: Revisi menambahkan penjelasan mengenai kenapa kok BM25 ini dipakai pada penelitian ini
-\hl{
-    Pada data teks pendek dan bising, c-TF-IDF dapat mengalami keterbatasan dalam
-merepresentasikan kepentingan kata secara stabil. Oleh karena itu, sejumlah
+    Skema pembobotan BM25 adalah algoritma fungsi peringkat (ranking function) yang banyak digunakan dalam pencarian informasi (information retrieval) dan dapat diadaptasi untuk tahap representasi topik \citep{doi.org/10.1111/coin.12248,DBLP:journals/corr/abs-2007-05186}. 
+	c-TF-IDF kesulitan menangkap hubungan semantik secara utuh dan cenderung menghasilkan topik yang kurang koheren ketika distribusi frekuensi kata sangat timpang atau tidak merata \citep{iaes2025indobert}. Oleh karena itu, sejumlah
 penelitian menerapkan BM25 pada tahap \textit{topic representation}, baik sebagai
 pengganti penuh maupun sebagai modifikasi dari skema c-TF-IDF.
-}
 
 Pada penelitian \citep{iaes2025indobert}, c-TF-IDF bawaan BERTopic digantikan
 sepenuhnya dengan BM25 pada level klaster, dengan skor kata dirumuskan sebagai:

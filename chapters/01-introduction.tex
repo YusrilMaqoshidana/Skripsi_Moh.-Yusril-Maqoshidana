@@ -40,13 +40,13 @@ Model ini dibangun melalui pendekatan \textit{domain-adaptive pretraining} denga
 Pendekatan ini memungkinkan model memahami karakteristik linguistik unik, bahasa sehari-hari, dan kosakata spesifik domain yang umum pada teks pendek berbahasa Indonesia, sehingga menghasilkan contextualized embeddings berkualitas tinggi untuk meningkatkan pemahaman semantik pada percakapan grup WhatsApp \citep{iaes2025indobert}.
 Dengan demikian, kombinasi BIRCH dan IndoBERTweet memiliki landasan metodologis yang kuat untuk digunakan pada analisis topik percakapan WhatsApp yang cenderung berteks pendek, bising, dan tidak terstruktur. BIRCH berperan dalam menekan \textit{outlier} pada data \textit{sparse}, sedangkan IndoBERTweet membantu merepresentasikan konteks bahasa media sosial secara lebih baik dibandingkan model yang hanya dilatih pada korpus formal.
 
-Meskipun penelitian mengenai \textit{topic modeling} pada percakapan grup WhatsApp telah dilakukan sebelumnya \citep{kharisudin2022topic,10425363,9388596}, masih terdapat beberapa \textit{research gap}. 
-Pertama, penggunaan IndoBERTweet sebagai model \textit{embedding} dalam \textit{framework} BERTopic untuk percakapan grup WhatsApp berbahasa Indonesia masih terbatas. 
-Kedua, pemanfaatan BIRCH sebagai pengganti HDBSCAN pada BERTopic belum banyak dieksplorasi, padahal berpotensi meningkatkan stabilitas \textit{clustering} dan mengurangi \textit{outlier}. 
+Meskipun penelitian mengenai \textit{topic modeling} pada percakapan grup WhatsApp telah dilakukan sebelumnya \citep{kharisudin2022topic,10425363,9388596}, masih terdapat beberapa \textit{research gap}.
+Pertama, penggunaan IndoBERTweet sebagai model \textit{embedding} dalam \textit{framework} BERTopic untuk percakapan grup WhatsApp berbahasa Indonesia masih terbatas.
+Kedua, pemanfaatan BIRCH sebagai pengganti HDBSCAN pada BERTopic belum banyak dieksplorasi, padahal berpotensi meningkatkan stabilitas \textit{clustering} dan mengurangi \textit{outlier}.
 Ketiga, mayoritas penelitian sebelumnya berfokus pada eksperimen metodologis tanpa menyediakan sistem yang dapat digunakan langsung oleh pengguna akhir.
 
-Berdasarkan permasalahan tersebut, penelitian ini bertujuan mengembangkan sistem analisis topik percakapan grup WhatsApp berbasis \textit{web} dengan fokus pada integrasi IndoBERTweet dan algoritma BIRCH dalam \textit{framework} BERTopic. 
-Sistem ini diharapkan membantu pengguna memahami topik utama percakapan grup secara otomatis tanpa harus membaca seluruh pesan secara manual. 
+Berdasarkan permasalahan tersebut, penelitian ini bertujuan mengembangkan sistem analisis topik percakapan grup WhatsApp berbasis \textit{web} dengan fokus pada integrasi IndoBERTweet dan algoritma BIRCH dalam \textit{framework} BERTopic.
+Sistem ini diharapkan membantu pengguna memahami topik utama percakapan grup secara otomatis tanpa harus membaca seluruh pesan secara manual.
 Selain memberikan kontribusi akademik pada pengembangan metode \textit{topic modeling} untuk data percakapan berbahasa Indonesia, penelitian ini juga menghasilkan solusi praktis yang dapat dimanfaatkan oleh administrator grup, komunitas, peneliti sosial, maupun pengguna umum melalui antarmuka \textit{web} yang mudah diakses dan informatif.
 
 % --- BAGIAN 1.2: RUMUSAN MASALAH ---
@@ -66,9 +66,9 @@ Selain memberikan kontribusi akademik pada pengembangan metode \textit{topic mod
 
 \noindent Berdasarkan rumusan masalah tersebut, berikut adalah tinjauan penelitian yang mampu dirumuskan, diantaranya:
 \begin{enumerate}[nosep]
-    \item Menerapkan BERTopic dengan menggunakan model IndoBERTweet sebagai model \textit{embedding} dan algoritma BIRCH sebagai metode \textit{clustering} untuk menganalisis topik percakapan grup WhatsApp berbahasa Indonesia.
-    \item Menganalisis hasil kinerja metode BERTopic dengan menggunakan model IndoBERTweet dan algoritma BIRCH \textit{clustering} dalam menghasilkan representasi semantik pada teks percakapan grup WhatsApp berbahasa Indonesia.
-    \item Mengimplementasikan sistem analisis topik percakapan grup WhatsApp berbasis \textit{web} yang memanfaatkan BERTopic dengan IndoBERTTweet dan BIRCH \textit{clustering} agar dapat digunakan secara langsung oleh \textit{end-user}.
+	\item Menerapkan BERTopic dengan menggunakan model IndoBERTweet sebagai model \textit{embedding} dan algoritma BIRCH sebagai metode \textit{clustering} untuk menganalisis topik percakapan grup WhatsApp berbahasa Indonesia.
+	\item Menganalisis hasil kinerja metode BERTopic dengan menggunakan model IndoBERTweet dan algoritma BIRCH \textit{clustering} dalam menghasilkan representasi semantik pada teks percakapan grup WhatsApp berbahasa Indonesia.
+	\item Mengimplementasikan sistem analisis topik percakapan grup WhatsApp berbasis \textit{web} yang memanfaatkan BERTopic dengan IndoBERTTweet dan BIRCH \textit{clustering} agar dapat digunakan secara langsung oleh \textit{end-user}.
 \end{enumerate}
 
 % --- BAGIAN 1.4: MANFAAT PENELITIAN ---
@@ -78,9 +78,9 @@ Selain memberikan kontribusi akademik pada pengembangan metode \textit{topic mod
 \noindent Adapun manfaat yang diharapkan dari penelitian ini dapat diuraikan sebagai berikut:
 
 \begin{enumerate}[nosep]
-    \item Memberikan kontribusi dalam pengembangan ilmu di bidang \textit{Natural Language Processing} (NLP), khususnya penerapan BERTopic dengan IndoBERTweet dan BIRCH \textit{clustering} untuk analisis topik pada teks percakapan berbahasa Indonesia.
-    \item Menyediakan sistem berbasis \textit{web} yang mampu menganalisis percakapan grup WhatsApp secara otomatis dan menyajikan hasil dalam bentuk visualisasi topik yang mudah dipahami.
-    \item Menjadi referensi bagi penelitian selanjutnya terkait penerapan \textit{topic modeling} pada data teks pendek dan percakapan informal berbahasa Indonesia.
+	\item Memberikan kontribusi dalam pengembangan ilmu di bidang \textit{Natural Language Processing} (NLP), khususnya penerapan BERTopic dengan IndoBERTweet dan BIRCH \textit{clustering} untuk analisis topik pada teks percakapan berbahasa Indonesia.
+	\item Menyediakan sistem berbasis \textit{web} yang mampu menganalisis percakapan grup WhatsApp secara otomatis dan menyajikan hasil dalam bentuk visualisasi topik yang mudah dipahami.
+	\item Menjadi referensi bagi penelitian selanjutnya terkait penerapan \textit{topic modeling} pada data teks pendek dan percakapan informal berbahasa Indonesia.
 \end{enumerate}
 
 % --- BAGIAN 1.5: BATASAN PENELITIAN ---
@@ -91,6 +91,12 @@ Selain memberikan kontribusi akademik pada pengembangan metode \textit{topic mod
 
 \begin{enumerate}[nosep]
 	\item Sistem hanya menganalisis percakapan teks berbahasa Indonesia dari grup WhatsApp, tidak mencakup media gambar, video, audio, maupun dokumen.
+	\item Data yang digunakan dalam penelitian ini berasal dari satu grup WhatsApp,
+	      yaitu komunitas buku \textit{Book Clan}, sehingga topik-topik yang dihasilkan
+	      mencerminkan karakteristik komunitas tersebut dan tidak dapat digeneralisasikan
+	      sebagai representasi percakapan grup WhatsApp lain. Meskipun demikian, pipeline
+	      pemodelan topik yang dikembangkan bersifat generalis dan dapat diterapkan pada
+	      data grup WhatsApp berbahasa Indonesia lainnya.
 	\item Data masukan berupa file ekspor chat WhatsApp format .txt atau .zip.
 	\item Data yang dianalisis memiliki jumlah minimal 2.000 pesan dan rentang riwayat maksimal 1 tahun.
 	\item Penelitian berfokus pada pemodelan topik dan tidak mencakup analisis sentimen, klasifikasi emosi, maupun prediksi perilaku pengguna.
