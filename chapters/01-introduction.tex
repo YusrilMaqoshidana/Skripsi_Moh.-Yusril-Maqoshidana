@@ -91,18 +91,12 @@ Selain memberikan kontribusi akademik pada pengembangan metode \textit{topic mod
 
 \begin{enumerate}[nosep]
 	\item Sistem hanya menganalisis percakapan teks berbahasa Indonesia dari grup WhatsApp, tidak mencakup media gambar, video, audio, maupun dokumen.
-	\item Data yang digunakan dalam penelitian ini berasal dari satu grup WhatsApp,
-	      yaitu komunitas buku \textit{Book Clan}, sehingga topik-topik yang dihasilkan
-	      mencerminkan karakteristik komunitas tersebut dan tidak dapat digeneralisasikan
-	      sebagai representasi percakapan grup WhatsApp lain. Meskipun demikian, pipeline
-	      pemodelan topik yang dikembangkan bersifat generalis dan dapat diterapkan pada
-	      data grup WhatsApp berbahasa Indonesia lainnya.
 	\item Data masukan berupa file ekspor chat WhatsApp format .txt atau .zip.
-	\item Data yang dianalisis memiliki jumlah minimal 2.000 pesan dan rentang riwayat maksimal 1 tahun.
+	\item Penelitian ini dibatasi pada analisis data percakapan grup WhatsApp Diskusi Umum Komunitas Book Clan dengan rentang riwayat data selama tiga tahun, yaitu dari tahun 2022 hingga 2025.
 	\item Penelitian berfokus pada pemodelan topik dan tidak mencakup analisis sentimen, klasifikasi emosi, maupun prediksi perilaku pengguna.
 	\item Tahap preprocessing mencakup pembersihan pesan sistem, normalisasi teks, transliterasi emotikon, normalisasi slang word, serta stopword removal menggunakan kamus manual dan Sastrawi.
 	\item Representasi topik menggunakan BM25 sebagai pengganti c-TF-IDF.
-	\item Evaluasi dilakukan menggunakan metrik Topic Diversity, Embedding Density, Intra-topic Similarity, Topic Coherence, serta pengujian fungsional black-box.
+	\item Evaluasi dilakukan menggunakan metrik Topic Coherence, Topic Diversity, Embedding Density, Intra-topic Similarity, serta pengujian fungsional black-box.
 \end{enumerate}
 
 

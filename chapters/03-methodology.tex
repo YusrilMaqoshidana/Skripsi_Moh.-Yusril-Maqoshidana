@@ -25,7 +25,7 @@ sedangkan aspek eksperimental kuantitatif digunakan untuk memvalidasi performa p
 \section{Objek Penelitian}
 \label{sec:method-object}
 
-Objek penelitian fokus pada data percakapan grup WhatsApp dari komunitas buku bernama \textit{Book Clan}, yang berisi interaksi antar pengguna dalam bahasa Indonesia. Data ini dipilih karena mewakili karakteristik percakapan yang umumnya berupa teks pendek, tidak terstruktur, mengandung \textit{noise}, serta fenomena \textit{code-mixing}.
+Objek penelitian fokus pada data percakapan grup WhatsApp dari komunitas \textit{Book Clan} dengan nama grup \textit{Diskusi Umum}, yang berisi interaksi antar pengguna dalam bahasa Indonesia. Data ini dipilih karena memiliki volume percakapan yang tinggi dan dapat mewakili karakteristik percakapan yang umumnya berupa teks pendek, tidak terstruktur, mengandung \textit{noise}, serta fenomena \textit{code-mixing}.
 
 
 \section{Waktu Penelitian}
@@ -57,7 +57,7 @@ pengguna dalam mengelola informasi yang besar dan tidak terstruktur.
 
 Studi literatur kemudian dilakukan untuk membangun landasan teori dan memahami
 perkembangan terkini di bidang \textit{topic modeling} berbahasa Indonesia melalui
-kajian jurnal ilmiah, prosiding konferensi, dan dokumentasi teknis terkait BERTopic,
+kajian jurnal ilmiah dan dokumentasi teknis terkait BERTopic,
 IndoBERTweet, BIRCH \textit{clustering}, BM25, serta metrik evaluasi pemodelan topik.
 Hasil gabungan tahap ini digunakan untuk mengidentifikasi \textit{research gap},
 merumuskan masalah penelitian secara spesifik, dan menentukan metode serta
@@ -77,12 +77,7 @@ pada dinamika percakapan yang aktual.
 \subsection{Praproses Data}
 \label{subsec:data-preprocessing}
 
-Tahap pra-pemrosesan data dibagi menjadi dua tahap, yaitu sebelum
-\textit{embedding} model dan sebelum representasi topik.
-
-\noindent \textbf{Tahap 1: Pra-\textit{Embedding} Model}
-
-\noindent Tahap ini bertujuan membersihkan dan mempersiapkan data mentah agar siap diolah
+Tahap praproses data bertujuan membersihkan dan mempersiapkan data mentah agar siap diolah
 oleh model \textit{embedding} dengan tetap mempertahankan makna semantik. Prosesnya meliputi:
 \begin{enumerate}[nosep]
 	\item Pemfilteran pesan sistem, yaitu menghapus notifikasi bawaan
@@ -95,11 +90,9 @@ oleh model \textit{embedding} dengan tetap mempertahankan makna semantik. Proses
 	\item Normalisasi kata slang dan pemanjangan kata.
 \end{enumerate}
 
-\noindent \textbf{Tahap 2: Pra-Representasi Topik}
-
-\noindent Tahap ini dilakukan sebelum pembentukan representasi topik, yaitu dengan
-konfigurasi \textit{vectorizer} menggunakan \textit{stopword} dari kamus manual
-dan \textit{library} Sastrawi.
+Apabila hasil evaluasi model menunjukkan performa yang kurang optimal, maka dilakukan eksperimen tambahan pada tahap praproses data. 
+Eksperimen tersebut dapat berupa penambahan, pengurangan, maupun modifikasi teknik praproses untuk mengetahui pengaruhnya terhadap kualitas representasi teks dan peningkatan performa model. 
+Dengan demikian, proses praproses dilakukan secara iteratif hingga diperoleh hasil evaluasi model yang lebih baik.
 
 \subsection{Pembuatan Model}
 \label{subsec:create-model}
@@ -159,19 +152,19 @@ oleh model BERTopic secara kuantitatif. Evaluasi dilakukan menggunakan empat
 metrik utama, yaitu:
 \begin{enumerate}[nosep]
 	\item \textit{Topic Coherence} \\
-	Topic Coherence digunakan untuk mengukur sejauh mana
+	      Topic Coherence digunakan untuk mengukur sejauh mana
 	      kata-kata teratas dalam setiap topik memiliki hubungan semantik satu
 	      sama lain. Nilai yang lebih tinggi menunjukkan topik yang lebih koheren.
 	\item \textit{Topic Diversity} \\
-	Topic Diversity digunakan untuk mengukur keunikan kata-kata
+	      Topic Diversity digunakan untuk mengukur keunikan kata-kata
 	      teratas antar topik. Nilai mendekati 1 menunjukkan tidak ada tumpang
 	      tindih kata antar topik.
 	\item \textit{Embedding Density} \\
-	Embedding Density digunakan untuk mengukur tingkat kekompakan
+	      Embedding Density digunakan untuk mengukur tingkat kekompakan
 	      dokumen dalam tiap klaster pada ruang \textit{embedding}. Nilai yang
 	      lebih tinggi menunjukkan klaster yang semakin padat.
 	\item \textit{Intra-topic Similarity} \\
-	Intra-topic Similarity digunakan untuk mengukur rata-rata
+	      Intra-topic Similarity digunakan untuk mengukur rata-rata
 	      kesamaan semantik antar dokumen dalam satu topik. Nilai yang lebih
 	      tinggi menunjukkan homogenitas topik yang lebih baik.
 \end{enumerate}
@@ -196,15 +189,18 @@ Implementasi dilakukan dengan arsitektur \textit{client-server}, menggunakan Vue
 \subsection{Evaluasi Sistem}
 \label{subsec:system-evaluation}
 
-\hl{Tahap evaluasi sistem dilakukan untuk mengukur kinerja dan efektivitas aplikasi	yang telah dikembangkan. Evaluasi dilakukan dengan menggunakan metode black-box testing, di mana fokusnya adalah pada input dan output sistem tanpa memperhatikan proses internalnya. Pengujian dilakukan dengan menggunakan dataset percakapan grup WhatsApp yang berbeda dari dataset yang digunakan untuk pelatihan model, untuk memastikan bahwa sistem dapat bekerja secara umum dan tidak hanya pada data tertentu. Hasil evaluasi ini akan memberikan gambaran tentang seberapa baik sistem dapat mengidentifikasi dan merepresentasikan topik dalam percakapan grup WhatsApp secara otomatis, serta memberikan umpan balik untuk perbaikan lebih lanjut jika diperlukan.
-}
+Tahap evaluasi sistem dilakukan untuk mengukur kinerja dan efektivitas aplikasi	yang telah dikembangkan.
+Evaluasi dilakukan dengan menggunakan metode black-box testing, di mana fokusnya adalah pada input dan output sistem tanpa memperhatikan proses internalnya.
+Pengujian dilakukan dengan menggunakan dataset percakapan grup WhatsApp yang berbeda dari dataset yang digunakan untuk pelatihan model, untuk memastikan bahwa sistem dapat bekerja secara umum dan tidak hanya pada data tertentu.
+Hasil evaluasi ini akan memberikan gambaran tentang seberapa baik sistem dapat mengidentifikasi dan merepresentasikan topik dalam percakapan grup WhatsApp secara otomatis, serta memberikan umpan balik untuk perbaikan lebih lanjut jika diperlukan.
+
 \subsection{Analisis Hasil}
 \label{subsec:result}
 
-Tahap analisis hasil dilakukan terhadap seluruh keluaran dari pemodelan topik
-dan evaluasi model. Analisis dilakukan dengan membandingkan performa model
-berdasarkan metrik evaluasi yang telah ditentukan, serta menginterpretasikan
-topik-topik yang dihasilkan.
+\hl{Tahap analisis hasil dilakukan terhadap seluruh keluaran dari pemodelan topik
+	dan evaluasi model. Analisis dilakukan dengan membandingkan performa model
+	berdasarkan metrik evaluasi yang telah ditentukan, serta menginterpretasikan
+	topik-topik yang dihasilkan.}
 
 \subsection{Penarikan Kesimpulan}
 \label{subsec:conclusion}
@@ -218,21 +214,21 @@ di masa mendatang.
 
 \noindent Penelitian ini mematuhi prinsip-prinsip etika penelitian, termasuk:
 \begin{enumerate}[nosep]
-	\item Anonimisasi \& Pseudo-anonimisasi
-	
-Data percakapan yang dikumpulkan dalam penelitian ini telah melalui proses anonimisasi pada tahap pra-pemrosesan untuk menghapus atau menyamarkan informasi yang dapat mengidentifikasi individu (PII - Personally Identifiable Information) seperti nama, NIK, alamat, atau nomor telepon sebelum dianalisis. Informasi yang berpotensi mengidentifikasi individu, seperti nama pengguna yang tercantum dalam pesan, digantikan dengan token anonim \textit{(@USER)}, sedangkan identitas pengirim pesan disamarkan dengan hanya menampilkan karakter awal diikuti tanda bintang (\textit{****}) pada bagian selanjutnya. Langkah ini diterapkan untuk memastikan bahwa data yang digunakan dalam proses analisis tidak dapat dikaitkan kembali kepada individu tertentu.
+	\item Anonimisasi
+
+	      Data percakapan yang dikumpulkan dalam penelitian ini telah melalui proses anonimisasi pada tahap pra-pemrosesan untuk menghapus atau menyamarkan informasi yang dapat mengidentifikasi individu seperti nama pengirim, mention, dan nomor telepon sebelum dianalisis. Nama pengguna dan nomor telepon yang tercantum dalam pengirim pesan hanya diambil 3 karakter kemudian karakter selanjutnya diganti dengan tanda bintang (\textit{****}). Untuk mention dipesan diganti dengan token anonim \textit{(@USER)}. Langkah ini diterapkan untuk memastikan bahwa data yang digunakan dalam proses analisis tidak dapat dikaitkan kembali kepada individu tertentu.
 
 	\item Informed Consent
 
-Penelitian ini telah mendapatkan persetujuan dari admin grup yang terlibat, dengan memberikan informasi yang jelas mengenai tujuan penelitian, prosedur yang akan dilakukan, serta hak dan kewajiban partisipan selama penelitian berlangsung. Partisipan diberikan kesempatan untuk bertanya dan menyatakan persetujuan secara sukarela sebelum data dikumpulkan.
+	      % Penelitian ini telah mendapatkan persetujuan dari admin grup yang terlibat, dengan memberikan informasi yang jelas mengenai tujuan penelitian, prosedur yang akan dilakukan, serta hak dan kewajiban partisipan selama penelitian berlangsung. Partisipan diberikan kesempatan untuk bertanya dan menyatakan persetujuan secara sukarela sebelum data dikumpulkan.
 
 	\item Pembatasan Tujuan
 
-Data yang dikumpulkan dan dianalisis dalam penelitian ini hanya digunakan untuk tujuan penelitian yang telah disepakati, yaitu analisis topik percakapan grup WhatsApp. Data tidak akan digunakan untuk tujuan lain, diperjualbelikan, atau disalahgunakan tanpa persetujuan lebih lanjut dari pihak terkait.
+	      Data yang dikumpulkan dan dianalisis dalam penelitian ini hanya digunakan untuk tujuan penelitian yang telah disepakati, yaitu analisis topik percakapan grup WhatsApp. Data tidak akan digunakan untuk tujuan lain, diperjualbelikan, atau disalahgunakan tanpa persetujuan lebih lanjut dari pihak terkait.
 
-	\item Keamanan Data
+	      % 	\item Keamanan Data
 
-Data percakapan dan hasil analisis disimpan di server aman dengan enkripsi dan kontrol akses yang ketat untuk mencegah kebocoran data dan akses tidak sah. Seluruh data akan dihapus setelah periode penelitian berakhir sesuai dengan kebijakan manajemen data penelitian institusi.
+	      % Data percakapan dan hasil analisis disimpan di server aman dengan enkripsi dan kontrol akses yang ketat untuk mencegah kebocoran data dan akses tidak sah. Seluruh data akan dihapus setelah periode penelitian berakhir sesuai dengan kebijakan manajemen data penelitian institusi.
 \end{enumerate}
 
 % ====================================================================

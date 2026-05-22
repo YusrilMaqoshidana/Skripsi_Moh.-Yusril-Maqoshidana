@@ -10,135 +10,95 @@
 
 \chapter{HASIL DAN PEMBAHASAN}
 
-% --- BAGIAN 4.1: HASIL PENELITIAN ---
-\section{Hasil Penelitian}
-\label{sec:results}
 
-\subsection{Karakteristik Responden}
-\label{subsec:respondent-characteristics}
+\section{Pengumpulan Data}
+\label{sec:data-collection}
 
-% Jelaskan data demografis dan karakteristik sampel
-\noindent Total responden yang ikut serta dalam penelitian ini adalah [jumlah] orang. 
-Karakteristik responden dapat dilihat pada Tabel \ref{tab:respondent-char}.
+Data yang digunakan dalam penelitian ini bersumber dari grup WhatsApp \textit{Info Warga Jember}, sebuah grup komunitas daring yang aktif digunakan oleh warga di wilayah Kabupaten Jember sebagai sarana penyebaran informasi, diskusi, dan komunikasi sehari-hari. Pengumpulan data dilakukan melalui fitur ekspor percakapan yang tersedia secara bawaan pada aplikasi WhatsApp. Fitur ini memungkinkan pengguna yang memiliki akses administrator untuk mengunduh riwayat percakapan dalam dua format: berkas \textit{.zip} yang menyertakan lampiran media, atau berkas \textit{.txt} yang hanya memuat teks percakapan. Penelitian ini menggunakan format \textit{.txt} karena komponen yang relevan untuk analisis topik adalah konten teks pesan, bukan lampiran media.
 
-% Contoh tabel karakteristik responden:
-% \begin{table}[h]
-% \centering
-% \caption{Karakteristik Demografi Responden}
-% \label{tab:respondent-char}
-% \begin{tabular}{|l|c|c|}
-% \hline
-% \textbf{Karakteristik} & \textbf{Jumlah} & \textbf{Persentase} \\
-% \hline
-% \multicolumn{3}{|c|}{\textbf{Jenis Kelamin}} \\
-% \hline
-% Laki-laki & XX & XX\% \\
-% Perempuan & XX & XX\% \\
-% \hline
-% \multicolumn{3}{|c|}{\textbf{Usia}} \\
-% \hline
-% ... & ... & ... \\
-% \hline
-% \end{tabular}
-% \end{table}
+Berkas hasil ekspor selanjutnya diproses melalui tahap \textit{parsing} untuk mengekstrak empat atribut utama dari setiap pesan, yaitu tanggal, waktu, nama pengirim, dan isi pesan, yang kemudian disusun dalam format CSV sebagai representasi terstruktur dari data mentah. Rentang waktu pengumpulan data mencakup periode dua tahun, terhitung sejak 19 Mei 2024 hingga 19 Mei 2026, guna memperoleh gambaran yang representatif terhadap dinamika percakapan dalam jangka panjang.
 
-Berdasarkan Tabel \ref{tab:respondent-char}, dapat dilihat bahwa \ldots 
-(Jelaskan hasil deskriptif karakteristik responden).
+Sebelum digunakan dalam analisis, data melewati tahap penyaringan untuk menghilangkan pesan yang tidak mengandung konten linguistik yang bermakna. Kriteria eksklusi meliputi pesan sistem yang dihasilkan otomatis oleh aplikasi WhatsApp—seperti notifikasi penambahan atau penghapusan anggota, perubahan ikon atau nama grup—serta entri bertanda \textit{<Media omitted>} yang menunjukkan lampiran tanpa teks penyerta. Setelah proses penyaringan tersebut, dataset final yang digunakan dalam penelitian ini terdiri dari \textbf{18.954 pesan} yang dikirim oleh \textbf{766 pengirim unik}, dengan rata-rata sekitar 26 pesan per hari sepanjang periode pengamatan.
+\section{Praproses Data}
+\label{sec:preprocessing}
+\noindent Uraikan langkah pra-pemrosesan yang dilakukan sesuai metodologi:
+\begin{enumerate}[nosep]
+    \item Pemfilteran pesan sistem dan pesan media
+    \item Normalisasi (lower-case, mention → @USER, URL → HTTP)
+    \item Transliteration emotikon dan normalisasi slang
+    \item Tokenisasi dan stopword removal (Sastrawi + manual)
+\end{enumerate}
+Berikan contoh before/after satu atau dua pesan untuk ilustrasi.
 
-\subsection{Hasil Analisis Deskriptif}
-\label{subsec:descriptive-results}
+\section{Pembuatan Model}
+\label{sec:descriptive-results}
+\noindent Sajikan statistik deskriptif utama setelah pra-pemrosesan: mean, median, standar deviasi panjang pesan, frekuensi kata teratas, dan distribusi topik awal jika relevan.
 
-% Jelaskan hasil analisis deskriptif utama
-\noindent Analisis deskriptif terhadap [variabel utama] menunjukkan bahwa:
+\subsection{Embedding dan Reduksi Dimensi}
+\label{subsec:embedding-umap}
+\noindent Jelaskan penggunaan IndoBERTweet untuk pembuatan embedding, parameter penting yang dipilih, dan hasil reduksi dimensi menggunakan UMAP. Sertakan visualisasi (scatter plot UMAP) dan interpretasi singkat.
 
-\textbf{[Sub-hasil 1]}: \ldots (Jelaskan dengan detail, sertakan angka/statistik).
-Mean dari [variabel] adalah [nilai] dengan standar deviasi [nilai].
+\subsection{Clustering dan Representasi Topik}
+\label{subsec:clustering-topics}
+\noindent Paparkan penggunaan BIRCH untuk clustering dan BM25 untuk representasi topik. Untuk setiap topik utama, tampilkan:
+\begin{itemize}[nosep]
+    \item Kata kunci representatif (top-n)
+    \item Jumlah dokumen per klaster
+    \item Contoh pesan yang termasuk dalam topik
+\end{itemize}
 
-\textbf{[Sub-hasil 2]}: \ldots (Jelaskan temuan berikutnya).
-Distribusi dari [variabel] menunjukkan bahwa \ldots
+\subsection{Evaluasi Kuantitatif Model}
+\label{subsec:model-evaluation}
+\noindent Tampilkan hasil metrik evaluasi yang digunakan: topic coherence, topic diversity, embedding density, dan intra-topic similarity. Sajikan hasil dalam tabel per skenario parameter (baseline vs modifikasi) dan beri interpretasi singkat.
 
-Hasil deskriptif secara lengkap dapat dilihat pada Tabel \ref{tab:descriptive} dan Gambar \ref{fig:descriptive}.
+\subsection{Perbandingan Eksperimen (Baseline vs Modifikasi)}
+\label{subsec:experiments-comparison}
+\noindent Bandingkan kinerja skenario berbeda (mis. HDBSCAN vs BIRCH, c-TF-IDF vs BM25, model embedding berbeda). Sertakan tabel ringkasan dan highlight perbedaan signifikan.
 
-\subsection{Hasil Analisis Inferensial}
+\subsection{Uji Asumsi dan Analisis Inferensial}
 \label{subsec:inferential-results}
+\noindent Jika relevan, laporkan uji normalitas, uji homogenitas, dan hasil pengujian hipotesis. Jelaskan metode statistik yang digunakan dan implikasinya terhadap interpretasi hasil.
 
-% Jelaskan hasil uji statistik/hipotesis
-\noindent Uji hipotesis dilakukan menggunakan [nama uji statistik]. 
-Sebelum dilakukan uji ini, terlebih dahulu diverifikasi asumsi-asumsi uji:
+\subsection{Implementasi Sistem dan Evaluasi Fungsional}
+\label{subsec:system-evaluation}
+\noindent Laporkan hasil pengujian aplikasi berbasis web: keandalan upload, waktu proses end-to-end, pengalaman pengguna (jika ada pengujian usability), serta contoh tampilan hasil.
 
-\textbf{Uji Normalitas}: Hasil uji normalitas menggunakan [test name] menunjukkan bahwa 
-$p\text{-value} = [nilai]$ ([$p > 0.05$ / $p < 0.05$]). Ini berarti data 
-[berdistribusi normal / tidak berdistribusi normal].
-
-\textbf{Uji Homogenitas}: Hasil uji homogenitas varians menunjukkan bahwa $p\text{-value} = [nilai]$, 
-yang berarti varians data [homogen / tidak homogen].
-
-Setelah asumsi terpenuhi, hasil uji [nama uji] dapat dilihat pada Tabel \ref{tab:hypothesis-test}:
-
-% Contoh tabel hasil uji statistik:
-% \begin{table}[h]
-% \centering
-% \caption{Hasil Uji Hipotesis}
-% \label{tab:hypothesis-test}
-% \begin{tabular}{|l|c|c|c|}
-% \hline
-% \textbf{Variabel} & \textbf{Statistik Uji} & \textbf{p-value} & \textbf{Kesimpulan} \\
-% \hline
-% Var 1 vs Var 2 & XX.XXX & 0.001 & Signifikan \\
-% \hline
-% \end{tabular}
-% \end{table}
-
-\noindent Hasil menunjukkan bahwa \ldots (Jelaskan hasil uji statistik).
-Karena $p\text{-value} = [nilai]$ dan $[p < 0.05 / p > 0.05]$, maka dapat disimpulkan 
-bahwa [hipotesis diterima / ditolak].
+\subsection{Analisis Hasil}
+\label{subsec:result-analysis}
+\noindent Analisis sintesis hasil kuantitatif dan kualitatif: apakah topik yang dihasilkan bermakna, stabil, dan sesuai konteks grup WhatsApp. Kaitkan dengan tujuan penelitian.
 
 % --- BAGIAN 4.2: PEMBAHASAN ---
 \section{Pembahasan}
 \label{sec:discussion}
 
-% PENTING: Pembahasan HARUS dilakukan secara kritis dengan mengacu pada 
-% konsep teori atau tinjauan pustaka dari Bab 2.
-% Jangan hanya merepeating hasil, tapi jelaskan MENGAPA dan HAL APA yang bermakna.
-
-\subsection{Interpretasi Hasil Utama}
+\subsection{Interpretasi Temuan Utama}
 \label{subsec:interpretation}
+\noindent Paparkan penjelasan mendalam mengenai temuan utama, mengapa hasil tersebut muncul, dan bagaimana temuan ini menjawab rumusan masalah. Hubungkan temuan dengan teori dan tinjauan pustaka di Bab 2.
 
-\noindent Hasil penelitian ini menunjukkan bahwa \ldots 
-(Jelaskan temuan utama dalam konteks penelitian Anda).
+\subsection{Analisis Kualitatif Topik}
+\label{subsec:qualitative-topic-analysis}
+\noindent Bahas beberapa topik penting secara kualitatif: konteks sosialnya, contoh kutipan pesan, dan relevansi bagi pengguna.
 
-Temuan ini sejalan dengan penelitian sebelumnya oleh \citet{Author2020} yang menyatakan bahwa \ldots
-Namun, penelitian ini juga menemukan perbedaan signifikan dalam \ldots karena [alasan/penjelasan].
-
-Menurut teori yang dikemukakan oleh \citet{Theorist2021}, fenomena ini dapat dijelaskan melalui \ldots
-(Jelaskan menggunakan framework/teori dari Bab 2).
-
-\subsection{Makna Praktis dan Implikasi}
+\subsection{Implikasi Praktis dan Rekomendasi Implementasi}
 \label{subsec:practical-implications}
-
-\noindent Dari perspektif praktis, hasil penelitian ini mengimplikasikan bahwa \ldots
-Implikasi ini penting bagi \ldots (Jelaskan untuk siapa dan apa manfaatnya).
-
-Beberapa saran implementasi dari temuan ini adalah:
-\begin{enumerate}
-    \item Saran implementasi pertama: \ldots
-    \item Saran implementasi kedua: \ldots
-    \item Saran implementasi ketiga: \ldots
-\end{enumerate}
+\noindent Jelaskan implikasi untuk pengembangan sistem dan pengguna akhir, termasuk rekomendasi konfigurasi model, antarmuka, dan fitur tambahan.
 
 \subsection{Keterbatasan Penelitian}
 \label{subsec:limitations}
+\noindent Sebutkan keterbatasan data, metode, dan eksperimen (mis. satu grup WhatsApp, potensi bias, keterbatasan anotasi) serta dampaknya pada generalisasi hasil.
 
-\noindent Penelitian ini memiliki beberapa keterbatasan yang perlu diakui:
+\subsection{Saran dan Pekerjaan Lanjutan}
+\label{subsec:future-work}
+\noindent Rekomendasi teknis dan riset lanjutan: perluasan dataset, eksperimen model embedding lain, perbaikan pipeline pra-pemrosesan, atau pengujian usability yang lebih formal.
 
-\begin{itemize}[nosep]
-    \item \textbf{Keterbatasan 1}: \ldots (Jelaskan apa keterbatasannya dan bagaimana dampaknya)
-    \item \textbf{Keterbatasan 2}: \ldots
-    \item \textbf{Keterbatasan 3}: \ldots
-\end{itemize}
+\subsection{Ringkasan Hasil Utama}
+\label{subsec:summary-results}
+\noindent Ringkas temuan paling penting dalam 3--5 poin yang langsung menjawab rumusan masalah.
 
-Keterbatasan-keterbatasan ini tidak menghilangkan validitas hasil penelitian, 
-namun perlu dipertimbangkan dalam menginterpretasi dan menggeneralisasi hasil.
+% ====================================================================
+% CATATAN: Isi tiap subsection diisi dengan hasil eksperimen dan pembahasan spesifik Anda.
+% Gunakan tabel dan gambar sesuai kebutuhan, dan rujuk ke Bab 3 untuk metodologi yang relevan.
+% ====================================================================
 
 % ====================================================================
 % CATATAN PENGISIAN BAB HASIL & PEMBAHASAN:
