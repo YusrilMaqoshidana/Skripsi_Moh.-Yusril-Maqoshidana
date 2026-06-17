@@ -67,7 +67,7 @@ untuk \textit{embedding}, BIRCH untuk klasterisasi, dan BM25 untuk representasi 
 
 % --- BAGIAN 2.3: KERANGKA KONSEPTUAL (OPSIONAL) ---
 \subsection{IndoBERTweet}
-\label{sec:indobertweet}
+\label{subsec:indobertweet}
 
 Model IndoBERTweet merupakan model bahasa pra-latih berskala besar pertama yang dirancang khusus untuk memproses data Twitter (X) berbahasa Indonesia.
 Model ini dikembangkan melalui pendekatan \textit{domain-adaptive pretraining} dengan fondasi IndoBERT yang semula dilatih pada korpus formal, kemudian diadaptasi ke domain Twitter yang lebih informal.
@@ -75,13 +75,13 @@ Dalam proses adaptasi tersebut, peneliti melakukan penyesuaian kosakata domain-s
 
 \input{tables/02-literature/tabel-indobertweet-kinerja.tex}
 
-Berdasarkan Tabel \ref{tab:kinerja-indobertweet} yang diadaptasi dari \cite{koto2021indobertweet}, model IndoBERTweet dan variannya secara konsisten mencapai performa tinggi pada tujuh tugas NLP berbahasa Indonesia, meliputi \textit{sentiment analysis}, \textit{emotion classification}, \textit{hate speech detection}, dan \textit{named entity recognition}.
+Berdasarkan Tabel \ref{tab:kinerja-indobertweet} yang diadaptasi dari \cite{koto2021indobertweet}, model IndoBERTweet dan variannya subsecara konsisten mencapai performa tinggi pada tujuh tugas NLP berbahasa Indonesia, meliputi \textit{sentiment analysis}, \textit{emotion classification}, \textit{hate speech detection}, dan \textit{named entity recognition}.
 Hasil terbaik secara rata-rata ditunjukkan oleh varian IndoBERT dengan adaptasi kosakata dan pelatihan lanjutan 200K langkah (86{,}5), sedangkan IndoBERTweet yang dilatih dari awal juga menunjukkan kinerja kompetitif (86{,}1).
 Temuan ini memperkuat asumsi bahwa model berbasis domain media sosial berpotensi lebih sesuai untuk teks pendek, informal, dan bising seperti percakapan grup WhatsApp berbahasa Indonesia, meskipun efektivitas akhirnya tetap perlu divalidasi pada penelitian ini.
 
 
 \subsection{BIRCH Clustering}
-\label{sec:birch}
+\label{subsec:birch}
 
 BIRCH (\textit{Balanced Iterative Reducing and Clustering using Hierarchies}) merupakan algoritma \textit{clustering}
 hierarkis yang dirancang untuk menangani dataset berskala besar secara efisien dengan cara meringkas data ke dalam
@@ -142,99 +142,104 @@ pengganti penuh maupun sebagai modifikasi dari skema c-TF-IDF.
 
 Pada penelitian \citep{iaes2025indobert}, c-TF-IDF bawaan BERTopic digantikan
 sepenuhnya dengan BM25 pada level klaster, dengan skor kata dirumuskan sebagai:
-
 \begin{equation}
 	w_{t,c_k} = \sum_{d \in C_k} IDF(t) \cdot
 	\frac{f(t,d)(k_1 + 1)}
 	{f(t,d) + k_1 \left(1 - b + b \cdot \frac{|d|}{avgdl}\right)},
 \end{equation}
-
 dengan fungsi \textit{inverse document frequency} didefinisikan sebagai
 $IDF(t) = \log \left( \frac{N - n(t) + 0.5}{n(t) + 0.5} \right)$.
-
-\noindent dengan:
-\begin{itemize}[nosep]
-	\item $C_k$ = himpunan dokumen pada klaster ke-$k$
-	\item $f(t,d)$ = frekuensi kata $t$ pada dokumen $d$
-	\item $|d|$ = panjang dokumen $d$
-	\item $avgdl$ = rata-rata panjang dokumen dalam korpus
-	\item $n(t)$ = jumlah dokumen yang memuat kata $t$
-	\item $N$ = jumlah total dokumen
-	\item $k_1$ dan $b$ = parameter pengatur saturasi frekuensi istilah dan normalisasi panjang dokumen
-\end{itemize}
+Skor $w_{t,c_k}$ pada persamaan tersebut dihitung dengan menjumlahkan kontribusi
+seluruh dokumen $d$ yang menjadi anggota himpunan dokumen pada klaster ke-$k$,
+yang dinotasikan sebagai $C_k$. Untuk setiap dokumen tersebut, $f(t,d)$
+menyatakan frekuensi kemunculan kata $t$ di dalam dokumen $d$, sementara $|d|$
+menyatakan panjang dokumen $d$ yang kemudian dinormalisasi terhadap $avgdl$,
+yaitu rata-rata panjang dokumen dalam korpus. Adapun nilai $IDF(t)$ diperoleh
+dari $n(t)$, yang menyatakan jumlah dokumen dalam korpus yang memuat kata $t$,
+serta $N$ yang menyatakan jumlah total dokumen dalam korpus tersebut. Dua
+parameter tambahan, $k_1$ dan $b$, masing-masing berfungsi mengatur tingkat
+saturasi frekuensi istilah agar pengaruh kata yang berulang tidak meningkat
+secara linear, dan mengatur normalisasi panjang dokumen agar dokumen yang
+lebih panjang tidak secara otomatis memperoleh skor yang lebih tinggi.
 
 Dalam konteks studi tersebut, pendekatan ini dilaporkan memberikan representasi
 topik yang lebih stabil dibandingkan c-TF-IDF pada korpus teks pendek berbahasa
 Indonesia \citep{iaes2025indobert}.
 
 \subsection{Topic Coherence}
-\label{sec:topic-coherence}
+\label{subsec:topic-coherence}
 
-\textit{Topic coherence} mengukur keterkaitan semantik antar kata teratas dalam topik. Dalam penelitian ini,
-koherensi dievaluasi menggunakan \textit{Normalized Pointwise Mutual Information} (NPMI) \citep{rahimi2023coherencemetrics}:
+\textit{Topic coherence} digunakan untuk mengukur keterkaitan semantik antar kata teratas dalam topik. Dari banyaknya \textit{topic coherence}, penelitian ini menggunakan \textit{Normalized Pointwise Mutual Information} (NPMI) karena memberikan korelasi tertinggi dengan penilaian manusia dalam konteks context vectors \citep{2685324}:
 
 \begin{equation}
-	\text{NPMI}(w_i, w_j) = \frac{\ln \left( \dfrac{P(w_i, w_j)}{P(w_i) \cdot P(w_j)} \right)}{-\ln(P(w_i, w_j))}
+    \text{NPMI}(w_i, w_j) = 
+    \frac{
+        \log \dfrac{P(w_i, w_j)}{P(w_i) \cdot P(w_j)}
+    }{
+        -\log P(w_i, w_j)
+    }
+    \label{eq:npmi-standalone}
 \end{equation}
 
 \noindent dengan $P(w_i,w_j)$ sebagai probabilitas ko-okurensi, serta $P(w_i)$ dan $P(w_j)$ sebagai probabilitas
-marjinal kemunculan kata. Nilai NPMI model diperoleh dari rata-rata pasangan kata pada tiap topik dan
-dirata-ratakan lagi antar topik. Skor yang lebih tinggi menunjukkan topik lebih koheren dan umumnya lebih
-mudah diinterpretasikan, meskipun metrik ini tetap sensitif terhadap pola ko-okurensi pada korpus
-\citep{lau2014machine,doogan2021topic}.
+marjinal kemunculan kata. Nilai dari NPMI berkisar antara [-1, 1], dengan nilai 1 menunjukkan keterkaitan semantik yang sempurna, 0 menunjukkan tidak ada keterkaitan, dan nilai negatif menunjukkan keterkaitan yang berlawanan \citep{11271424}.
 
 \subsection{Topic Diversity}
-\label{sec:topic-diversity}
+\label{subsec:topic-diversity}
 
-\textit{Topic diversity} menilai seberapa unik kata-kata representatif antar topik, sehingga dapat
-menggambarkan tingkat perbedaan topik yang dihasilkan model \citep{dieng2020topic}. Nilainya dihitung
-sebagai proporsi kata unik pada himpunan kata teratas seluruh topik \citep{terragni2021octis}:
+\textit{Topic diversity} didefinisikan dengan keberagaman topik sebagai persentase kata unik dalam 25 kata teratas dari semua topik. Keberagaman mendekati 0 menunjukan bahwa topik yang berlebihan dan keberagaman mendekati 1 menunjukkan topik yang beragam \citep{dieng2020topic}. Nilainya dihitung
+melalui rumus berikut:
 
 \begin{equation}
 	TD = \frac{|\text{unique words in top } N \text{ words of all topics}|}{N \times K}
 \end{equation}
 
-\noindent dengan rentang nilai $0$--$1$. Nilai yang mendekati $1$ menunjukkan tumpang tindih kata antar topik
-lebih rendah, sedangkan nilai kecil mengindikasikan topik cenderung redundan \citep{ABDELRAZEK2023102131}.
-Meskipun sederhana dan intuitif, nilai diversitas tinggi tidak selalu berarti kualitas topik lebih baik, sehingga
-perlu dibaca bersama metrik lain \citep{dieng2020topic}.
-
 \subsection{Embedding Density}
-\label{sec:embedding-density}
+\label{subsec:embedding-density}
 
-\textit{Embedding density} mengukur kekompakan dokumen dalam klaster topik pada ruang embedding.
-Semakin dekat dokumen terhadap pusat klaster, semakin tinggi kepadatan yang menunjukkan konsistensi
-semantik internal yang lebih baik \citep{2009-00672}. Salah satu formulasi yang digunakan adalah:
+\textit{Embedding Density} adalah metrik evaluasi yang mengukur tingkat kekompakan (\textit{compactness}) representasi embedding dokumen di dalam suatu klaster atau topik \citep{2009-00672}. Metrik ini dihitung menggunakan fungsi kernel dengan bobot sebagai berikut:
 
 \begin{equation}
-	\mathrm{ED}_k = \frac{1}{1 + \frac{1}{|C_k|} \sum_{x_i \in C_k} \lVert x_i - \mu_k \rVert_2}
+\rho_k(z) =
+\frac{
+\sum_{i=1}^{N_k} K\!\left(\dfrac{z - \mathbf{e}_i^{(k)}}{h}\right) w_{k,i}
+}{
+\sum_{i=1}^{N_k} K\!\left(\dfrac{z - \mathbf{e}_i^{(k)}}{h}\right)
+}
+\label{eq:embedding-density}
 \end{equation}
 
-\noindent dengan $C_k$ himpunan dokumen pada topik ke-$k$, $x_i$ vektor dokumen, dan $\mu_k$ centroid klaster.
-Nilai lebih tinggi berarti klaster lebih padat. Kelebihan metrik ini adalah kemampuannya menangkap kualitas
-pengelompokan pada teks pendek, tetapi ia hanya merefleksikan aspek geometris dan tidak langsung menjamin
-topik lebih mudah dipahami manusia \citep{iaes2025indobert,9953874}.
+\noindent dengan $z$ adalah titik embedding evaluasi, yang dalam
+penelitian ini ditetapkan sebagai centroid embedding topik $k$
+($z = \bar{\mathbf{e}}^{(k)}$); $\mathbf{e}_i^{(k)}$ adalah vektor
+embedding dokumen ke-$i$ dalam topik $k$; $N_k$ adalah jumlah dokumen
+dalam topik $k$; $K(\cdot)$ adalah fungsi kernel Gaussian; $h$ adalah
+parameter \textit{bandwidth}; dan $w_{k,i}$ adalah bobot representativitas
+dokumen ke-$i$ terhadap topik $k$, yang dihitung berdasarkan
+\textit{cosine similarity} antara embedding dokumen dan centroid
+embedding topik tersebut. Semakin tinggi nilai kepadatan yang diperoleh, semakin kohesif dan bermakna topik yang dihasilkan \citep{2009-00672}.
 
 \subsection{Intra-topic Similarity}
-\label{sec:intra-topic-similarity}
+\label{subsec:intra-topic-similarity}
 
-\textit{Intra-topic similarity} mengukur rata-rata kesamaan semantik antar dokumen dalam satu topik,
-sehingga merepresentasikan homogenitas internal klaster \citep{zhao2018inter,iaes2025indobert}. Pengukuran
-umumnya menggunakan \textit{cosine similarity}:
-
+Intra-topic similarity merupakan metrik evaluasi yang mengukur kemiripan 
+semantik antar dokumen di dalam satu topik, diadaptasi dari konsep 
+\textit{intra-list similarity} (ILS) sebagai rata-rata kemiripan berpasangan 
+seluruh item dalam sebuah daftar \citep{10.1007/s11257-022-09351-w}. \cite{zhao2018inter} menekankan bahwa struktur intra-topik berbasis 
+\textit{word embeddings} mampu menangkap aspek tematik yang lebih halus dan 
+bermakna. Dalam konteks evaluasi model topik, intra-topic similarity untuk 
+topik $k$ dengan $N_k$ dokumen dirumuskan sebagai berikut:
 \begin{equation}
-	\mathrm{sim}(x_i, x_j) = \frac{x_i \cdot x_j}{\lVert x_i \rVert \; \lVert x_j \rVert}
+    \text{ITS}(k) = \frac{1}{N_k(N_k - 1)} 
+        \sum_{\substack{i,j=1 \\ i \neq j}}^{N_k}
+        \cos\!\left(\mathbf{e}_i^{(k)},\, \mathbf{e}_j^{(k)}\right)
+    \label{eq:intra-topic-similarity}
 \end{equation}
 
-\noindent Skor topik ke-$k$ dihitung dari rata-rata seluruh pasangan dokumen dalam klaster:
-
-\begin{equation}
-	\mathrm{ITS}_k = \frac{2}{|C_k|(|C_k|-1)} \sum_{i<j,\, x_i,x_j \in C_k} \mathrm{sim}(x_i, x_j)
-\end{equation}
-
-\noindent Nilai ITS yang lebih tinggi menunjukkan dokumen dalam topik makin seragam secara semantik.
-Metrik ini efektif untuk menangkap kedekatan makna pada teks pendek, namun sangat bergantung pada kualitas
-model embedding yang digunakan \citep{10.1007/s11257-022-09351-w,iaes2025indobert}.
+\noindent di mana $\mathbf{e}_i^{(k)}$ dan $\mathbf{e}_j^{(k)}$ adalah 
+embedding dokumen ke-$i$ dan ke-$j$ dalam topik $k$. Nilai akhir diperoleh 
+dengan merata-ratakan $\text{ITS}(k)$ di seluruh $K$ topik; semakin tinggi 
+nilainya, semakin kohesif topik yang dihasilkan.
 
 % Gunakan diagram jika tersedia (lihat contoh di bawah):
 % \begin{figure}[h]

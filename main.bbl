@@ -25,11 +25,6 @@ Dieng, A.~B., Ruiz, F. J.~R., and Blei, D.~M. (2020).
 \newblock Topic modeling in embedding spaces.
 \newblock {\em Transactions of the Association for Computational Linguistics}, 8:439--453.
 
-\bibitem[Doogan and Buntine, 2021]{doogan2021topic}
-Doogan, C. and Buntine, W. (2021).
-\newblock Topic model or topic twaddle? re-evaluating semantic interpretability measures.
-\newblock In Toutanova, K., Rumshisky, A., Zettlemoyer, L., Hakkani-Tur, D., Beltagy, I., Bethard, S., Cotterell, R., Chakraborty, T., and Zhou, Y., editors, {\em Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies}, pages 3824--3848, Online. Association for Computational Linguistics.
-
 \bibitem[Egger and Yu, 2022]{10.3389/fsoc.2022.886498}
 Egger, R. and Yu, J. (2022).
 \newblock A topic modeling comparison between lda, nmf, top2vec, and bertopic to demystify twitter posts.
@@ -59,11 +54,6 @@ Kharisudin, I. and Masri'an, H. (2022).
 \newblock Topic modeling on whatsapp user reviews using latent dirichlet allocation.
 \newblock {\em Scientific Journal of Informatics}, 9:51--62.
 
-\bibitem[Khodorchenko et~al., 2022]{9953874}
-Khodorchenko, M., Butakov, N., and Nasonov, D. (2022).
-\newblock Towards better evaluation of topic model quality.
-\newblock In {\em 2022 32nd Conference of Open Innovations Association (FRUCT)}, pages 128--134.
-
 \bibitem[Koto et~al., 2021]{koto2021indobertweet}
 Koto, F., Lau, J.~H., and Baldwin, T. (2021).
 \newblock Indobertweet: A pretrained language model for indonesian twitter with effective domain-specific vocabulary initialization.
@@ -77,11 +67,6 @@ Koto, F., Rahimi, A., Lau, J., and Baldwin, T. (2020).
 Kumar, R.~P. and Naik, N.~M. (2023).
 \newblock Whatsapp chat analyzer using machine learning and natural language processing.
 \newblock In {\em 2023 2nd International Conference on Futuristic Technologies (INCOFT)}, pages 1--6.
-
-\bibitem[Lau et~al., 2014]{lau2014machine}
-Lau, J.~H., Newman, D., and Baldwin, T. (2014).
-\newblock Machine reading tea leaves: Automatically evaluating topic coherence and topic model quality.
-\newblock In Wintner, S., Goldwater, S., and Riezler, S., editors, {\em Proceedings of the 14th Conference of the {E}uropean Chapter of the Association for Computational Linguistics}, pages 530--539, Gothenburg, Sweden. Association for Computational Linguistics.
 
 \bibitem[McInnes et~al., 2018]{mcinnes2018umap}
 McInnes, L., Healy, J., and Melville, J. (2018).
@@ -103,11 +88,6 @@ Prayogi, A., Novriyenny, N., and Prahmana, I.~G. (2025).
 \newblock Dinamika sentimen komunikasi mahasiswa dan dosen dengan pemanfaatan analisis pesan whatsapp akademis menggunakan machine learning.
 \newblock {\em Repeater: Publikasi Teknik Informatika dan Jaringan}, 3(2):45--54.
 
-\bibitem[Rahimi et~al., 2024]{rahimi2023coherencemetrics}
-Rahimi, H., Mimno, D., Hoover, J., Naacke, H., Constantin, C., and Amann, B. (2024).
-\newblock Contextualized topic coherence metrics.
-\newblock In Graham, Y. and Purver, M., editors, {\em Findings of the Association for Computational Linguistics: EACL 2024}, pages 1760--1773, St. Julian{'}s, Malta. Association for Computational Linguistics.
-
 \bibitem[Rani et~al., 2022]{rani2022whatsapp}
 Rani, S.~J., Prabhu, T., and Chellam, J. A.~I. (2022).
 \newblock Whatsapp sentiment analysis using r.
@@ -118,6 +98,11 @@ Retna, V.~A., Brundha, P., and RajKumar, G. (2021).
 \newblock People’s behaviour analysis in chat message using natural language processing.
 \newblock In {\em 2021 Third International Conference on Intelligent Communication Technologies and Virtual Mobile Networks (ICICV)}, pages 1128--1133.
 
+\bibitem[R\"{o}der et~al., 2015]{2685324}
+R\"{o}der, M., Both, A., and Hinneburg, A. (2015).
+\newblock Exploring the space of topic coherence measures.
+\newblock In {\em Proceedings of the Eighth ACM International Conference on Web Search and Data Mining}, WSDM '15, page 399–408, New York, NY, USA. Association for Computing Machinery.
+
 \bibitem[Rushkin, 2020]{2009-00672}
 Rushkin, I. (2020).
 \newblock Document similarity from vector space densities.
@@ -127,11 +112,6 @@ Rushkin, I. (2020).
 Shan, X., Liu, C., Xia, Y., Chen, Q., Zhang, Y., Luo, A., and Luo, Y. (2020).
 \newblock {BISON:} bm25-weighted self-attention framework for multi-fields document search.
 \newblock {\em CoRR}, abs/2007.05186.
-
-\bibitem[Terragni et~al., 2021]{terragni2021octis}
-Terragni, S., Fersini, E., Galuzzi, B.~G., Tropeano, P., and Candelieri, A. (2021).
-\newblock Octis: Comparing and optimizing topic models is simple!
-\newblock In {\em Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: System Demonstrations}, pages 263--270.
 
 \bibitem[{WhatsApp Inc.}, 2026]{WhatsAppAbout}
 {WhatsApp Inc.} (2026).

@@ -1,46 +1,46 @@
-This is BibTeX, Version 0.99d (TeX Live 2025/nixos.org)
+This is BibTeX, Version 0.99e (TeX Live 2026/Arch Linux)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main_backup_original.aux
 The style file: apalike.bst
 Database file #1: daftar_pustaka.bib
-You've used 32 entries,
+You've used 28 entries,
             1935 wiz_defined-function locations,
-            661 strings with 10957 characters,
-and the built_in function-call counts, 14630 in all, are:
-= -- 1417
-> -- 681
-< -- 20
-+ -- 238
-- -- 230
-* -- 1219
-:= -- 2476
-add.period$ -- 99
-call.type$ -- 32
-change.case$ -- 268
-chr.to.int$ -- 32
-cite$ -- 32
-duplicate$ -- 569
-empty$ -- 994
-format.name$ -- 276
-if$ -- 2944
+            635 strings with 9511 characters,
+and the built_in function-call counts, 12013 in all, are:
+= -- 1167
+> -- 541
+< -- 15
++ -- 192
+- -- 184
+* -- 1000
+:= -- 2060
+add.period$ -- 85
+call.type$ -- 28
+change.case$ -- 232
+chr.to.int$ -- 28
+cite$ -- 28
+duplicate$ -- 467
+empty$ -- 814
+format.name$ -- 224
+if$ -- 2391
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 29
-newline$ -- 161
-num.names$ -- 102
-pop$ -- 264
+missing$ -- 25
+newline$ -- 141
+num.names$ -- 84
+pop$ -- 216
 preamble$ -- 1
-purify$ -- 268
+purify$ -- 232
 quote$ -- 0
-skip$ -- 436
+skip$ -- 359
 stack$ -- 0
-substring$ -- 996
-swap$ -- 119
-text.length$ -- 10
+substring$ -- 794
+swap$ -- 85
+text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 192
+type$ -- 168
 warning$ -- 0
-while$ -- 108
+while$ -- 84
 width$ -- 0
-write$ -- 416
+write$ -- 361

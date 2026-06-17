@@ -9,5 +9,5 @@
     "editor.formatOnSave": true
   },
   "latex-workshop.formatting.latex": "latexindent",
-  "latex-workshop.latex.autoBuild.run": "onSave"
+  "latex-workshop.latex.autoBuild.run": "onFileChange"
 }

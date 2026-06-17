@@ -7,8 +7,8 @@
 \contentsline {chapter}{ABSTRACT}{vi}{chapter*.6}%
 \contentsline {chapter}{RINGKASAN}{vii}{chapter*.7}%
 \contentsline {chapter}{PRAKATA}{viii}{chapter*.8}%
-\contentsline {chapter}{DAFTAR TABEL}{xiii}{Item.8}%
-\contentsline {chapter}{DAFTAR GAMBAR}{xiv}{Item.8}%
+\contentsline {chapter}{DAFTAR TABEL}{xiii}{Item.14}%
+\contentsline {chapter}{DAFTAR GAMBAR}{xiv}{Item.14}%
 \contentsline {chapter}{\numberline {1}PENDAHULUAN}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Latar Belakang}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Rumusan Masalah}{3}{section.1.2}%
@@ -55,7 +55,7 @@
 \contentsline {subsection}{\numberline {4.3.7}Analisis Hasil}{25}{subsection.4.3.7}%
 \contentsline {section}{\numberline {4.4}Pembahasan}{25}{section.4.4}%
 \contentsline {subsection}{\numberline {4.4.1}Interpretasi Temuan Utama}{25}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Analisis Kualitatif Topik}{26}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.2}Analisis Kualitatif Topik}{25}{subsection.4.4.2}%
 \contentsline {subsection}{\numberline {4.4.3}Implikasi Praktis dan Rekomendasi Implementasi}{26}{subsection.4.4.3}%
 \contentsline {subsection}{\numberline {4.4.4}Keterbatasan Penelitian}{26}{subsection.4.4.4}%
 \contentsline {subsection}{\numberline {4.4.5}Saran dan Pekerjaan Lanjutan}{26}{subsection.4.4.5}%
@@ -65,11 +65,11 @@
 \contentsline {section}{\numberline {5.2}Saran}{27}{section.5.2}%
 \contentsline {subsection}{\numberline {5.2.1}Saran untuk Penelitian Selanjutnya}{27}{subsection.5.2.1}%
 \contentsline {subsection}{\numberline {5.2.2}Saran untuk Praktisi dan Pengambil Kebijakan}{28}{subsection.5.2.2}%
-\contentsline {chapter}{DAFTAR PUSTAKA}{28}{Item.55}%
-\contentsline {chapter}{\numberline {A}LAMPIRAN}{33}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Lampiran A - Data Mentah}{33}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Lampiran B - Instrumen Penelitian}{34}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}Lampiran B.1 - Kuesioner}{34}{subsection.A.2.1}%
-\contentsline {section}{\numberline {A.3}Lampiran C - Output Analisis Statistik}{35}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Lampiran D - Kode Sumber}{36}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Lampiran E - Dokumen Pendukung}{37}{section.A.5}%
+\contentsline {chapter}{DAFTAR PUSTAKA}{28}{Item.61}%
+\contentsline {chapter}{\numberline {A}LAMPIRAN}{32}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Lampiran A - Data Mentah}{32}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Lampiran B - Instrumen Penelitian}{33}{section.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}Lampiran B.1 - Kuesioner}{33}{subsection.A.2.1}%
+\contentsline {section}{\numberline {A.3}Lampiran C - Output Analisis Statistik}{34}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Lampiran D - Kode Sumber}{35}{section.A.4}%
+\contentsline {section}{\numberline {A.5}Lampiran E - Dokumen Pendukung}{36}{section.A.5}%
