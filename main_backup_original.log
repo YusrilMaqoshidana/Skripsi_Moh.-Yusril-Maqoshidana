@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.17)  17 JUN 2026 17:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.17)  20 JUN 2026 21:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -591,7 +591,7 @@ Package hyperref Info: Link coloring ON on input line 58.
 \openout3 = `main_backup_original.out'.
 
  (./frontmatter/00-cover.tex
-<images/logo.png, id=300, 157.58875pt x 148.555pt>
+<images/logo.png, id=276, 157.58875pt x 148.555pt>
 File: images/logo.png Graphic file (type png)
 <use images/logo.png>
 Package pdftex.def Info: images/logo.png  used on input line 14.
@@ -657,15 +657,15 @@ Overfull \hbox (19.089pt too wide) in paragraph at lines 24--25
 
 [8
 
-] [9]) (./frontmatter/09-toc.tex (./main_backup_original.toc [10] [11])
+] [9]) (./frontmatter/09-toc.tex (./main_backup_original.toc [10])
 \tf@toc=\write4
 \openout4 = `main_backup_original.toc'.
 
- [12] (./main_backup_original.lot)
+ [11] (./main_backup_original.lot)
 \tf@lot=\write5
 \openout5 = `main_backup_original.lot'.
 
- [13] (./main_backup_original.lof
+ [12] (./main_backup_original.lof
 Overfull \hbox (4.64221pt too wide) in paragraph at lines 7--7
  [][] [][][]\T1/ptm/m/n/12 Rancangan frame-work BERTopic yang di-mod-i-fikasi pa-da tahap pem- 
  []
@@ -674,7 +674,7 @@ Overfull \hbox (4.64221pt too wide) in paragraph at lines 7--7
 \tf@lof=\write6
 \openout6 = `main_backup_original.lof'.
 
- [14]) (./chapters/01-introduction.tex
+ [13]) (./chapters/01-introduction.tex
 Bab 1.
 
 Overfull \hbox (1.2957pt too wide) in paragraph at lines 27--31
@@ -1206,7 +1206,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [7]
-<images/framework-bertopic-modifikasi-indobert-birch-bm25.png, id=584, 443.6575pt x 693.59125pt>
+<images/framework-bertopic-modifikasi-indobert-birch-bm25.png, id=550, 443.6575pt x 693.59125pt>
 File: images/framework-bertopic-modifikasi-indobert-birch-bm25.png Graphic file (type png)
 <use images/framework-bertopic-modifikasi-indobert-birch-bm25.png>
 Package pdftex.def Info: images/framework-bertopic-modifikasi-indobert-birch-bm25.png  used on input line 49.
@@ -1306,22 +1306,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [14]
 Bab 3.
-<images/alur_penelitian.png, id=718, 653.44125pt x 302.12875pt>
-File: images/alur_penelitian.png Graphic file (type png)
-<use images/alur_penelitian.png>
-Package pdftex.def Info: images/alur_penelitian.png  used on input line 44.
-(pdftex.def)             Requested size: 338.59023pt x 156.55002pt.
 [15
 
 ]
-Overfull \hbox (9.80273pt too wide) in paragraph at lines 58--65
-[]\T1/ptm/m/n/12 Studi lit-er-atur ke-mu-di-an di-lakukan un-tuk mem-ban-gun lan-dasan teori dan mema-
- []
-
-
-Overfull \hbox (14.42143pt too wide) in paragraph at lines 58--65
-\T1/ptm/m/n/12 ka-jian ju-r-nal ilmi-ah dan doku-men-tasi tek-nis terkait BERTopic, In-doBER-Tweet, BIRCH
- []
+<images/alur_penelitian.png, id=687, 653.44125pt x 302.12875pt>
+File: images/alur_penelitian.png Graphic file (type png)
+<use images/alur_penelitian.png>
+Package pdftex.def Info: images/alur_penelitian.png  used on input line 46.
+(pdftex.def)             Requested size: 338.59023pt x 156.55002pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1331,22 +1323,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [16 <./images/alur_penelitian.png>]
-Overfull \hbox (5.82835pt too wide) in paragraph at lines 83--86
+Overfull \hbox (5.82835pt too wide) in paragraph at lines 74--75
 []\T1/ptm/m/n/12 Pemfilteran pe-san sis-tem, yaitu meng-ha-pus no-ti-fikasi bawaan What-sApp seper-
  []
 
 
-Overfull \hbox (0.27364pt too wide) in paragraph at lines 93--96
-\T1/ptm/m/n/12 ma-ka di-lakukan eksper-i-men tam-ba-han pa-da tahap prapros-es da-ta. Eksper-i-men terse-
+Overfull \hbox (1.30466pt too wide) in paragraph at lines 80--81
+[]\T1/ptm/m/n/12 Normalisasi teks den-gan men-gubah selu-ruh karak-ter men-ja-di hu-ruf ke-cil (\T1/ptm/m/it/12 low-
  []
-
-<images/framework-BERTopic-modifikasi.png, id=729, 392.46625pt x 724.7075pt>
-File: images/framework-BERTopic-modifikasi.png Graphic file (type png)
-<use images/framework-BERTopic-modifikasi.png>
-Package pdftex.def Info: images/framework-BERTopic-modifikasi.png  used on input line 109.
-(pdftex.def)             Requested size: 199.1693pt x 367.78241pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1356,9 +1340,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [17]
-Overfull \hbox (16.12428pt too wide) in paragraph at lines 120--127
-\T1/ptm/m/n/12 ang berdi-men-si ren-dah. Pa-ram-e-ter UMAP yang di-gu-nakan meliputi \T1/ptm/m/it/12 n_neighbors\T1/ptm/m/n/12 ,
- []
+<images/framework-BERTopic-modifikasi.png, id=704, 392.46625pt x 724.7075pt>
+File: images/framework-BERTopic-modifikasi.png Graphic file (type png)
+<use images/framework-BERTopic-modifikasi.png>
+Package pdftex.def Info: images/framework-BERTopic-modifikasi.png  used on input line 93.
+(pdftex.def)             Requested size: 159.333pt x 294.22371pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1368,7 +1354,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [18 <./images/framework-BERTopic-modifikasi.png>]
-Overfull \hbox (4.367pt too wide) in paragraph at lines 150--153
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[19]
+Overfull \hbox (4.367pt too wide) in paragraph at lines 139--147
 []\T1/ptm/m/n/12 Tahap eval-u-asi mod-el bertu-juan un-tuk men-gukur kual-i-tas top-ik yang di-hasilkan
  []
 
@@ -1379,13 +1373,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[19]
-<images/alur-implementasi-sistem.png, id=756, 702.625pt x 219.82124pt>
-File: images/alur-implementasi-sistem.png Graphic file (type png)
-<use images/alur-implementasi-sistem.png>
-Package pdftex.def Info: images/alur-implementasi-sistem.png  used on input line 181.
-(pdftex.def)             Requested size: 318.67209pt x 99.70016pt.
-
+[20]
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 167.
+ (/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1393,8 +1385,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[20 <./images/alur-implementasi-sistem.png>]
-Overfull \hbox (11.50598pt too wide) in paragraph at lines 192--196
+[21]
+Overfull \hbox (11.50598pt too wide) in paragraph at lines 174--178
 \T1/ptm/m/n/12 mem-per-hatikan pros-es in-ter-nal-nya. Pen-gu-jian di-lakukan den-gan meng-gu-nakan dataset
  []
 
@@ -1405,7 +1397,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[21]) (./chapters/04-results.tex
+[22]) (./chapters/04-results.tex
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1413,7 +1405,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[22]
+[23]
 Bab 4.
 
 Overfull \hbox (0.95854pt too wide) in paragraph at lines 19--20
@@ -1425,7 +1417,7 @@ Overfull \hbox (1.10028pt too wide) in paragraph at lines 21--22
 \T1/ptm/m/n/12 Kri-te-ria ek-sklusi meliputi pe-san sis-tem yang di-hasilkan otoma-tis oleh ap-likasi What-
  []
 
-[23
+[24
 
 ]
 LaTeX Info: Symbol \textrightarrow not provided by
@@ -1445,7 +1437,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[24{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+[25{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
 Overfull \hbox (7.50832pt too wide) in paragraph at lines 68--69
 \T1/ptm/m/n/12 Analisis sin-te-sis hasil kuan-ti-tatif dan kual-i-tatif: apakah top-ik yang di-hasilkan bermak-
  []
@@ -1467,7 +1459,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[25]) (./chapters/05-conclusion.tex
+[26]) (./chapters/05-conclusion.tex
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1475,7 +1467,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[26]
+[27]
 Bab 5.
 
 Overfull \hbox (10.94014pt too wide) in paragraph at lines 27--30
@@ -1492,7 +1484,7 @@ Overfull \hbox (16.305pt too wide) in paragraph at lines 59--63
 \T1/ptm/m/n/12 vari-abel ...untuk mem-berikan gam-baran yang lebih lengkap ten-tang ...(Jelaskan
  []
 
-[27
+[28
 
 ]
 Overfull \hbox (4.017pt too wide) in paragraph at lines 69--72
@@ -1527,7 +1519,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[28] [29
+[29] [30
 
 ]
 
@@ -1537,36 +1529,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[30])) (./backmatter/02-appendices.tex
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[31]
-Lampiran A.
-
-LaTeX Warning: Reference `tab:appx-rawdata' on page 32 undefined on input line 26.
-
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 28.
-(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [32
-
-]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[33]
-Overfull \hbox (78.67pt too wide) in paragraph at lines 103--105
-[]\T1/ptm/m/n/12 Output statis-tik lengkap dari soft-ware anal-i-sis ter-sim-pan dalam fold-er \T1/pcr/m/n/12 analysis_output/\T1/ptm/m/n/12 .
- []
+[31])) (./backmatter/02-appendices.tex
+<images/alur-sistem-web.png, id=804, 1243.64626pt x 1959.32pt>
+File: images/alur-sistem-web.png Graphic file (type png)
+<use images/alur-sistem-web.png>
+Package pdftex.def Info: images/alur-sistem-web.png  used on input line 22.
+(pdftex.def)             Requested size: 199.1693pt x 313.76668pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1575,11 +1543,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[34]
-Overfull \hbox (190.2957pt too wide) in paragraph at lines 139--141
-[]\T1/ptm/m/n/12 Kode sum-ber lengkap terse-dia di repos-i-to-ry GitHub: \T1/pcr/m/n/12 https://github.com/username/repository-name 
- []
-
+[32])
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1587,47 +1551,31 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[35]
-Overfull \hbox (3.36026pt too wide) in paragraph at lines 160--162
-[]\T1/ptm/m/n/12 Dokumen-dokumen ini dis-im-pan dalam fold-er \T1/pcr/m/n/12 supporting_documents/
- []
-
-)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[36] (./main_backup_original.aux)
+[33 <./images/alur-sistem-web.png>] (./main_backup_original.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 
 
-LaTeX Warning: There were undefined references.
-
-
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main_backup_original.out' has not changed.
-(rerunfilecheck)             Checksum: 18F564B871DEA92E839894E670722CBC;11768.
+(rerunfilecheck)             Checksum: 29DD3A505122416BE73DF7AB87417A3B;10603.
  ) 
 Here is how much of TeX's memory you used:
- 16510 strings out of 469515
- 265707 string characters out of 5470807
- 781622 words of memory out of 5000000
- 44586 multiletter control sequences out of 15000+600000
+ 16478 strings out of 469515
+ 265265 string characters out of 5470807
+ 781297 words of memory out of 5000000
+ 44574 multiletter control sequences out of 15000+600000
  661893 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 80i,13n,136p,884b,625s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main_backup_original.pdf (51 pages, 343948 bytes).
+ 80i,13n,136p,1699b,625s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main_backup_original.pdf (47 pages, 355838 bytes).
 PDF statistics:
- 985 PDF objects out of 1000 (max. 8388607)
- 877 compressed objects within 9 object streams
- 234 named destinations out of 1000 (max. 500000)
- 618 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 928 PDF objects out of 1000 (max. 8388607)
+ 826 compressed objects within 9 object streams
+ 214 named destinations out of 1000 (max. 500000)
+ 570 words of extra memory for PDF output out of 10000 (max. 10000000)
 

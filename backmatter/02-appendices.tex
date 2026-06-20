@@ -13,152 +13,26 @@
 % ====================================================================
 
 \appendix
-\chapter{LAMPIRAN}
+\frontmatterchapter{LAMPIRAN}
+\noindent\textbf{Lampiran - Alur Implementasi Sistem}
 
-% --- LAMPIRAN A: DATA MENTAH (RAW DATA) ---
-\section{Lampiran A - Data Mentah}
-\label{sec:appx-rawdata}
-
-% Jika data mentah terlalu besar, letakkan ringkasan atau sample di sini.
-% Data lengkap dapat disimpan dalam file terpisah dan direferensikan:
-% "Data mentah tersedia pada file data\_raw.csv"
-
-Data mentah dari penelitian ini dapat dilihat pada Tabel \ref{tab:appx-rawdata} di bawah ini.
-Namun, untuk menjaga ukuran dokumen, hanya sample data yang ditampilkan. 
-Data lengkap tersedia pada file \texttt{data\_raw.csv} yang disertakan.
-
-% \begin{table}[h]
-% \centering
-% \caption{Sample Data Mentah Penelitian}
-% \label{tab:appx-rawdata}
-% \begin{tabular}{|c|c|c|c|}
-% \hline
-% \textbf{ID} & \textbf{Var 1} & \textbf{Var 2} & \textbf{Var 3} \\
-% \hline
-% 1 & Value & Value & Value \\
-% 2 & Value & Value & Value \\
-% ... & ... & ... & ... \\
-% \hline
-% \end{tabular}
-% \end{table}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/bab-3-alur-implementasi-sistem.png}
+\caption{Alur Implementasi Sistem}
+\label{fig:bab-3-alur-implementasi-sistem}
+\end{figure}
 
 \newpage
+\noindent\textbf{Lampiran - Alur Teknis Implementasi Sistem Web}
 
-% --- LAMPIRAN B: INSTRUMEN PENELITIAN ---
-\section{Lampiran B - Instrumen Penelitian}
-\label{sec:appx-instruments}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/bab-4-alur-teknis-implementasi-sistem.png}
+\caption{Alur Teknis Implementasi Sistem}
+\label{fig:bab-4-alur-teknis-implementasi-sistem}
+\end{figure}
 
-% Tuliskan instrumen penelitian Anda di sini (kuesioner, interview guide, observation sheet)
-
-\subsection{Lampiran B.1 - Kuesioner}
-\label{subsec:appx-questionnaire}
-
-\noindent \textbf{KUESIONER PENELITIAN}
-
-Petunjuk Pengisian:
-\begin{itemize}[nosep]
-    \item Bacalah setiap pertanyaan dengan cermat
-    \item Jawab dengan jujur sesuai pendapat Anda
-    \item Tidak ada jawaban yang benar atau salah
-    \item Data Anda dijamin kerahasiaannya
-\end{itemize}
-
-\textbf{A. DATA DEMOGRAFIS}
-
-\begin{enumerate}
-    \item Jenis Kelamin: Laki-laki $\square$ \quad Perempuan $\square$
-    \item Usia: ... tahun
-    \item Pendidikan: ...
-    \item Pekerjaan: ...
-\end{enumerate}
-
-\textbf{B. PERTANYAAN PENELITIAN}
-
-Untuk pertanyaan berikut, berikan jawaban dengan skala 1-5:
-\begin{itemize}[nosep]
-    \item 1 = Sangat Tidak Setuju (STS)
-    \item 2 = Tidak Setuju (TS)
-    \item 3 = Netral (N)
-    \item 4 = Setuju (S)
-    \item 5 = Sangat Setuju (SS)
-\end{itemize}
-
-\begin{enumerate}
-    \item Pernyataan pertama: $\quad$ STS $\square$ TS $\square$ N $\square$ S $\square$ SS $\square$
-    \item Pernyataan kedua: $\quad$ STS $\square$ TS $\square$ N $\square$ S $\square$ SS $\square$
-    \item Pernyataan ketiga: $\quad$ STS $\square$ TS $\square$ N $\square$ S $\square$ SS $\square$
-\end{enumerate}
-
-\noindent \textbf{Terima kasih atas partisipasi Anda}
-
-\newpage
-
-% --- LAMPIRAN C: OUTPUT ANALISIS STATISTIK ---
-\section{Lampiran C - Output Analisis Statistik}
-\label{sec:appx-statistical-output}
-
-% Letakkan tabel atau hasil output software statistik di sini
-% Anda dapat menginclude gambar screenshot dari SPSS, R, Python, dll.
-
-Output statistik lengkap dari software analisis tersimpan dalam folder \texttt{analysis\_output/}.
-Beberapa hasil utama ditampilkan di bawah:
-
-% \begin{figure}[h]
-% \centering
-% \includegraphics[width=0.8\textwidth]{images/spss-output-example.png}
-% \caption{Contoh Output SPSS (Descriptive Statistics)}
-% \label{fig:appx-spss-output}
-% \end{figure}
-
-\newpage
-
-% --- LAMPIRAN D: KODE SUMBER (UNTUK PENELITIAN KOMPUTASI) ---
-\section{Lampiran D - Kode Sumber}
-\label{sec:appx-sourcecode}
-
-% Jika penelitian melibatkan coding (Python, R, Java, dll), letakkan di sini
-% Gunakan listings package untuk code formatting yang baik
-
-% Contoh:
-% \begin{lstlisting}[language=Python, caption=Script Analisis Data]
-% import pandas as pd
-% import numpy as np
-% from scipy import stats
-%
-% # Load data
-% data = pd.read_csv('data.csv')
-%
-% # Descriptive statistics
-% print(data.describe())
-%
-% # Statistical test
-% t_stat, p_value = stats.ttest_ind(group1, group2)
-% print(f"T-statistic: {t_stat}, p-value: {p_value}")
-% \end{lstlisting}
-
-Kode sumber lengkap tersedia di repository GitHub: 
-\texttt{https://github.com/username/repository-name}
-
-Atau dalam file \texttt{source\_code.py}, \texttt{analysis.R}, dll. yang disertakan.
-
-\newpage
-
-% --- LAMPIRAN E: DOKUMEN PENDUKUNG LAINNYA ---
-\section{Lampiran E - Dokumen Pendukung}
-\label{sec:appx-supporting-docs}
-
-Dokumen pendukung berikut disertakan dalam pengumpulan skripsi:
-
-\begin{itemize}[nosep]
-    \item Surat izin penelitian dari institusi
-    \item Informed consent forms (ICF) yang ditandatangani responden
-    \item Sertifikat ethical clearance (jika ada)
-    \item Bukti publikasi draft di jurnal/conference (jika ada)
-    \item Dokumen lain yang relevan
-\end{itemize}
-
-Dokumen-dokumen ini disimpan dalam folder \texttt{supporting\_documents/} dan dapat 
-diminta dari penulis jika diperlukan untuk verifikasi atau referensi.
 
 % ====================================================================
 % CATATAN PENGISIAN LAMPIRAN:

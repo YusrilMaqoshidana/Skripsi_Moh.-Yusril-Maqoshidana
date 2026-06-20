@@ -14,11 +14,31 @@
 \section{Pengumpulan Data}
 \label{sec:data-collection}
 
-Data yang digunakan dalam penelitian ini bersumber dari grup WhatsApp \textit{Info Warga Jember}, sebuah grup komunitas daring yang aktif digunakan oleh warga di wilayah Kabupaten Jember sebagai sarana penyebaran informasi, diskusi, dan komunikasi sehari-hari. Pengumpulan data dilakukan melalui fitur ekspor percakapan yang tersedia secara bawaan pada aplikasi WhatsApp. Fitur ini memungkinkan pengguna yang memiliki akses administrator untuk mengunduh riwayat percakapan dalam dua format: berkas \textit{.zip} yang menyertakan lampiran media, atau berkas \textit{.txt} yang hanya memuat teks percakapan. Penelitian ini menggunakan format \textit{.txt} karena komponen yang relevan untuk analisis topik adalah konten teks pesan, bukan lampiran media.
+Data penelitian diperoleh dari grup percakapan WhatsApp [nama/deskripsi grup] setelah memperoleh izin dari admin grup sebagaimana dijelaskan pada Lampiran~\ref{subsec}. 
+Pengumpulan data dilakukan menggunakan fitur \textit{Export Chat} bawaan aplikasi WhatsApp, yang menghasilkan berkas dalam format \textit{.zip} berisi riwayat percakapan dalam satu berkas \textit{.txt} tanpa media. 
+Berkas \textit{.zip} tersebut terlebih dahulu diekstraksi untuk memperoleh file \textit{.txt} yang selanjutnya digunakan sebagai sumber data utama penelitian. 
+Data yang diekspor mencakup periode percakapan dari [tanggal awal] hingga [tanggal akhir], dengan total [jumlah] pesan dari [jumlah] partisipan grup.
 
-Berkas hasil ekspor selanjutnya diproses melalui tahap \textit{parsing} untuk mengekstrak empat atribut utama dari setiap pesan, yaitu tanggal, waktu, nama pengirim, dan isi pesan, yang kemudian disusun dalam format CSV sebagai representasi terstruktur dari data mentah. Rentang waktu pengumpulan data mencakup periode dua tahun, terhitung sejak 19 Mei 2024 hingga 19 Mei 2026, guna memperoleh gambaran yang representatif terhadap dinamika percakapan dalam jangka panjang.
+Sebagai ilustrasi, potongan data mentah hasil ekspor ditampilkan pada Listing~\ref{lst:contoh-data-mentah}. 
+Secara umum, setiap baris percakapan mengikuti pola \texttt{DD/MM/YY HH.MM - Pengirim: Pesan}. 
+Namun demikian, data mentah juga memuat variasi format lain seperti pesan sistem (misalnya anggota ditambahkan ke grup), placeholder media, tautan, dan penanda pesan yang telah diedit.
 
-Sebelum digunakan dalam analisis, data melewati tahap penyaringan untuk menghilangkan pesan yang tidak mengandung konten linguistik yang bermakna. Kriteria eksklusi meliputi pesan sistem yang dihasilkan otomatis oleh aplikasi WhatsApp—seperti notifikasi penambahan atau penghapusan anggota, perubahan ikon atau nama grup—serta entri bertanda \textit{<Media omitted>} yang menunjukkan lampiran tanpa teks penyerta. Setelah proses penyaringan tersebut, dataset final yang digunakan dalam penelitian ini terdiri dari \textbf{18.954 pesan} yang dikirim oleh \textbf{766 pengirim unik}, dengan rata-rata sekitar 26 pesan per hari sepanjang periode pengamatan.
+\begin{lstlisting}[caption={Contoh potongan data mentah hasil ekspor WhatsApp (nama disamarkan)}, label={lst:contoh-data-mentah}, basicstyle=\ttfamily\small]
+02/02/26 20.46 - User-1: Woi Katakan pada dunia hsr back
+02/02/26 20.47 - User-1: <Media tidak disertakan>
+27/09/25 10.35 - User-3: sheesh
+03/02/26 11.24 - User-4: https://link
+28/09/25 09.48 - User-5: gara gara dapet evernight jadi pengen hyacine <Pesan ini diedit>
+24/04/26 05.12 - User-7 sudah ditambahkan
+\end{lstlisting}
+
+Berkas \textit{.txt} selanjutnya diproses melalui tahap \textit{parsing} menggunakan \textit{regular expression} untuk mengekstrak tiga atribut utama, yaitu \textit{Timestamp}, \textit{Pengirim}, dan \textit{Pesan}. 
+Pada tahap ini, nilai \textit{timestamp} dinormalisasi ke format ISO 8601 (\texttt{YYYY-MM-DDTHH:MM}) untuk memudahkan pengurutan kronologis, filtering temporal, dan analisis berbasis waktu.
+
+Sebagai ilustrasi, hasil \textit{parsing} dari potongan data mentah pada Listing~\ref{lst:contoh-data-mentah} disajikan pada Tabel~\ref{tab:contoh-hasil-parsing}.
+
+\input{tables/04-results/example-data-csv.tex}
+
 \section{Praproses Data}
 \label{sec:preprocessing}
 \noindent Uraikan langkah pra-pemrosesan yang dilakukan sesuai metodologi:

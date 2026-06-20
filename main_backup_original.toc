@@ -7,8 +7,8 @@
 \contentsline {chapter}{ABSTRACT}{vi}{chapter*.6}%
 \contentsline {chapter}{RINGKASAN}{vii}{chapter*.7}%
 \contentsline {chapter}{PRAKATA}{viii}{chapter*.8}%
-\contentsline {chapter}{DAFTAR TABEL}{xiii}{Item.14}%
-\contentsline {chapter}{DAFTAR GAMBAR}{xiv}{Item.14}%
+\contentsline {chapter}{DAFTAR TABEL}{xii}{Item.14}%
+\contentsline {chapter}{DAFTAR GAMBAR}{xiii}{Item.14}%
 \contentsline {chapter}{\numberline {1}PENDAHULUAN}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Latar Belakang}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Rumusan Masalah}{3}{section.1.2}%
@@ -31,45 +31,39 @@
 \contentsline {section}{\numberline {3.1}Jenis Penelitian}{15}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Objek Penelitian}{15}{section.3.2}%
 \contentsline {section}{\numberline {3.3}Waktu Penelitian}{15}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Tahapan Penelitian}{15}{section.3.4}%
+\contentsline {section}{\numberline {3.4}Tahapan Penelitian}{16}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}Identifikasi Masalah dan Studi Literatur}{16}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Pengumpulan Data}{16}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.2}Pengumpulan Data}{17}{subsection.3.4.2}%
 \contentsline {subsection}{\numberline {3.4.3}Praproses Data}{17}{subsection.3.4.3}%
-\contentsline {subsection}{\numberline {3.4.4}Pembuatan Model}{17}{subsection.3.4.4}%
-\contentsline {subsection}{\numberline {3.4.5}Evaluasi Model}{19}{subsection.3.4.5}%
+\contentsline {subsection}{\numberline {3.4.4}Pembuatan Model}{18}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.5}Evaluasi Model}{20}{subsection.3.4.5}%
 \contentsline {subsection}{\numberline {3.4.6}Implementasi Sistem}{20}{subsection.3.4.6}%
-\contentsline {subsection}{\numberline {3.4.7}Evaluasi Sistem}{21}{subsection.3.4.7}%
-\contentsline {subsection}{\numberline {3.4.8}Analisis Hasil}{21}{subsection.3.4.8}%
-\contentsline {subsection}{\numberline {3.4.9}Penarikan Kesimpulan}{21}{subsection.3.4.9}%
-\contentsline {section}{\numberline {3.5}Etika Penelitian}{21}{section.3.5}%
-\contentsline {chapter}{\numberline {4}HASIL DAN PEMBAHASAN}{23}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Pengumpulan Data}{23}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Praproses Data}{24}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Pembuatan Model}{24}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Embedding dan Reduksi Dimensi}{24}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Clustering dan Representasi Topik}{24}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}Evaluasi Kuantitatif Model}{24}{subsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.3.4}Perbandingan Eksperimen (Baseline vs Modifikasi)}{25}{subsection.4.3.4}%
-\contentsline {subsection}{\numberline {4.3.5}Uji Asumsi dan Analisis Inferensial}{25}{subsection.4.3.5}%
-\contentsline {subsection}{\numberline {4.3.6}Implementasi Sistem dan Evaluasi Fungsional}{25}{subsection.4.3.6}%
-\contentsline {subsection}{\numberline {4.3.7}Analisis Hasil}{25}{subsection.4.3.7}%
-\contentsline {section}{\numberline {4.4}Pembahasan}{25}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Interpretasi Temuan Utama}{25}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Analisis Kualitatif Topik}{25}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Implikasi Praktis dan Rekomendasi Implementasi}{26}{subsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.4.4}Keterbatasan Penelitian}{26}{subsection.4.4.4}%
-\contentsline {subsection}{\numberline {4.4.5}Saran dan Pekerjaan Lanjutan}{26}{subsection.4.4.5}%
-\contentsline {subsection}{\numberline {4.4.6}Ringkasan Hasil Utama}{26}{subsection.4.4.6}%
-\contentsline {chapter}{\numberline {5}KESIMPULAN DAN SARAN}{27}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Kesimpulan}{27}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Saran}{27}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Saran untuk Penelitian Selanjutnya}{27}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Saran untuk Praktisi dan Pengambil Kebijakan}{28}{subsection.5.2.2}%
-\contentsline {chapter}{DAFTAR PUSTAKA}{28}{Item.61}%
-\contentsline {chapter}{\numberline {A}LAMPIRAN}{32}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Lampiran A - Data Mentah}{32}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Lampiran B - Instrumen Penelitian}{33}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}Lampiran B.1 - Kuesioner}{33}{subsection.A.2.1}%
-\contentsline {section}{\numberline {A.3}Lampiran C - Output Analisis Statistik}{34}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Lampiran D - Kode Sumber}{35}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Lampiran E - Dokumen Pendukung}{36}{section.A.5}%
+\contentsline {subsection}{\numberline {3.4.7}Evaluasi Sistem}{22}{subsection.3.4.7}%
+\contentsline {subsection}{\numberline {3.4.8}Analisis Hasil}{22}{subsection.3.4.8}%
+\contentsline {subsection}{\numberline {3.4.9}Penarikan Kesimpulan}{23}{subsection.3.4.9}%
+\contentsline {section}{\numberline {3.5}Etika Penelitian}{23}{section.3.5}%
+\contentsline {chapter}{\numberline {4}HASIL DAN PEMBAHASAN}{24}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Pengumpulan Data}{24}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Praproses Data}{25}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Pembuatan Model}{25}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Embedding dan Reduksi Dimensi}{25}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Clustering dan Representasi Topik}{25}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Evaluasi Kuantitatif Model}{25}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Perbandingan Eksperimen (Baseline vs Modifikasi)}{26}{subsection.4.3.4}%
+\contentsline {subsection}{\numberline {4.3.5}Uji Asumsi dan Analisis Inferensial}{26}{subsection.4.3.5}%
+\contentsline {subsection}{\numberline {4.3.6}Implementasi Sistem dan Evaluasi Fungsional}{26}{subsection.4.3.6}%
+\contentsline {subsection}{\numberline {4.3.7}Analisis Hasil}{26}{subsection.4.3.7}%
+\contentsline {section}{\numberline {4.4}Pembahasan}{26}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Interpretasi Temuan Utama}{26}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Analisis Kualitatif Topik}{26}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Implikasi Praktis dan Rekomendasi Implementasi}{27}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}Keterbatasan Penelitian}{27}{subsection.4.4.4}%
+\contentsline {subsection}{\numberline {4.4.5}Saran dan Pekerjaan Lanjutan}{27}{subsection.4.4.5}%
+\contentsline {subsection}{\numberline {4.4.6}Ringkasan Hasil Utama}{27}{subsection.4.4.6}%
+\contentsline {chapter}{\numberline {5}KESIMPULAN DAN SARAN}{28}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Kesimpulan}{28}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Saran}{28}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Saran untuk Penelitian Selanjutnya}{28}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Saran untuk Praktisi dan Pengambil Kebijakan}{29}{subsection.5.2.2}%
+\contentsline {chapter}{DAFTAR PUSTAKA}{29}{Item.58}%
+\contentsline {section}{\numberline {.1}Lampiran - Alur Sistem Web}{33}{section.Alph0.1}%
