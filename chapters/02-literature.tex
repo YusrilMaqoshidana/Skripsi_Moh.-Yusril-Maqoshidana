@@ -134,37 +134,56 @@ node CF-Tree, sedangkan $T$ mengontrol kekompakan subklaster.
 \subsection{Topic Representation Dengan BM25}
 \label{subsec:bm25}
 
-% TODO: Revisi menambahkan penjelasan mengenai kenapa kok BM25 ini dipakai pada penelitian ini
-    Skema pembobotan BM25 adalah algoritma fungsi peringkat (ranking function) yang banyak digunakan dalam pencarian informasi (information retrieval) dan dapat diadaptasi untuk tahap representasi topik \citep{doi.org/10.1111/coin.12248,DBLP:journals/corr/abs-2007-05186}. 
-	c-TF-IDF kesulitan menangkap hubungan semantik secara utuh dan cenderung menghasilkan topik yang kurang koheren ketika distribusi frekuensi kata sangat timpang atau tidak merata \citep{iaes2025indobert}. Oleh karena itu, sejumlah
-penelitian menerapkan BM25 pada tahap \textit{topic representation}, baik sebagai
-pengganti penuh maupun sebagai modifikasi dari skema c-TF-IDF.
+Skema pembobotan BM25 adalah algoritma fungsi peringkat (\textit{ranking
+function}) yang banyak digunakan dalam pencarian informasi (\textit{information
+retrieval}) dan dapat diadaptasi untuk tahap representasi topik
+\citep{doi.org/10.1111/coin.12248,DBLP:journals/corr/abs-2007-05186}.
+c-TF-IDF kesulitan menangkap hubungan semantik secara utuh dan cenderung
+menghasilkan topik yang kurang koheren ketika distribusi frekuensi kata sangat
+timpang atau tidak merata \citep{iaes2025indobert}. Oleh karena itu, sejumlah
+penelitian menerapkan BM25 pada tahap \textit{topic representation}, baik
+sebagai pengganti penuh maupun sebagai modifikasi dari skema c-TF-IDF.
 
-Pada penelitian \citep{iaes2025indobert}, c-TF-IDF bawaan BERTopic digantikan
-sepenuhnya dengan BM25 pada level klaster, dengan skor kata dirumuskan sebagai:
+Pada penelitian \citet{iaes2025indobert}, c-TF-IDF bawaan BERTopic digantikan
+sepenuhnya dengan BM25 pada tingkat klaster. Skor representasi kata $t$ untuk
+klaster $C_k$ dirumuskan sebagai:
+
 \begin{equation}
-	w_{t,c_k} = \sum_{d \in C_k} IDF(t) \cdot
-	\frac{f(t,d)(k_1 + 1)}
-	{f(t,d) + k_1 \left(1 - b + b \cdot \frac{|d|}{avgdl}\right)},
+    w_{t,C_k} = \text{BM25}(t, C_k) =
+    \sum_{d \in C_k}
+    \mathrm{IDF}(t) \cdot
+    \frac{f(t,d) \cdot (k_1 + 1)}
+         {f(t,d) + k_1 \!\left(1 - b + b \cdot \dfrac{|d|}{\mathit{avgdl}}\right)},
+    \label{eq:bm25-cluster}
 \end{equation}
-dengan fungsi \textit{inverse document frequency} didefinisikan sebagai
-$IDF(t) = \log \left( \frac{N - n(t) + 0.5}{n(t) + 0.5} \right)$.
-Skor $w_{t,c_k}$ pada persamaan tersebut dihitung dengan menjumlahkan kontribusi
-seluruh dokumen $d$ yang menjadi anggota himpunan dokumen pada klaster ke-$k$,
-yang dinotasikan sebagai $C_k$. Untuk setiap dokumen tersebut, $f(t,d)$
-menyatakan frekuensi kemunculan kata $t$ di dalam dokumen $d$, sementara $|d|$
-menyatakan panjang dokumen $d$ yang kemudian dinormalisasi terhadap $avgdl$,
-yaitu rata-rata panjang dokumen dalam korpus. Adapun nilai $IDF(t)$ diperoleh
-dari $n(t)$, yang menyatakan jumlah dokumen dalam korpus yang memuat kata $t$,
-serta $N$ yang menyatakan jumlah total dokumen dalam korpus tersebut. Dua
-parameter tambahan, $k_1$ dan $b$, masing-masing berfungsi mengatur tingkat
+
+\noindent dengan fungsi \textit{inverse document frequency} didefinisikan sebagai:
+
+\begin{equation}
+    \mathrm{IDF}(t) = \log\!\left(\frac{N - n(t) + 0.5}{n(t) + 0.5}\right).
+    \label{eq:idf-bm25}
+\end{equation}
+
+Skor $w_{t,C_k}$ pada Persamaan~\ref{eq:bm25-cluster} dihitung dengan
+menjumlahkan kontribusi seluruh dokumen $d \in C_k$, yaitu himpunan dokumen
+anggota klaster ke-$k$. Untuk setiap dokumen tersebut, $f(t,d)$ menyatakan
+frekuensi kemunculan kata $t$ di dalam dokumen $d$, sedangkan $|d|$
+menyatakan panjang dokumen $d$ yang dinormalisasi terhadap $\mathit{avgdl}$,
+yakni rata-rata panjang dokumen dalam korpus. Nilai $\mathrm{IDF}(t)$ pada
+Persamaan~\ref{eq:idf-bm25} diperoleh dari $n(t)$, yaitu jumlah dokumen dalam
+korpus yang memuat kata $t$, dan $N$, yaitu jumlah total dokumen dalam korpus.
+Dua parameter tambahan, $k_1$ dan $b$, masing-masing berfungsi mengatur
 saturasi frekuensi istilah agar pengaruh kata yang berulang tidak meningkat
-secara linear, dan mengatur normalisasi panjang dokumen agar dokumen yang
-lebih panjang tidak secara otomatis memperoleh skor yang lebih tinggi.
+secara linear, serta mengatur normalisasi panjang dokumen agar dokumen yang
+lebih panjang tidak secara otomatis memperoleh skor lebih tinggi. Perlu
+dicatat bahwa rumus IDF pada Persamaan~\ref{eq:idf-bm25} dapat menghasilkan
+nilai negatif apabila suatu kata muncul pada lebih dari separuh dokumen dalam
+korpus ($n(t) > N/2$), sehingga secara otomatis menekan peran kata-kata umum
+dalam representasi topik.
 
 Dalam konteks studi tersebut, pendekatan ini dilaporkan memberikan representasi
-topik yang lebih stabil dibandingkan c-TF-IDF pada korpus teks pendek berbahasa
-Indonesia \citep{iaes2025indobert}.
+topik yang lebih stabil dibandingkan c-TF-IDF pada korpus teks pendek
+berbahasa Indonesia \citep{iaes2025indobert}.
 
 \subsection{Topic Coherence}
 \label{subsec:topic-coherence}
@@ -172,7 +191,7 @@ Indonesia \citep{iaes2025indobert}.
 \textit{Topic coherence} digunakan untuk mengukur keterkaitan semantik antar kata teratas dalam topik. Dari banyaknya \textit{topic coherence}, penelitian ini menggunakan \textit{Normalized Pointwise Mutual Information} (NPMI) karena memberikan korelasi tertinggi dengan penilaian manusia dalam konteks context vectors \citep{2685324}:
 
 \begin{equation}
-    \text{NPMI}(w_i, w_j) = 
+    \text{NPMI}(w_i, w_j) =
     \frac{
         \log \dfrac{P(w_i, w_j)}{P(w_i) \cdot P(w_j)}
     }{
@@ -197,48 +216,44 @@ melalui rumus berikut:
 \subsection{Embedding Density}
 \label{subsec:embedding-density}
 
-\textit{Embedding Density} adalah metrik evaluasi yang mengukur tingkat kekompakan (\textit{compactness}) representasi embedding dokumen di dalam suatu klaster atau topik \citep{2009-00672}. Metrik ini dihitung menggunakan fungsi kernel dengan bobot sebagai berikut:
+\textit{Embedding Density} adalah metrik evaluasi yang mengukur kepadatan representasi \textit{embedding} fitur/dokumen dalam suatu klaster dengan menggabungkan jarak spasial (fungsi kernel) dan bobot semantik \citep{2009-00672}. Kepadatan pada titik sampel $z$ (misalnya \textit{centroid} topik) dihitung dengan rumus:
 
 \begin{equation}
-\rho_k(z) =
-\frac{
-\sum_{i=1}^{N_k} K\!\left(\dfrac{z - \mathbf{e}_i^{(k)}}{h}\right) w_{k,i}
-}{
-\sum_{i=1}^{N_k} K\!\left(\dfrac{z - \mathbf{e}_i^{(k)}}{h}\right)
-}
+\rho_k = \frac{\sum_{i=1}^{N_k} k\!\left(\frac{\bar{\mathbf{e}}_k - \mathbf{e}_i}{h}\right) w_{k,i}}
+         {\sum_{i=1}^{N_k} k\!\left(\frac{\bar{\mathbf{e}}_k - \mathbf{e}_i}{h}\right)}
 \label{eq:embedding-density}
 \end{equation}
 
-\noindent dengan $z$ adalah titik embedding evaluasi, yang dalam
-penelitian ini ditetapkan sebagai centroid embedding topik $k$
-($z = \bar{\mathbf{e}}^{(k)}$); $\mathbf{e}_i^{(k)}$ adalah vektor
-embedding dokumen ke-$i$ dalam topik $k$; $N_k$ adalah jumlah dokumen
-dalam topik $k$; $K(\cdot)$ adalah fungsi kernel Gaussian; $h$ adalah
-parameter \textit{bandwidth}; dan $w_{k,i}$ adalah bobot representativitas
-dokumen ke-$i$ terhadap topik $k$, yang dihitung berdasarkan
-\textit{cosine similarity} antara embedding dokumen dan centroid
-embedding topik tersebut. Semakin tinggi nilai kepadatan yang diperoleh, semakin kohesif dan bermakna topik yang dihasilkan \citep{2009-00672}.
+\noindent Keterangan variabel spasial:
+\begin{itemize}[nosep] % Pastikan paket enumitem dimuat di preamble: \usepackage{enumitem}
+    \item $\bar{\mathbf{e}}_k$: Vektor \textit{centroid} topik ke-$k$ (pengganti titik sampel $z$), dihitung sebagai rata-rata embedding dokumen dalam klaster tersebut.
+    \item $\mathbf{e}_i$: Vektor \textit{embedding} dokumen ke-$i$ (pengganti $x_i$) dalam klaster $k$.
+    \item $k(y)$: Fungsi kernel Gaussian, yaitu $k(y) = (2\pi)^{-d/2} \exp(-|y|^2/2)$, untuk mengukur kedekatan spasial.
+    \item $h$: Parameter \textit{bandwidth}. Dalam implementasi, digunakan estimasi berbasis volume ($h_V$) dengan kuantil radius 0.1 dan 0.9 untuk mengurangi sensitivitas terhadap \textit{outlier}, serta mekanisme \textit{fallback} Silverman jika terjadi degenerasi klaster.
+    \item $w_{k,i}$: Bobot semantik dokumen ke-$i$ terhadap topik ke-$k$. Nilai ini dihitung dari total skor representasi kata-kata topik (c-TF-IDF untuk BERTopic \textit{default}, atau BM25 untuk BERTopic termodifikasi) yang muncul pada dokumen tersebut, kemudian dinormalisasi per topik ke rentang $[0,1]$.
+\end{itemize}
+\noindent Penyebut pada persamaan berfungsi sebagai konstanta normalisasi sehingga nilai $\rho_k$ tidak bergantung pada jumlah dokumen dalam klaster \citep{2009-00672}.
 
 \subsection{Intra-topic Similarity}
 \label{subsec:intra-topic-similarity}
 
-Intra-topic similarity merupakan metrik evaluasi yang mengukur kemiripan 
-semantik antar dokumen di dalam satu topik, diadaptasi dari konsep 
-\textit{intra-list similarity} (ILS) sebagai rata-rata kemiripan berpasangan 
-seluruh item dalam sebuah daftar \citep{10.1007/s11257-022-09351-w}. \cite{zhao2018inter} menekankan bahwa struktur intra-topik berbasis 
-\textit{word embeddings} mampu menangkap aspek tematik yang lebih halus dan 
-bermakna. Dalam konteks evaluasi model topik, intra-topic similarity untuk 
+Intra-topic similarity merupakan metrik evaluasi yang mengukur kemiripan
+semantik antar dokumen di dalam satu topik, diadaptasi dari konsep
+\textit{intra-list similarity} (ILS) sebagai rata-rata kemiripan berpasangan
+seluruh item dalam sebuah daftar \citep{10.1007/s11257-022-09351-w}. \cite{zhao2018inter} menekankan bahwa struktur intra-topik berbasis
+\textit{word embeddings} mampu menangkap aspek tematik yang lebih halus dan
+bermakna. Dalam konteks evaluasi model topik, intra-topic similarity untuk
 topik $k$ dengan $N_k$ dokumen dirumuskan sebagai berikut:
 \begin{equation}
-    \text{ITS}(k) = \frac{1}{N_k(N_k - 1)} 
+    \text{ITS}(k) = \frac{1}{N_k(N_k - 1)}
         \sum_{\substack{i,j=1 \\ i \neq j}}^{N_k}
         \cos\!\left(\mathbf{e}_i^{(k)},\, \mathbf{e}_j^{(k)}\right)
     \label{eq:intra-topic-similarity}
 \end{equation}
 
-\noindent di mana $\mathbf{e}_i^{(k)}$ dan $\mathbf{e}_j^{(k)}$ adalah 
-embedding dokumen ke-$i$ dan ke-$j$ dalam topik $k$. Nilai akhir diperoleh 
-dengan merata-ratakan $\text{ITS}(k)$ di seluruh $K$ topik; semakin tinggi 
+\noindent di mana $\mathbf{e}_i^{(k)}$ dan $\mathbf{e}_j^{(k)}$ adalah
+embedding dokumen ke-$i$ dan ke-$j$ dalam topik $k$. Nilai akhir diperoleh
+dengan merata-ratakan $\text{ITS}(k)$ di seluruh $K$ topik; semakin tinggi
 nilainya, semakin kohesif topik yang dihasilkan.
 
 % Gunakan diagram jika tersedia (lihat contoh di bawah):

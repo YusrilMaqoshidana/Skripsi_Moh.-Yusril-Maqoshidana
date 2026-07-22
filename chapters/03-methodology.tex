@@ -57,34 +57,25 @@ Selanjutnya, studi literatur dilakukan untuk memperoleh landasan teoritis dan me
 
 \subsection{Pengumpulan Data}
 \label{subsec:data-collection}
-
 Tahap pengumpulan data dilakukan dengan mengekspor riwayat percakapan dari grup WhatsApp menggunakan fitur \textit{export chat} yang tersedia secara bawaan pada aplikasi WhatsApp. 
-Data yang diekspor berupa file berformat \textit{.txt} atau \textit{.zip} yang memuat informasi tanggal, waktu, nama pengirim, dan isi pesan sebelum dilakukan tahap praproses. 
-Proses pengumpulan data memperhatikan aspek etika penelitian, termasuk permintaan izin kepada admin grup terkait serta anonimisasi identitas pengirim pesan pada tahap praproses, mengingat data percakapan bersifat personal dan sensitif.
+Data yang diekspor berupa file berformat \textit{.txt} atau \textit{.zip} yang memuat informasi tanggal, waktu, nama pengirim, dan isi pesan.
+Proses pengumpulan data memperhatikan aspek etika penelitian, termasuk permintaan izin kepada admin grup terkait, mengingat data percakapan bersifat personal dan sensitif.
 
 \subsection{Praproses Data}
 \label{subsec:data-preprocessing}
-
-Tahap praproses data bertujuan untuk membersihkan dan mempersiapkan data mentah agar siap diolah oleh model \textit{embedding} dengan tetap mempertahankan informasi semantik yang relevan. Proses ini dilakukan untuk mengurangi \textit{noise}, menstandarkan format teks, serta meningkatkan kualitas representasi data sebelum memasuki tahap pemodelan topik.
+Tahap praproses data bertujuan untuk membersihkan dan mempersiapkan kolom pesan dari data mentah agar siap diolah oleh model \textit{embedding} dengan tetap mempertahankan informasi semantik yang relevan. Proses ini dilakukan untuk mengurangi \textit{noise}, menstandarkan format teks, serta meningkatkan kualitas representasi data sebelum memasuki tahap pemodelan topik.
 
 \noindent Tahap praproses yang dilakukan meliputi:
 \begin{enumerate}[nosep]
-	\item Anonimisasi data pengirim pesan dengan enkripsi dan mengganti \textit{mention} nama pengguna pada pesan menjadi token \textit{@USER} untuk menjaga privasi identitas pengguna.
-	
-	\item Pemfilteran pesan sistem, yaitu menghapus notifikasi bawaan WhatsApp seperti pesan bergabung, keluar grup, perubahan keamanan, serta pesan media yang tidak disertakan dalam analisis.
-	
-	\item Penghapusan pesan dengan jumlah kata kurang dari 2 untuk mengurangi pesan yang terlalu pendek dan minim informasi semantik.
-	
-	\item Penghapusan tautan atau URL yang terdapat pada pesan karena tidak memberikan kontribusi langsung terhadap analisis topik.
-	
-	\item Normalisasi teks dengan mengubah seluruh karakter menjadi huruf kecil (\textit{lowercase}), normalisasi kata tawa (\textit{wkwk}, \textit{haha}) menjadi token yang seragam, menghapus spasi ganda, serta menormalkan pemanjangan karakter (\textit{elongation}) pada kata.
-	
-	\item Transliterasi emoji dan emotikon ke dalam bentuk teks agar makna ekspresif yang terkandung tetap dapat direpresentasikan secara semantik.
-	
+\item Pemfilteran pesan sistem, yaitu menghapus notifikasi bawaan WhatsApp seperti pesan bergabung, keluar grup, perubahan keamanan, serta pesan media yang tidak disertakan dalam analisis.
+\item Mengganti \textit{mention} nama pengguna pada isi pesan dengan token \textit{@USER}.
+\item Penghapusan pesan dengan jumlah kata kurang dari 2 untuk mengurangi pesan yang terlalu pendek dan minim informasi semantik.
+\item Penghapusan tautan atau URL yang terdapat pada pesan karena tidak memberikan kontribusi langsung terhadap analisis topik.
+\item Normalisasi teks dengan mengubah seluruh karakter menjadi huruf kecil (\textit{lowercase}), normalisasi kata tawa (\textit{wkwk}, \textit{haha}) menjadi token yang seragam, menghapus spasi ganda, serta menormalkan pemanjangan karakter (\textit{elongation}) pada kata.
+\item Transliterasi emoji dan emotikon ke dalam bentuk teks agar makna ekspresif yang terkandung tetap dapat direpresentasikan secara semantik.
 \end{enumerate}
 
-Melalui tahapan praproses tersebut, data percakapan yang semula tidak terstruktur dapat diubah menjadi data tekstual yang lebih bersih, konsisten, dan representatif untuk mendukung proses pemodelan topik menggunakan BERTopic.
-
+Melalui tahapan praproses tersebut, kolom pesan yang semula tidak terstruktur dapat diubah menjadi data tekstual yang lebih bersih, konsisten, dan representatif untuk mendukung proses pemodelan topik menggunakan BERTopic.
 \subsection{Pembuatan Model}
 \label{subsec:create-model}
 
@@ -184,6 +175,9 @@ Hasil evaluasi ini akan memberikan gambaran tentang seberapa baik sistem dapat m
 
 Tahap analisis hasil dilakukan terhadap keluaran model topik dan metrik evaluasi yang diperoleh dari tahap pengujian. 
 Analisis kuantitatif dilakukan dengan membandingkan nilai metrik evaluasi (Embedding Density, Intra-topic Similarity, NPMI, dan Topic Diversity) antara metode \textit{embedding} IndoBERTweet dan all-MiniLM-L6-v2 \textit{clustering} BIRCH dan HDBSCAN, serta antar ukuran data pada eksperimen \textit{learning curve} (20\%--100\%). 
+\hl{
+	Apakah perlu membandingkan BM25 dengan c-TF-IDF?
+	}	
 Perbandingan disajikan dalam bentuk tabel dan grafik tren untuk melihat konsistensi performa model seiring penambahan jumlah data.
 
 \subsection{Penarikan Kesimpulan}

@@ -1,0 +1,26 @@
+\begingroup
+\renewcommand{\arraystretch}{1}
+\begin{table}[H]
+\centering
+\caption{Contoh Hasil Normalisasi Mention}
+\label{tab:normalize-mention}
+\scriptsize
+\begin{tabular}{p{5.5cm} p{5.5cm}}
+\toprule
+\textbf{Pesan} & \textbf{Pesan\_Preprocessed} \\
+\midrule
+@+62 895-xxxx-xxxxx hai hai... &
+@USER hai hai... \\
+
+@+62 813-xxxx-xxxx @+62 857-xxxx-xxxx &
+@USER @USER \\
+
+summon @~Kamu Bertanya-tanyea? &
+summon @USER Bertanya-tanyea? \\
+
+Btw thank you ya @+62 895-xxxx-xxxx &
+Btw thank you ya @USER \\
+\bottomrule
+\end{tabular}
+\end{table}
+\endgroup

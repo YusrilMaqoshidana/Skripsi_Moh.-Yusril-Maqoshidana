@@ -1,0 +1,26 @@
+# Ignore everything by default
+*
+
+# Allow directories to be traversed
+!*/
+
+# Except for directories we don't want to traverse
+.git/
+venv/
+.venv/
+.vscode/
+
+# Whitelist specific file extensions and files
+!**/*.tex
+!**/*.md
+!**/*.bib
+!**/*.png
+!**/*.jpg
+!**/*.jpeg
+!**/*.gif
+!**/*.svg
+!images/**/*.pdf
+!main.pdf
+
+# Keep the .gitignore file itself
+!.gitignore

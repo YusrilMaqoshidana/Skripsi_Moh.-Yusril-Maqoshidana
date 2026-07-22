@@ -14,13 +14,13 @@
 \section{Pengumpulan Data}
 \label{sec:data-collection}
 
-Data penelitian diperoleh dari grup percakapan WhatsApp [nama/deskripsi grup] setelah memperoleh izin dari admin grup sebagaimana dijelaskan pada Lampiran~\ref{subsec}. 
-Pengumpulan data dilakukan menggunakan fitur \textit{Export Chat} bawaan aplikasi WhatsApp, yang menghasilkan berkas dalam format \textit{.zip} berisi riwayat percakapan dalam satu berkas \textit{.txt} tanpa media. 
-Berkas \textit{.zip} tersebut terlebih dahulu diekstraksi untuk memperoleh file \textit{.txt} yang selanjutnya digunakan sebagai sumber data utama penelitian. 
+Data penelitian diperoleh dari grup percakapan WhatsApp [nama/deskripsi grup] setelah memperoleh izin dari admin grup sebagaimana dijelaskan pada Lampiran~\ref{subsec}.
+Pengumpulan data dilakukan menggunakan fitur \textit{Export Chat} bawaan aplikasi WhatsApp, yang menghasilkan berkas dalam format \textit{.zip} berisi riwayat percakapan dalam satu berkas \textit{.txt} tanpa media.
+Berkas \textit{.zip} tersebut terlebih dahulu diekstraksi untuk memperoleh file \textit{.txt} yang selanjutnya digunakan sebagai sumber data utama penelitian.
 Data yang diekspor mencakup periode percakapan dari [tanggal awal] hingga [tanggal akhir], dengan total [jumlah] pesan dari [jumlah] partisipan grup.
 
-Sebagai ilustrasi, potongan data mentah hasil ekspor ditampilkan pada Listing~\ref{lst:contoh-data-mentah}. 
-Secara umum, setiap baris percakapan mengikuti pola \texttt{DD/MM/YY HH.MM - Pengirim: Pesan}. 
+Sebagai ilustrasi, potongan data mentah hasil ekspor ditampilkan pada Listing~\ref{lst:contoh-data-mentah}.
+Secara umum, setiap baris percakapan mengikuti pola \texttt{DD/MM/YY HH.MM - Pengirim: Pesan}.
 Namun demikian, data mentah juga memuat variasi format lain seperti pesan sistem (misalnya anggota ditambahkan ke grup), placeholder media, tautan, dan penanda pesan yang telah diedit.
 
 \begin{lstlisting}[caption={Contoh potongan data mentah hasil ekspor WhatsApp (nama disamarkan)}, label={lst:contoh-data-mentah}, basicstyle=\ttfamily\small]
@@ -32,88 +32,94 @@ Namun demikian, data mentah juga memuat variasi format lain seperti pesan sistem
 24/04/26 05.12 - User-7 sudah ditambahkan
 \end{lstlisting}
 
-Berkas \textit{.txt} selanjutnya diproses melalui tahap \textit{parsing} menggunakan \textit{regular expression} untuk mengekstrak tiga atribut utama, yaitu \textit{Timestamp}, \textit{Pengirim}, dan \textit{Pesan}. 
-Pada tahap ini, nilai \textit{timestamp} dinormalisasi ke format ISO 8601 (\texttt{YYYY-MM-DDTHH:MM}) untuk memudahkan pengurutan kronologis, filtering temporal, dan analisis berbasis waktu.
+\section{Praproses Data}
+\label{sec:preprocessing}
 
-Sebagai ilustrasi, hasil \textit{parsing} dari potongan data mentah pada Listing~\ref{lst:contoh-data-mentah} disajikan pada Tabel~\ref{tab:contoh-hasil-parsing}.
+\subsection{Parsing Data Chat WhatsApp}
+
+Berkas \textit{.txt} hasil ekspor chat selanjutnya diproses melalui tahap \textit{parsing} menggunakan \textit{Python} dan \textit{regular expression}. Pada tahap ini, sistem terlebih dahulu mendeteksi format \textit{timestamp} dari berkas masukan untuk mengakomodasi beberapa format ekspor \textit{WhatsApp}, seperti format Android Indonesia 12 jam, Android Indonesia 24 jam, dan Android Inggris 12 jam.
+
+Setelah format teridentifikasi, setiap baris data dinormalisasi dengan menghapus karakter tak terlihat (\textit{invisible characters}) dan menyeragamkan karakter spasi agar pola pesan dapat dikenali secara konsisten. Selanjutnya, proses \textit{parsing} dilakukan untuk mengekstraksi isi pesan pengguna (\textit{user message}) serta memisahkannya dari \textit{system message} seperti notifikasi penambahan anggota atau media yang tidak disertakan.
+
+Pesan yang terdiri atas beberapa baris (\textit{multiline message}) digabungkan kembali menjadi satu entri utuh untuk menjaga konteks pesan. Hasil akhir dari proses ini disimpan ke dalam format \textit{CSV} dengan satu atribut utama, yaitu \textit{Pesan}, yang kemudian digunakan sebagai masukan pada tahap pra-pemrosesan berikutnya.
 
 \input{tables/04-results/example-data-csv.tex}
 
-\section{Praproses Data}
-\label{sec:preprocessing}
-\noindent Uraikan langkah pra-pemrosesan yang dilakukan sesuai metodologi:
-\begin{enumerate}[nosep]
-    \item Pemfilteran pesan sistem dan pesan media
-    \item Normalisasi (lower-case, mention → @USER, URL → HTTP)
-    \item Transliteration emotikon dan normalisasi slang
-    \item Tokenisasi dan stopword removal (Sastrawi + manual)
-\end{enumerate}
-Berikan contoh before/after satu atau dua pesan untuk ilustrasi.
+\subsection{Penghapusan Artefak Teks \texttt{<...>}}
 
-\section{Pembuatan Model}
-\label{sec:descriptive-results}
-\noindent Sajikan statistik deskriptif utama setelah pra-pemrosesan: mean, median, standar deviasi panjang pesan, frekuensi kata teratas, dan distribusi topik awal jika relevan.
+Pada tahap pra-pemrosesan, dilakukan pembersihan terhadap artefak teks yang ditandai dengan pola \texttt{<...>} menggunakan \textit{regular expression}.
+Artefak ini umumnya berasal dari metadata bawaan hasil ekspor chat \textit{WhatsApp}, seperti \texttt{<Media omitted>}, \texttt{<Pesan ini diedit>}, atau penanda sistem lainnya yang tidak merepresentasikan isi percakapan aktual antar pengguna.
 
-\subsection{Embedding dan Reduksi Dimensi}
-\label{subsec:embedding-umap}
-\noindent Jelaskan penggunaan IndoBERTweet untuk pembuatan embedding, parameter penting yang dipilih, dan hasil reduksi dimensi menggunakan UMAP. Sertakan visualisasi (scatter plot UMAP) dan interpretasi singkat.
+Proses pembersihan dilakukan pada kolom \textit{Pesan\_Preprocessed}, yang merupakan salinan awal dari kolom \textit{Pesan}.
+Selanjutnya, pola \texttt{<.*?>} digunakan untuk mendeteksi sekaligus menghapus seluruh substring yang berada di antara simbol tanda kurung sudut (\texttt{< >}).
+Setelah pola tersebut dihapus, dilakukan \textit{trimming} untuk menghilangkan spasi berlebih di awal maupun akhir teks.
 
-\subsection{Clustering dan Representasi Topik}
-\label{subsec:clustering-topics}
-\noindent Paparkan penggunaan BIRCH untuk clustering dan BM25 untuk representasi topik. Untuk setiap topik utama, tampilkan:
-\begin{itemize}[nosep]
-    \item Kata kunci representatif (top-n)
-    \item Jumlah dokumen per klaster
-    \item Contoh pesan yang termasuk dalam topik
-\end{itemize}
+Berdasarkan hasil identifikasi, dari total 91.868 baris data, ditemukan sebanyak 14.739 baris yang mengandung pola \texttt{<...>} atau setara dengan 16,04% dari keseluruhan dataset. Jumlah total baris sebelum dan sesudah proses tetap sama, yaitu 91.868 baris, karena tahap ini hanya membersihkan konten teks tanpa menghapus entri data.
 
-\subsection{Evaluasi Kuantitatif Model}
-\label{subsec:model-evaluation}
-\noindent Tampilkan hasil metrik evaluasi yang digunakan: topic coherence, topic diversity, embedding density, dan intra-topic similarity. Sajikan hasil dalam tabel per skenario parameter (baseline vs modifikasi) dan beri interpretasi singkat.
+Contoh hasil pembersihan ditunjukkan pada Tabel~\ref{tab:remove-angle-bracket}. Terlihat bahwa pesan yang semula hanya berisi metadata seperti \texttt{<Media omitted>} berubah menjadi string kosong setelah proses pembersihan. Hal ini menunjukkan bahwa artefak tersebut tidak mengandung informasi semantik yang relevan untuk analisis topik, sehingga perlu dihilangkan agar tidak menjadi \textit{noise} pada tahap pemodelan topik.
 
-\subsection{Perbandingan Eksperimen (Baseline vs Modifikasi)}
-\label{subsec:experiments-comparison}
-\noindent Bandingkan kinerja skenario berbeda (mis. HDBSCAN vs BIRCH, c-TF-IDF vs BM25, model embedding berbeda). Sertakan tabel ringkasan dan highlight perbedaan signifikan.
+\input{tables/04-results/remove-angle-bracket.tex}
 
-\subsection{Uji Asumsi dan Analisis Inferensial}
-\label{subsec:inferential-results}
-\noindent Jika relevan, laporkan uji normalitas, uji homogenitas, dan hasil pengujian hipotesis. Jelaskan metode statistik yang digunakan dan implikasinya terhadap interpretasi hasil.
+\subsection{Penghapusan URL}
 
-\subsection{Implementasi Sistem dan Evaluasi Fungsional}
-\label{subsec:system-evaluation}
-\noindent Laporkan hasil pengujian aplikasi berbasis web: keandalan upload, waktu proses end-to-end, pengalaman pengguna (jika ada pengujian usability), serta contoh tampilan hasil.
+Pada tahap pra-pemrosesan, dilakukan penghapusan \textit{Uniform Resource Locator} (URL) dari teks percakapan. URL umumnya berupa tautan menuju situs web, media sosial, video, atau artikel daring, seperti tautan \textit{YouTube}, \textit{Instagram}, \textit{TikTok}, dan halaman web lainnya. Dalam konteks analisis topik, keberadaan URL cenderung tidak memberikan informasi semantik yang relevan terhadap isi percakapan karena lebih merepresentasikan referensi eksternal dibandingkan konten tekstual pesan itu sendiri.
 
-\subsection{Analisis Hasil}
-\label{subsec:result-analysis}
-\noindent Analisis sintesis hasil kuantitatif dan kualitatif: apakah topik yang dihasilkan bermakna, stabil, dan sesuai konteks grup WhatsApp. Kaitkan dengan tujuan penelitian.
+Proses penghapusan URL dilakukan menggunakan \textit{regular expression} dengan pola \texttt{https?://\textbackslash S+ | www\textbackslash .\textbackslash S+}, yang dirancang untuk mendeteksi tautan yang diawali dengan \texttt{http://}, \texttt{https://}, maupun \texttt{[www](http://www).}. Setiap URL yang terdeteksi kemudian dihapus dari kolom \textit{Pesan\_Preprocessed}.
+Setelah URL dihapus, spasi berlebih akibat proses penghapusan dinormalisasi agar teks tetap rapi dan konsisten.
 
-% --- BAGIAN 4.2: PEMBAHASAN ---
-\section{Pembahasan}
-\label{sec:discussion}
+Untuk mengevaluasi dampak proses ini, dilakukan perbandingan antara data sebelum dan sesudah pembersihan. Baris yang mengalami perubahan ditandai menggunakan \textit{masking} logis, yaitu dengan membandingkan isi teks sebelum dan sesudah transformasi. Jumlah baris yang berubah merepresentasikan banyaknya pesan yang mengandung URL.
 
-\subsection{Interpretasi Temuan Utama}
-\label{subsec:interpretation}
-\noindent Paparkan penjelasan mendalam mengenai temuan utama, mengapa hasil tersebut muncul, dan bagaimana temuan ini menjawab rumusan masalah. Hubungkan temuan dengan teori dan tinjauan pustaka di Bab 2.
+Contoh hasil penghapusan URL ditunjukkan pada Tabel~\ref{tab:remove-url}. Terlihat bahwa terdapat beberapa jenis perubahan. Pada pesan yang hanya berisi URL, hasil pra-pemrosesan menjadi string kosong. Sementara itu, pada pesan yang memuat URL sekaligus teks tambahan, hanya bagian URL yang dihapus dan isi pesan utama tetap dipertahankan. Pendekatan ini memastikan bahwa informasi tekstual yang masih relevan untuk analisis topik tetap terjaga, sementara komponen yang berpotensi menjadi \textit{noise} berhasil dihilangkan.
 
-\subsection{Analisis Kualitatif Topik}
-\label{subsec:qualitative-topic-analysis}
-\noindent Bahas beberapa topik penting secara kualitatif: konteks sosialnya, contoh kutipan pesan, dan relevansi bagi pengguna.
+\input{tables/04-results/remove-url.tex}
 
-\subsection{Implikasi Praktis dan Rekomendasi Implementasi}
-\label{subsec:practical-implications}
-\noindent Jelaskan implikasi untuk pengembangan sistem dan pengguna akhir, termasuk rekomendasi konfigurasi model, antarmuka, dan fitur tambahan.
+\subsection{Normalisasi Mention}
 
-\subsection{Keterbatasan Penelitian}
-\label{subsec:limitations}
-\noindent Sebutkan keterbatasan data, metode, dan eksperimen (mis. satu grup WhatsApp, potensi bias, keterbatasan anotasi) serta dampaknya pada generalisasi hasil.
+Pada tahap pra-pemrosesan, dilakukan normalisasi terhadap \textit{mention} atau penandaan pengguna yang diawali dengan simbol \texttt{@}. Dalam data percakapan \textit{WhatsApp}, \textit{mention} dapat muncul dalam berbagai format, seperti nomor telepon (misalnya \texttt{@+62 895-xxxx-xxxx}), nama pengguna, maupun \textit{username} khusus. Elemen ini umumnya berfungsi sebagai penanda identitas pengguna, bukan sebagai representasi topik pembicaraan.
 
-\subsection{Saran dan Pekerjaan Lanjutan}
-\label{subsec:future-work}
-\noindent Rekomendasi teknis dan riset lanjutan: perluasan dataset, eksperimen model embedding lain, perbaikan pipeline pra-pemrosesan, atau pengujian usability yang lebih formal.
+Keberadaan \textit{mention} dalam teks dapat menimbulkan \textit{noise} pada proses analisis topik karena model dapat menganggap nama atau nomor tertentu sebagai token penting, padahal informasi tersebut tidak memiliki makna semantik yang relevan terhadap isi percakapan. Selain itu, normalisasi \textit{mention} juga membantu menjaga anonimitas data dengan mengurangi paparan identitas pengguna.
 
-\subsection{Ringkasan Hasil Utama}
-\label{subsec:summary-results}
-\noindent Ringkas temuan paling penting dalam 3--5 poin yang langsung menjawab rumusan masalah.
+Proses normalisasi dilakukan menggunakan \textit{regular expression} untuk mendeteksi dua pola utama, yaitu \textit{mention} berbasis nomor telepon dan \textit{mention} berbasis nama pengguna. Seluruh \textit{mention} yang terdeteksi kemudian diganti dengan token seragam, yaitu \texttt{@USER}. Pendekatan ini memungkinkan informasi bahwa suatu pesan mengandung referensi kepada pengguna lain tetap dipertahankan, tanpa menyimpan identitas spesifik pengguna tersebut.
+
+Untuk mengevaluasi hasil transformasi, dilakukan perbandingan antara teks sebelum dan sesudah normalisasi. Baris yang mengalami perubahan ditandai menggunakan \textit{masking} logis. Berdasarkan hasil identifikasi, dari total 91.868 baris data, ditemukan sebanyak 1.306 baris yang mengandung \textit{mention}, atau setara dengan 1,42% dari keseluruhan dataset.
+
+Contoh hasil normalisasi ditunjukkan pada Tabel~\ref{tab:normalize-mention}. Terlihat bahwa \textit{mention} dalam bentuk nomor telepon maupun nama pengguna berhasil diganti menjadi token \texttt{@USER}. Dengan demikian, struktur percakapan tetap terjaga karena keberadaan referensi antarpengguna masih dapat dikenali, sementara identitas spesifik pengguna telah dianonimkan.
+
+\input{tables/04-results/normalize-mention.tex}
+
+\subsection{Transliterasi Emoji}
+
+Pada tahap pra-pemrosesan, dilakukan transliterasi emoji untuk mengubah simbol emoji menjadi representasi teks yang dapat dipahami oleh model pemrosesan bahasa alami. Emoji merupakan komponen penting dalam percakapan digital karena sering digunakan untuk mengekspresikan emosi, reaksi, maupun konteks nonverbal. Jika emoji dihapus secara langsung, sebagian informasi semantik yang terkandung dalam pesan berpotensi hilang.
+
+Proses transliterasi dilakukan menggunakan pustaka \textit{Python} \texttt{emoji} dan \texttt{regex}.
+Sebelum transliterasi, dilakukan normalisasi terhadap emoji yang muncul secara berulang menggunakan pola \textit{grapheme cluster}. Langkah ini bertujuan untuk mereduksi rangkaian emoji identik yang berulang menjadi satu simbol saja, sehingga ekspresi seperti [emoji tertawa][emoji tertawa][emoji tertawa] atau [emoji tangan melipat][emoji tangan melipat] disederhanakan menjadi [emoji tertawa] dan [emoji tangan melipat].
+Normalisasi ini membantu mengurangi redundansi token tanpa menghilangkan makna emosional utama dari pesan.
+
+Setelah normalisasi, setiap emoji dikonversi menjadi deskripsi tekstual menggunakan fungsi \textit{demojize}.
+Sebagai contoh, emoji \texttt{[emoji tersenyum]} ditransliterasikan menjadi token \textit{smiling\_face}.
+Setelah transliterasi selesai, spasi berlebih yang muncul akibat proses konversi dinormalisasi kembali agar format teks tetap konsisten.
+
+Untuk mengevaluasi dampak transformasi, dilakukan perbandingan antara teks sebelum dan sesudah proses transliterasi. Baris yang mengalami perubahan ditandai menggunakan \textit{masking} logis. Berdasarkan hasil identifikasi, dari total 91.868 baris data, terdapat 41.487 baris yang mengalami perubahan setelah proses transliterasi dan normalisasi, atau setara dengan 45,16% dari keseluruhan dataset.
+
+Contoh hasil transliterasi ditunjukkan pada Tabel~\ref{tab:emoji-transliteration}. Terlihat bahwa emoji yang semula berupa simbol visual berhasil diubah menjadi token tekstual yang tetap mempertahankan makna emosionalnya. Pendekatan ini memungkinkan informasi emosional dalam percakapan tetap terwakili dalam bentuk token yang dapat diproses oleh model analisis topik.
+
+\input{tables/04-results/emoji-transliteration.tex}
+
+\subsection{Normalisasi Kata Tawa}
+
+Pada tahap pra-pemrosesan, dilakukan normalisasi terhadap kata-kata yang merepresentasikan ekspresi tawa. Dalam percakapan informal berbasis teks, ekspresi tawa dapat muncul dalam berbagai variasi penulisan, seperti \texttt{wkwk}, \texttt{wkwwk}, \texttt{haha}, \texttt{hahaha}, \texttt{hehe}, \texttt{hihi}, \texttt{xixi}, \texttt{kwkwkw}, hingga bentuk serapan dari bahasa Inggris seperti \texttt{lol} dan \texttt{lmao}. Meskipun memiliki bentuk yang beragam, seluruh variasi tersebut pada dasarnya menyampaikan makna semantik yang serupa, yaitu ekspresi tertawa atau humor.
+
+Keberagaman bentuk penulisan kata tawa dapat meningkatkan sparsitas kosakata (\textit{vocabulary sparsity}) karena model akan memperlakukan setiap variasi sebagai token yang berbeda. Hal ini dapat mengurangi kualitas representasi teks dan berpotensi memengaruhi hasil pemodelan topik. Oleh karena itu, seluruh variasi kata tawa dinormalisasi menjadi satu bentuk token standar, yaitu \texttt{wkwk}.
+
+Proses normalisasi dilakukan menggunakan \textit{regular expression} yang dirancang untuk mendeteksi berbagai pola kata tawa, termasuk pola berbasis pengulangan karakter maupun suku kata. Seluruh pola yang terdeteksi kemudian diganti dengan token \texttt{wkwk}. Setelah transformasi, spasi berlebih dinormalisasi kembali agar struktur teks tetap konsisten.
+
+Untuk mengevaluasi dampak normalisasi, dilakukan perbandingan antara teks sebelum dan sesudah transformasi menggunakan \textit{masking} logis. Berdasarkan hasil identifikasi, dari total 91.868 baris data, ditemukan 9.258 baris yang mengalami perubahan akibat proses normalisasi kata tawa, atau setara dengan 10,08% dari keseluruhan dataset.
+
+Contoh hasil normalisasi ditunjukkan pada Tabel~\ref{tab:laughter-normalization}. Terlihat bahwa berbagai bentuk ekspresi tawa seperti \texttt{Haha}, \texttt{haha}, dan \texttt{hahaha} berhasil diseragamkan menjadi token \texttt{wkwk}. Dengan demikian, informasi mengenai ekspresi humor tetap dipertahankan, namun variasi token yang tidak perlu dapat dikurangi.
+
+\input{tables/04-results/laughter-normalization.tex}
+
+
 
 % ====================================================================
 % CATATAN: Isi tiap subsection diisi dengan hasil eksperimen dan pembahasan spesifik Anda.
