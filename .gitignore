@@ -9,6 +9,7 @@
 venv/
 .venv/
 .vscode/
+jurnal
 
 # Whitelist specific file extensions and files
 !**/*.tex
