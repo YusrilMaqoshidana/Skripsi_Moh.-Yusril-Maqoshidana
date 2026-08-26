@@ -2,24 +2,24 @@
 \renewcommand{\arraystretch}{1}
 \begin{table}[H]
 \centering
-\caption{Contoh Hasil Normalisasi Mention}
+\caption{Contoh Hasil Normalisasi Mention dan Kontak}
 \label{tab:normalize-mention}
 \scriptsize
 \begin{tabular}{p{5.5cm} p{5.5cm}}
 \toprule
-\textbf{Pesan} & \textbf{Pesan\_Preprocessed} \\
+\textbf{Pesan Asli} & \textbf{Pesan Hasil Praproses} \\
 \midrule
-@+62 895-xxxx-xxxxx hai hai... &
-@USER hai hai... \\
+@+62 895-1234-5678 hai hai... &
+@User-bc45·5678 hai hai... \\
 
-@+62 813-xxxx-xxxx @+62 857-xxxx-xxxx &
-@USER @USER \\
+summon @Yusril Maqoshidana &
+summon @User-a8b3 \\
 
-summon @~Kamu Bertanya-tanyea? &
-summon @USER Bertanya-tanyea? \\
+Nomor telepon saya +6289512345678 &
+Nomor telepon saya \\
 
-Btw thank you ya @+62 895-xxxx-xxxx &
-Btw thank you ya @USER \\
+Btw thank you ya @Yusril Maqoshidana &
+Btw thank you ya @User-a8b3 \\
 \bottomrule
 \end{tabular}
 \end{table}

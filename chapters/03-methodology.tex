@@ -62,34 +62,59 @@ Proses pengumpulan data memperhatikan aspek etika penelitian, termasuk permintaa
 
 \subsection{Praproses Data}
 \label{subsec:data-preprocessing}
-Tahap praproses data bertujuan untuk membersihkan dan mempersiapkan kolom pesan dari data mentah agar siap diolah oleh model \textit{embedding} dengan tetap mempertahankan informasi semantik yang relevan. Proses ini dilakukan untuk mengurangi \textit{noise}, menstandarkan format teks, serta meningkatkan kualitas representasi data sebelum memasuki tahap pemodelan topik.
 
-\noindent Tahap praproses yang dilakukan mengikuti urutan \textit{pipeline} sebagai berikut:
-\begin{enumerate}[nosep]
-\item Parsing data mentah dengan mendeteksi format dan mengekstrak berkas riwayat percakapan WhatsApp (\textit{.txt} atau \textit{.zip}) ke dalam struktur data tabel (\textit{dataframe}) dengan kolom \textit{Timestamp}, \textit{Sender}, dan \textit{Message} untuk mempermudah preprocessing tahap selanjutnya.
-\item Anonimisasi identitas pengirim dan mention dengan hash sha256 sehingga informasi nama atau nomor telepon pengirim serta penyebutan (\textit{mention}) akun pengguna lain pada isi pesan terjaga kerahasiaan identitas dan mematuhi etika privasi data.
-\item Memfilter dan mengeliminasi notifikasi sistem otomatis WhatsApp seperti pesan keluar/masuk grup, enkripsi keamanan, pesan yang dihapus, pesan yang diedit, dan notifikasi lainnya yang tidak memiliki nilai semantik bagi analisis topik.
-\item Menghapus pranala luar (\textit{hyperlink}), tag format HTML, simbol tagar (\textit{hashtag}), serta teks metadata sistem yang dapat mengganggu representasi topik utama.
-\item Mengubah seluruh huruf pada pesan menjadi huruf kecil (\textit{lowercase}) untuk menyeragamkan format kata dan meminimalkan variasi bentuk kata akibat perbedaan penggunaan huruf kapital.
-\item Unicode normalization dengan melakukan standardisasi representasi karakter Unicode guna mengeliminasi karakter tersembunyi, karakter kontrol, atau variasi bentuk simbol Unicode yang sering muncul pada pesan obrolan perangkat seluler.
-\item Normalisasi (\textit{elongation}) dengan menyederhanakan karakter yang ditulis secara berulang secara berlebihan (misalnya, \textit{``bisaaa''} menjadi \textit{``bisa''}) agar setiap kata memiliki bentuk yang konsisten dan dapat dikenali dengan benar oleh model.
-\item Menerjemahkan karakter emoji dan emotikon yang terdapat dalam pesan menjadi kata atau teks deskriptif yang setara guna mempertahankan muatan ekspresif dan informasi semantik yang terkandung di dalamnya.
-\item Menghapus karakter unik yang muncul akibat proses ekspor WhatsApp, menghapus spasi berlebih (ganda), menghapus baris pesan yang bernilai kosong (\textit{null}), pesan duplikat tanpa informasi tambahan, serta lampiran berkas kontak WhatsApp (\textit{.vcf}) karena tidak mengandung informasi tekstual yang relevan.
-\end{enumerate}
+Tahap praproses data bertujuan untuk membersihkan dan mempersiapkan data pesan dari obrolan mentah WhatsApp agar siap diolah oleh model pemodelan topik BERTopic. Percakapan grup WhatsApp memiliki karakteristik teks informal yang sangat khas, seperti teks pendek, banyaknya notifikasi sistem otomatis, penyebutan (\textit{mention}) pengguna, alamat email dan nomor telepon sensitif, penggunaan emoji, kata tidak baku (\textit{slang}), pemanjangan karakter berulang (\textit{elongation}), serta derau (\textit{noise}) berupa pranala luar (URL) dan artefak ekspor. Secara runtut, alur praproses data yang diimplementasikan terdiri dari sembilan tahapan sub-proses berikut:
 
-Melalui tahapan praproses tersebut, kolom pesan yang semula tidak terstruktur dapat diubah menjadi data tekstual yang lebih bersih, konsisten, dan representatif untuk mendukung proses pemodelan topik menggunakan BERTopic.
+\subsubsection{Parsing Chat Mentah WhatsApp dan Deteksi Format}
+
+Mengurai berkas riwayat percakapan mentah berformat \textit{.txt} atau \textit{.zip} dengan mendeteksi format file dan mengkonversi timestamp mentah ke standar baku ISO 8601 (\textit{YYYY-MM-DDTHH:MM:SS}), serta menyusun data ke dalam struktur tabel (\textit{dataframe}) dengan kolom \textit{Timestamp}, \textit{pengirim}, dan \textit{pesan}.
+
+\subsubsection{Anonimisasi Identitas Pengirim dan Mention pada Teks Pesan}
+
+Mengenkripsi nama pengirim asli dan penyebutan (\textit{mention}) pengguna (\textit{@nama} atau \textit{@nomor}) di dalam teks pesan menjadi kode samaran terenkripsi (seperti \textit{@User-[hash]}) menggunakan algoritma \textit{hashing} SHA-256. Proses ini dilakukan di sisi klien demi menjamin etika privasi dan kerahasiaan identitas pengguna tanpa menghilangkan struktur interaksi penyebutan pada percakapan.
+
+\subsubsection{Penyaringan Pesan Notifikasi, Berkas Kontak, dan Duplikat}
+
+Memfilter dan mengeliminasi notifikasi otomatis bawaan sistem WhatsApp (seperti \textit{``pesan ini telah dihapus''}, \textit{``panggilan suara tak terjawab''}, \textit{``media tidak disertakan''}, dan sejenisnya), membuang lampiran berkas kartu kontak (\textit{.vcf}), serta menghapus baris pesan mentah duplikat persis.
+
+\subsubsection{Penghapusan Metadata Sistem, Tag Format, dan URL}
+
+Menhapus teks penanda metadata sistem dalam kurung sudut \textit{<...>} (seperti \textit{<Media tidak disertakan>}), kurung siku \textit{[...]}, tag HTML, simbol tagar (\textit{\#...}), serta membuang URL seperti \textit{https://...} atau \textit{www...} dari isi pesan agar tidak menjadi \textit{noise}.
+
+\subsubsection{Case Folding dan Normalisasi Unicode}
+
+Mengubah seluruh huruf kapital pada pesan menjadi huruf kecil (\textit{lowercase}) untuk menyeragamkan bentuk kata serta melakukan standardisasi Unicode guna mengeliminasi karakter tersembunyi, karakter kontrol keyboard seluler, dan merapikan spasi ganda.
+
+\subsubsection{Anonimisasi Data Sensitif Teks}
+
+Menghapus dan mengeliminasi alamat email serta nomor telepon independen yang berada di dalam isi pesan untuk mencegah kebocoran kontak pribadi di dalam representasi topik tanpa menyisipkan token buatan yang tidak informatif.
+
+\subsubsection{Transliterasi Emoji dan Emotikon (Demojize)}
+
+Menerjemahkan karakter emoji visual dan emotikon menjadi teks deskriptif yang setara (misalnya emoji \textit{smiling face} menjadi \textit{smiling\_face}) agar nilai emosi tetap terekstraksi tanpa merusak representasi kata oleh model bahasa.
+
+\subsubsection{Normalisasi Pemanjangan Karakter dan Kata Tidak Baku}
+
+Menyederhanakan penulisan 3 atau lebih karakter berulang secara berturut-turut menjadi 2 karakter serta memetakan kata-kata informal, singkatan, dan variasi ekspresi tawa tidak baku ke bentuk kata baku bahasa Indonesia menggunakan kamus rujukan normalisasi.
+
+\subsubsection{Penyaringan Panjang Dokumen Minimal (\textit{Min Word Count Filter})}
+
+Mengeliminasi baris dokumen yang setelah melalui tahap praproses memiliki jumlah kata kurang dari 3 kata pada kolom pesan yang telah di proses agar setiap dokumen yang akan dikelompokkan oleh BERTopic memiliki substansi informasi semantik yang memadai.
+
+Melalui rangkaian tahapan praproses tunggal tersebut, data percakapan WhatsApp mentah yang tidak terstruktur diubah menjadi masukan teks terproses (\textit{Pesan\_Preprocessed}) yang siap digunakan pada tahap pemodelan topik BERTopic.
+
 \subsection{Pembuatan Model}
 \label{subsec:create-model}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.4\textwidth]{images/framework-BERTopic-modifikasi.png}
+	\includegraphics[width=0.85\textwidth]{images/bab-3-pipeline-bertopic-proposed.png}
 	\caption{Rancangan framework BERTopic yang dimodifikasi pada tahap pembuatan model}\label{fig:framework-bertopic-modifikasi}
 \end{figure}
 
 Tahap pemodelan topik merupakan tahap inti dari penelitian ini, dengan data yang telah melalui pra-pemrosesan dianalisis menggunakan \textit{framework} BERTopic yang telah dimodifikasi seperti pada Gambar \ref{fig:framework-bertopic-modifikasi}.
 Penentuan parameter pada tiap komponen dilakukan dengan dua skenario, yaitu mengacu pada \textit{baseline} dari penelitian terdahulu dan eksperimen penalaan parameter untuk memperoleh kinerja terbaik berdasarkan metrik evaluasi.
-Sebagaimana ditunjukkan pada Gambar \ref{fig:framework-bertopic-modifikasi}, alur pembuatan model ini terdiri dari empat komponen utama:
+Sebagaimana ditunjukkan pada Gambar \ref{fig:framework-bertopic-modifikasi}, alur pembuatan model ini terdiri dari lima komponen utama:
 
 \begin{enumerate}[nosep]
 	\item \textit{Document Embedding} menggunakan IndoBERTweet \\
@@ -124,6 +149,9 @@ Sebagaimana ditunjukkan pada Gambar \ref{fig:framework-bertopic-modifikasi}, alu
 	      sehingga menghasilkan kata kunci representatif yang lebih relevan dan
 	      stabil secara semantik untuk setiap topik \citep{iaes2025indobert}. Parameter BM25 yang digunakan
 	      meliputi \textit{k1} dan \textit{b}.
+
+	\item \textit{Topic Reduction} (Reduksi Topik Otomatis) \\
+	      Jumlah topik yang terbentuk disederhanakan secara otomatis (\textit{nr\_topics} = \textit{"auto"}) dengan menggabungkan klaster-klaster topik yang memiliki kemiripan semantik tinggi pada ruang \textit{embedding}, serta menerapkan kondisi pengaman (\textit{safety guard}) untuk menjaga kestabilan pemrosesan apabila jumlah topik unik $\le 1$.
 \end{enumerate}
 
 \subsection{Evaluasi Model}
@@ -145,7 +173,6 @@ Model dinyatakan memenuhi kriteria apabila kombinasi parameter yang diujikan men
 \label{subsec:system-implementation}
 
 Tahap pengembangan sistem bertujuan untuk mengimplementasikan alur pemodelan topik ke dalam sebuah aplikasi berbasis web yang dapat digunakan secara praktis oleh pengguna, sekaligus menjadi validasi terhadap penerapan \textit{pipeline} yang telah dirancang.
-Gambaran umum alur sistem disajikan pada Lampiran, Gambar~\ref{fig:bab-3-alur-implementasi-sistem}.
 
 Sistem dibangun dengan arsitektur \textit{client-server}, menggunakan Vue.js sebagai \textit{client} dan FastAPI sebagai \textit{server} layanan API.
 Pemrosesan pemodelan topik yang bersifat komputasional berat dijalankan sebagai \textit{background job} menggunakan \textit{background task}, sehingga proses analisis tidak memblokir permintaan pengguna dan status pemrosesan dapat dipantau secara asinkron dengan SSE (\text{Server-Sent Event}) disisi \textit{server}.
@@ -166,7 +193,7 @@ Hasil evaluasi ini akan memberikan gambaran tentang seberapa baik sistem dapat m
 \label{subsec:result}
 
 Tahap analisis hasil dilakukan terhadap keluaran model topik dan metrik evaluasi yang diperoleh dari tahap pengujian.
-Analisis kuantitatif dilakukan dengan membandingkan nilai metrik evaluasi (Embedding Density, Intra-topic Similarity, NPMI, dan Topic Diversity) antara metode modifikasi BERTopic dengan baseline BERTopic. Perbandingan disajikan dalam bentuk tabel dan grafik tren untuk melihat konsistensi performa model seiring penambahan jumlah data.
+Analisis kuantitatif dilakukan dengan membandingkan nilai metrik evaluasi (Embedding Density, Intra-topic Similarity, NPMI, Topic Diversity, dan Black-box Testing) antara metode modifikasi BERTopic dengan baseline BERTopic. Perbandingan disajikan dalam bentuk tabel dan grafik tren untuk melihat konsistensi performa model seiring penambahan jumlah data.
 
 \subsection{Penarikan Kesimpulan}
 \label{subsec:conclusion}
@@ -179,9 +206,9 @@ di masa mendatang.
 \label{sec:ethics}
 
 Penelitian ini menggunakan data riwayat percakapan grup WhatsApp yang bersifat personal, sehingga proses pengumpulan data memperhatikan aspek etika dan perizinan.
-Pengambilan data dilakukan dengan terlebih dahulu mengajukan surat izin penelitian dari pihak kampus kepada admin grup WhatsApp yang menjadi sumber data, sebagaimana ditunjukkan pada Lampiran~\ref{appx:surat-izin-penelitian} (Gambar~\ref{fig:surat-izin-penelitian}).
-Persetujuan admin grup untuk penggunaan data percakapan dalam penelitian ini didokumentasikan melalui tangkapan layar (\textit{screenshot}), sebagaimana ditunjukkan pada Lampiran~\ref{appx:bukti-izin-admin} (Gambar~\ref{fig:bukti-izin-admin-1}, Gambar~\ref{fig:bukti-izin-admin-2}, dan Gambar~\ref{fig:bukti-izin-admin-3}).
-Terdapat beberapa syarat yang diajukan oleh admin grup terkait penggunaan data, pesan tidak boleh disebarluaskan kepada pihak lain dan nama grup harus disamarkan.
+Pengambilan data dilakukan dengan terlebih dahulu membuat surat izin penelitian di Fakultas Ilmu Komputer Universitas Jember, kemudian menyerahkan surat izin penelitian kepada admin grup WhatsApp yang menjadi sumber data, sebagaimana ditunjukkan pada Lampiran~\ref{appx:surat-izin-penelitian} (Gambar~\ref{fig:surat-izin-penelitian}).
+Persetujuan admin grup untuk penggunaan data percakapan dalam penelitian ini didokumentasikan melalui tangkapan layar (\textit{screenshot}), sebagaimana ditunjukkan pada Lampiran~\ref{appx:bukti-izin-admin} (Gambar~\ref{fig:bukti-izin-admin}, mencakup Gambar~\ref{fig:bukti-izin-admin-1}, Gambar~\ref{fig:bukti-izin-admin-2}, dan Gambar~\ref{fig:bukti-izin-admin-3}).
+Terdapat beberapa syarat yang diajukan oleh admin grup terkait penggunaan data, yaitu pesan tidak boleh disebarluaskan kepada pihak lain dan nama grup serta identitas partisipan harus disamarkan.
 
 % ====================================================================
 % CATATAN PENGISIAN BAB METODOLOGI:

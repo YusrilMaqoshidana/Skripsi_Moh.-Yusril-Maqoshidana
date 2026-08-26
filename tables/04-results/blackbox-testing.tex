@@ -1,0 +1,128 @@
+\begingroup
+\pagestyle{fancy}
+\singlespacing
+\setlength{\extrarowheight}{3pt}
+\setlength{\LTpre}{-10pt}
+\setlength{\LTpost}{1pt}
+
+\begin{scriptsize}
+	\begin{longtable}{>{\centering\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{1.5cm} >{\raggedright\arraybackslash}p{1.8cm} >{\raggedright\arraybackslash}p{2.5cm} >{\raggedright\arraybackslash}p{1.4cm} >{\raggedright\arraybackslash}p{2.4cm} >{\centering\arraybackslash}p{0.8cm}}
+
+		\caption{Hasil Pengujian Fungsional Sistem (\textit{Black-Box Testing})} \label{tab:blackbox-testing} \\[6pt]
+		\hline
+		\textbf{ID Uji} & \textbf{Fitur / Modul} & \textbf{Skenario Pengujian} & \textbf{Langkah-langkah Pengujian} & \textbf{Data Uji / Input} & \textbf{Hasil yang Diharapkan} & \textbf{Hasil} \\
+		\hline
+		\endfirsthead
+
+		\caption*{\textbf{Tabel \ref{tab:blackbox-testing}} Hasil Pengujian Fungsional Sistem (\textit{Black-Box Testing})} \\[6pt]
+		\hline
+		\textbf{ID Uji} & \textbf{Fitur / Modul} & \textbf{Skenario Pengujian} & \textbf{Langkah-langkah Pengujian} & \textbf{Data Uji / Input} & \textbf{Hasil yang Diharapkan} & \textbf{Hasil} \\
+		\hline
+		\endhead
+
+		\hline
+		\endfoot
+
+		\hline
+		\endlastfoot
+
+		% --- Modul 1: Landing Page & Navigasi ---
+		\multicolumn{7}{l}{\textbf{1. Modul Landing Page \& Navigasi Utama (\texttt{/} \& \texttt{/about})}} \\
+		\hline
+		TC-NAV-01 & Landing Page & Membuka rute utama aplikasi & 1. Buka browser. \newline 2. Akses \url{http://localhost:5173/}. & URL: \texttt{/} & Halaman Beranda (\textit{HomeView}) tampil dengan hero section, deskripsi fitur, dan tombol CTA "Mulai Analisis Obrolan". & Valid \\
+		\hline
+		TC-NAV-02 & Navigasi CTA & Menekan tombol CTA "Mulai Analisis" & 1. Berada di halaman \texttt{/}. \newline 2. Klik tombol "Mulai Analisis Obrolan". & Klik Tombol & Pengguna diarahkan secara mulus ke halaman wizard upload (\texttt{/upload}). & Valid \\
+		\hline
+		TC-NAV-03 & Halaman About & Membuka rute tentang aplikasi & 1. Klik menu "Tentang" pada Navbar. \newline 2. Atau akses \url{http://localhost:5173/about}. & URL: \texttt{/about} & Halaman \textit{AboutView} tampil menjelaskan metodologi BERTopic, BIRCH Clustering, dan IndoBERTweet. & Valid \\
+		\hline
+		TC-NAV-04 & Navbar Responsive & Pengujian tampilan navbar di layar HP/Mobile & 1. Buka DevTools (F12) $\rightarrow$ Switch to Mobile View (width $<$ 640px). \newline 2. Amati elemen navbar. & Mobile Screen & Elemen navbar menyesuaikan layar (\textit{responsive layout}), menu collapse/hamburger berjalan lancar. & Valid \\
+		\hline
+
+		% --- Modul 2: Wizard Upload Step 1 ---
+		\multicolumn{7}{l}{\textbf{2. Modul Wizard Upload \& Filter (\texttt{/upload}) - Step 1: Upload File}} \\
+		\hline
+		TC-UPL-01 & Upload .txt Valid & Mengunggah berkas ekspor obrolan \texttt{.txt} & 1. Buka rute \texttt{/upload} (Step 1). \newline 2. Drag \& drop atau Browse file \texttt{.txt} ekspor WhatsApp valid. & File: \texttt{whatsapp\_}\allowbreak\texttt{chat.txt} & File berhasil diuraikan (\textit{parsed}), indikator nama file dan ukuran (KB) muncul, tombol "Selanjutnya" aktif. & Valid \\
+		\hline
+		TC-UPL-02 & Upload .zip Valid & Mengunggah berkas ekspor obrolan terkompresi \texttt{.zip} & 1. Buka \texttt{/upload}. \newline 2. Pilih file \texttt{.zip} yang berisi obrolan WhatsApp. & File: \texttt{WhatsApp\_}\allowbreak\texttt{Chat.zip} & File \texttt{.zip} berhasil diekstrak di client-side, pesan terbaca, tombol "Selanjutnya" aktif. & Valid \\
+		\hline
+		TC-UPL-03 & Format Tidak Valid & Mengunggah berkas dengan format selain \texttt{.txt} / \texttt{.zip} & 1. Buka \texttt{/upload}. \newline 2. Pilih file format \texttt{.pdf}, \texttt{.png}, atau \texttt{.docx}. & File: \texttt{dokumen.pdf} & Tampil pesan peringatan merah \textit{"Warning: Format berkas tidak didukung..."}, file ditolak, tombol "Selanjutnya" tetap disabled. & Valid \\
+		\hline
+		TC-UPL-04 & File Korup / Kosong & Mengunggah file \texttt{.txt} kosong tanpa struktur obrolan & 1. Buat file \texttt{empty.txt} (0 byte). \newline 2. Upload file tersebut ke DropZone. & File: \texttt{empty.txt} & Tampil pesan kesalahan \textit{"Gagal memproses berkas chat / tidak ada pesan valid"}, sistem menolak file. & Valid \\
+		\hline
+		TC-UPL-05 & Hapus File (Clear) & Batalkan/hapus pilihan file yang sudah diunggah & 1. Upload file \texttt{.txt} valid. \newline 2. Klik ikon/tombol "Clear / Hapus File". & Klik Clear & Informasi file terhapus, DropZone kembali ke state kosong awal, tombol "Selanjutnya" kembali disabled. & Valid \\
+		\hline
+		TC-UPL-06 & Navigasi Step 1 $\rightarrow$ 2 & Berpindah ke Step 2 Filter Rentang Waktu & 1. Upload file \texttt{.txt} valid. \newline 2. Klik tombol "Selanjutnya". & Klik Selanjutnya & Tampilan berpindah ke \textbf{Step 2 (Filter Tanggal)}. Header Stepper menunjukkan Step 2 aktif. & Valid \\
+		\hline
+
+		% --- Modul 3: Wizard Upload Step 2 ---
+		\multicolumn{7}{l}{\textbf{3. Modul Wizard Upload \& Filter (\texttt{/upload}) - Step 2: Filter Rentang Waktu}} \\
+		\hline
+		TC-FLT-01 & Visualisasi Grafik & Memeriksa grafik aktivitas obrolan harian & 1. Berada di Step 2. \newline 2. Amati grafik \textit{TimeRangeFilter}. & Data Obrolan & Grafik batang/garis keaktifan harian obrolan dari tanggal awal hingga akhir berhasil dirender. & Valid \\
+		\hline
+		TC-FLT-02 & Slider Rentang Tanggal & Menggeser slider rentang tanggal obrolan & 1. Geser handle slider kiri dan kanan (misal 20\% -- 80\%). & Slider Drag & Label tanggal awal dan tanggal akhir diperbarui secara real-time sesuai rentang yang dipilih. & Valid \\
+		\hline
+		TC-FLT-03 & Navigasi Kembali & Menekan tombol "Kembali" ke Step 1 & 1. Berada di Step 2. \newline 2. Klik tombol "Kembali". & Klik Kembali & Tampilan kembali ke \textbf{Step 1 (Upload File)} dengan file yang sudah dipilih sebelumnya tetap tersimpan. & Valid \\
+		\hline
+		TC-FLT-04 & Mulai Analisis & Menekan tombol "Mulai Analisis" & 1. Tentukan rentang tanggal. \newline 2. Klik tombol "Mulai Analisis". & Klik Mulai Analisis & Aplikasi melakukan pemotongan tanggal, anonimisasi pesan client-side, upload CSV ke server, dan pindah ke \textbf{Step 3 (Analisis AI)}. & Valid \\
+		\hline
+
+		% --- Modul 4: Wizard Upload Step 3 ---
+		\multicolumn{7}{l}{\textbf{4. Modul Wizard Upload \& Filter (\texttt{/upload}) - Step 3: Progress Analisis AI (SSE)}} \\
+		\hline
+		TC-ANL-01 & Terminal Progress & Memantau log proses analisis AI secara real-time & 1. Berada di Step 3. \newline 2. Perhatikan \textit{TerminalSimulator}. & SSE Event Stream & 8 tahapan proses (Preprocessing, IndoBERTweet, UMAP, BIRCH, BM25, metrik) berjalan berurutan dengan indikator running $\rightarrow$ completed. & Valid \\
+		\hline
+		TC-ANL-02 & Auto Redirection & Menguji perpindahan otomatis setelah analisis selesai & 1. Tunggu hingga tahapan ke-8 selesai (status \texttt{done: true}). & Auto Event & Setelah jeda singkat ($\sim$800ms), aplikasi secara otomatis melakukan redirect ke rute \texttt{/results}. & Valid \\
+		\hline
+		TC-ANL-03 & Error Backend Handling & Menguji respon sistem jika server backend mati/error & 1. Matikan server Backend (FastAPI). \newline 2. Klik "Mulai Analisis". & Backend Offline & Step 3 menampilkan pesan kesalahan merah \textit{"Koneksi ke server terputus / Gagal mengunggah berkas"}, tombol "Coba Lagi" \& "Kembali ke Filter" aktif. & Valid \\
+		\hline
+		TC-ANL-04 & Tombol Coba Lagi & Mengulang proses analisis saat terjadi kegagalan & 1. Pada kondisi error (TC-ANL-03), nyalakan backend kembali. \newline 2. Klik tombol "Coba Lagi". & Klik Coba Lagi & Proses analisis diulang kembali dari tahap awal tanpa perlu mengunggah ulang file. & Valid \\
+		\hline
+
+		% --- Modul 5: Dashboard Hasil Analisis ---
+		\multicolumn{7}{l}{\textbf{5. Modul Dashboard Hasil Analisis (\texttt{/results})}} \\
+		\hline
+		TC-RES-01 & Ringkasan Metrik & Memeriksa nilai evaluasi statistik \& clustering & 1. Akses halaman \texttt{/results} setelah analisis berhasil. \newline 2. Periksa baris kartu metrik. & Data Metrik Server & Menampilkan kartu: \textit{Topik Terdeteksi}, \textit{Topic Diversity}, \textit{C-NPMI Coherence}, \textit{Embedding Density}, dan \textit{Intra-topic Sim} dengan angka valid. & Valid \\
+		\hline
+		TC-RES-02 & Active Dates Chart & Memeriksa chart keaktifan pesan per tanggal & 1. Amati komponen \textit{ActiveDatesChart}. & Grafik Tanggal & Chart line/bar menampilkan grafik volume obrolan per tanggal dengan tooltip aktif saat dikursorkan. & Valid \\
+		\hline
+		TC-RES-03 & Top Senders List & Memeriksa daftar pengirim pesan teraktif & 1. Amati bagian \textit{TopSenderList}. & Data Pengirim & Menampilkan daftar nama/anonim pengirim teratas beserta jumlah pesan dan avatar inisial. & Valid \\
+		\hline
+		TC-RES-04 & Active Hours Chart & Memeriksa grafik keaktifan jam obrolan (00-23) & 1. Amati bagian \textit{ActiveHoursChart}. & Grafik Jam & Visualisasi grafik jam sibuk obrolan grup tampil dengan akurat. & Valid \\
+		\hline
+		TC-RES-05 & Klaster Topik \& Paginasi & Memeriksa kartu klaster topik \& fungsi paginasi & 1. Scroll ke \textit{Daftar Klaster Topik Obrolan}. \newline 2. Uji tombol halaman paginasi (1, 2, next, prev). & Paginator Click & Kartu klaster topik tampil per halaman (default 6), paginasi berfungsi memperbarui daftar topik tanpa reload. & Valid \\
+		\hline
+		TC-RES-06 & Analisis File Baru & Menguji penghapusan session \& navigasi analisis baru & 1. Berada di \texttt{/results}. \newline 2. Klik tombol "Analisis File Baru". & Klik Analisis File Baru & \textbf{1.} Request API \texttt{DELETE} \texttt{/api/results/}\allowbreak\texttt{\{session\_id\}} dikirim. \newline \textbf{2.} \texttt{sessionStorage} dibersihkan. \newline \textbf{3.} State diset ulang ke awal. \newline \textbf{4.} Pengguna diarahkan ke \texttt{/upload} \textbf{Step 1 (Upload)} tanpa perlu di-refresh. & Valid \\
+		\hline
+
+		% --- Modul 6: Detail Topik & Konteks Pesan ---
+		\multicolumn{7}{l}{\textbf{6. Modul Detail Topik \& Konteks Pesan (\texttt{/results/topics/:topicId})}} \\
+		\hline
+		TC-TPC-01 & Navigasi Ke Detail Topik & Membuka halaman detail topik dari dashboard & 1. Berada di \texttt{/results}. \newline 2. Klik salah satu kartu topik (misal Topik \#0). & Klik TopicCard & Pengguna diarahkan ke URL \url{http://localhost:5173/results/topics/0}. Halaman menampilkan label topik, kata kunci, dan daftar pesan klaster. & Valid \\
+		\hline
+		TC-TPC-02 & Filter Search Pesan & Menguji pencarian kata kunci di dalam topik & 1. Berada di detail topik. \newline 2. Ketik kata kunci pada kolom pencarian pesan. & Input: \texttt{tugas} & Daftar pesan terfilter secara otomatis menampilkan pesan yang mengandung kata \texttt{tugas}. & Valid \\
+		\hline
+		TC-TPC-03 & Modal Konteks Pesan & Membuka modal konteks percakapan di sekitar pesan & 1. Klik ikon / tombol "Konteks" pada salah satu baris pesan. \newline 2. Amati modal yang muncul. & Klik Konteks Pesan & Modal \textit{MessageContextModal} terbuka menampilkan 4 pesan sebelum dan 4 pesan sesudah, dengan pesan pilihan di-highlight. & Valid \\
+		\hline
+		TC-TPC-04 & Tutup Modal Konteks & Menutup modal konteks percakapan & 1. Klik ikon silang \texttt{(X)} atau area luar modal konteks. & Klik Close & Modal konteks tertutup dan pengguna kembali ke daftar pesan topik. & Valid \\
+		\hline
+		TC-TPC-05 & Kembali ke Results & Menekan tombol "Kembali ke Hasil Analisis" & 1. Berada di detail topik. \newline 2. Klik tombol "Kembali". & Klik Kembali & Pengguna kembali ke dashboard \texttt{/results} tanpa kehilangan data analisis session tersebut. & Valid \\
+		\hline
+
+		% --- Modul 7: Keamanan Rute & Persistence ---
+		\multicolumn{7}{l}{\textbf{7. Pengujian Keamanan Rute (\textit{Route Guard}) \& \textit{Session Persistence}}} \\
+		\hline
+		TC-SEC-01 & Akses Direct \texttt{/results} Tanpa Session & Membuka URL \texttt{/results} langsung tanpa upload file & 1. Buka tab baru / hapus \texttt{sessionStorage}. \newline 2. Ketik langsung URL \url{http://localhost:5173/results}. & Direct URL Access & Route guard memblokir akses dan otomatis me-redirect pengguna ke rute \texttt{/upload}. & Valid \\
+		\hline
+		TC-SEC-02 & Akses Direct \texttt{/results/topics/0} Tanpa Session & Membuka URL detail topik tanpa session aktif & 1. Hapus \texttt{sessionStorage}. \newline 2. Akses URL \url{http://localhost:5173/results/topics/0}. & Direct URL Access & Route guard memblokir akses dan me-redirect pengguna ke rute \texttt{/upload}. & Valid \\
+		\hline
+		TC-SEC-03 & Akses Direct \texttt{/upload} Saat Session Aktif & Membuka URL \texttt{/upload} saat session analisis masih ada & 1. Lakukan analisis hingga berhasil di \texttt{/results}. \newline 2. Ubah URL browser secara manual ke \texttt{/upload}. & Direct URL Access & Route guard mendeteksi \texttt{sessionStorage} aktif dan otomatis me-redirect kembali ke \texttt{/results}. & Valid \\
+		\hline
+		TC-SEC-04 & Refresh Halaman (F5) di Dashboard & Menekan tombol F5 saat berada di \texttt{/results} & 1. Berada di \texttt{/results}. \newline 2. Tekan F5 / Refresh browser. & Page Refresh (F5) & Aplikasi membaca \texttt{sessionId} dari \texttt{sessionStorage}, mengunduh ulang data overview dari backend, dan tetap berada di \texttt{/results}. & Valid \\
+		\hline
+		TC-SEC-05 & Tombol Back Browser & Menekan tombol Back browser dari \texttt{/results} & 1. Dari \texttt{/results}, tekan tombol "Back" di browser. & Browser Back & Route guard mencegah tampilan bug dan menangani rute secara konsisten. & Valid \\
+		\hline
+
+	\end{longtable}
+\end{scriptsize}
+\setlength{\extrarowheight}{0pt}
+\endgroup

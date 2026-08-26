@@ -10,346 +10,368 @@
 
 \chapter{HASIL DAN PEMBAHASAN}
 
-
 \section{Pengumpulan Data}
 \label{sec:data-collection}
 
-Data penelitian diperoleh dari grup WhatsApp komunitas buku setelah memperoleh izin dari admin grup sebagaimana dijelaskan pada Subbab~\ref{sec:ethics}.
+Data penelitian diperoleh dari grup WhatsApp komunitas buku setelah memperoleh izin dari admin grup seperti yang dijelaskan pada bagian~\ref{sec:ethics}.
 Pengumpulan data dilakukan menggunakan fitur \textit{Export Chat} bawaan aplikasi WhatsApp, yang menghasilkan berkas dalam format \textit{.zip} berisi riwayat percakapan dalam satu berkas \textit{.txt} tanpa media.
 Berkas \textit{.zip} tersebut terlebih dahulu diekstraksi untuk memperoleh file \textit{.txt} yang selanjutnya digunakan sebagai sumber data utama penelitian.
-Data yang diekspor mencakup periode percakapan dari Juni 2023 hingga Juni 2026, dengan total pesan 91.868 sebelum proses pembersihan pesan dengan total partisipan 1307.
+Data yang diekspor mencakup periode percakapan dari Juni 2023 hingga Juni 2026, dengan total pesan 91.868 sebelum proses pembersihan pesan dengan total partisipan 1.307.
 
-Sebagai ilustrasi, potongan data mentah hasil ekspor ditampilkan pada Listing~\ref{lst:contoh-data-mentah}.
-Secara umum, setiap baris percakapan mengikuti pola \texttt{DD/MM/YY HH.MM - Pengirim: Pesan}.
+Sebagai ilustrasi, potongan data mentah hasil ekspor ditampilkan pada Tabel~\ref{tab:contoh-data-mentah}.
+Secara umum, setiap baris percakapan mengikuti pola \textit{DD/MM/YY HH.MM - Pengirim: Pesan}.
 Namun demikian, data mentah juga memuat variasi format lain seperti pesan sistem (misalnya anggota ditambahkan ke grup), placeholder media, tautan, dan penanda pesan yang telah diedit.
 
-\begin{lstlisting}[caption={Contoh potongan data mentah hasil ekspor WhatsApp (nama disamarkan)}, label={lst:contoh-data-mentah}, basicstyle=\ttfamily\small]
-02/02/26 20.46 - User-1: Aku tadi searching sedikit tentang buku ini
-02/02/26 20.47 - User-1: <Media tidak disertakan>
-27/09/25 10.35 - User-3: sheesh
-03/02/26 11.24 - User-4: https://link
-28/09/25 09.48 - User-5: gara gara dapet evernight jadi pengen hyacine <Pesan ini diedit>
-24/04/26 05.12 - User-7 sudah ditambahkan
-\end{lstlisting}
+\input{tables/04-results/raw-data-example.tex}
 
-Berdasarkan potongan data mentah pada Listing~\ref{lst:contoh-data-mentah}, terdapat beberapa karakteristik khas dari riwayat percakapan WhatsApp yang membedakannya dengan teks formal, antara lain:
+Berdasarkan potongan data mentah pada Tabel~\ref{tab:contoh-data-mentah}, terdapat beberapa karakteristik khas dari riwayat percakapan WhatsApp yang membedakannya dengan teks formal, antara lain:
 \begin{enumerate}[nosep]
+    \item Jumlah kata yang singkat dan informal: Pesan cenderung pendek, menggunakan bahasa sehari-hari, dan sering kali mengandung singkatan atau istilah khusus komunitas.
     \item Penggunaan Bahasa Campuran dan Slang: Adanya pencampuran bahasa (seperti kata \textit{``searching''} dan \textit{``sheesh''}) serta istilah khusus domain percakapan (seperti \textit{``evernight''} dan \textit{``hyacine''}).
-    \item Metadata Media: Penanda otomatis \texttt{<Media tidak disertakan>} disematkan oleh sistem WhatsApp untuk menunjukkan file multimedia (gambar, video, stiker, audio) yang tidak diekspor ke dalam file teks biasa.
-    \item Keberadaan Tautan (URL): Terdapat tautan web (\texttt{https://link}) yang dibagikan oleh anggota grup.
-    \item Penanda Pesan Diedit: Penanda metadata \texttt{<Pesan ini diedit>} di akhir pesan muncul secara otomatis ketika pengirim melakukan perubahan (\textit{edit}) pada isi pesan yang dikirimkan.
+    \item Metadata Media: Penanda otomatis \textit{<Media tidak disertakan>} disematkan oleh sistem WhatsApp untuk menunjukkan file multimedia (gambar, video, stiker, audio) yang tidak diekspor ke dalam file teks biasa.
+    \item Keberadaan Tautan (URL): Terdapat tautan web (\textit{https://link}) yang dibagikan oleh anggota grup.
+    \item Penanda Pesan Diedit: Penanda metadata \textit{<Pesan ini diedit>} di akhir pesan muncul secara otomatis ketika pengirim melakukan perubahan (\textit{edit}) pada isi pesan yang dikirimkan.
     \item Pesan Sistem (System Message): Baris terakhir memuat notifikasi otomatis sistem (seperti penambahan anggota baru) yang formatnya tidak diawali oleh nama pengirim biasa.
 \end{enumerate}
 
 \section{Praproses Data}
 \label{sec:preprocessing}
 
-\subsection{Parsing Data Chat WhatsApp}
+Tahap praproses data pada penelitian ini dilakukan untuk membersihkan dan mempersiapkan teks percakapan mentah WhatsApp agar siap diolah oleh model \textit{topic modeling} BERTopic. Alur praproses merealisasikan arsitektur \textit{Single-Path Preprocessing} yang mencakup lima alur utama, yaitu parsing data mentah dan deteksi format timestamp ISO 8601, anonimisasi identitas pengirim dan \textit{mention} pengguna (SHA-256), penyaringan pesan notifikasi otomatis sistem dan berkas kontak, pembersihan teks kontekstual (\textit{case folding}, normalisasi Unicode, transliterasi emoji, normalisasi kata tidak baku dan pemanjangan karakter), serta penyaringan panjang dokumen minimal ($< 3$ kata).
 
-Berkas \textit{.txt} hasil ekspor chat selanjutnya diproses melalui tahap \textit{parsing} menggunakan \textit{Python} dan \textit{regular expression}. Pada tahap ini, sistem terlebih dahulu mendeteksi format \textit{timestamp} dari berkas masukan untuk mengakomodasi beberapa format ekspor \textit{WhatsApp}, seperti format Android Indonesia 12 jam, Android Indonesia 24 jam, dan Android Inggris 12 jam.
+Sebagai gambaran konkret mengenai perubahan bentuk teks pada setiap tahap pembersihan, contoh transformasi teks pesan sebelum dan sesudah praproses disajikan pada Tabel~\ref{tab:contoh-hasil-praproses}.
 
-Setelah format teridentifikasi, setiap baris data dinormalisasi dengan menghapus karakter tak terlihat (\textit{invisible characters}) dan menyeragamkan karakter spasi agar pola pesan dapat dikenali secara konsisten. Selanjutnya, proses \textit{parsing} dilakukan untuk mengekstraksi isi pesan pengguna (\textit{user message}) serta memisahkannya dari \textit{system message} seperti notifikasi penambahan anggota atau media yang tidak disertakan.
+\input{tables/04-results/preprocessing-summary-table.tex}
 
-Pesan yang terdiri atas beberapa baris (\textit{multiline message}) digabungkan kembali menjadi satu entri utuh untuk menjaga konteks pesan. Hasil akhir dari proses ini disimpan ke dalam format \textit{CSV} dengan satu atribut utama, yaitu \textit{Pesan}, yang kemudian digunakan sebagai masukan pada tahap pra-pemrosesan berikutnya.
+Berdasarkan contoh transformasi pada Tabel~\ref{tab:contoh-hasil-praproses}, terlihat bahwa baris pesan mentah yang berupa notifikasi otomatis sistem (seperti \textit{``pesan ini telah dihapus''} atau lampiran berkas kontak \textit{.vcf}) dieliminasi sepenuhnya menjadi baris kosong yang kemudian dibuang dari dataset. Untuk perlindungan privasi data, nama pengirim dan penyebutan (\textit{mention}) disamarkan menjadi token terenkripsi \textit{@User-[hash]} di sisi klien. Pada aspek pembersihan teks kontekstual, penanda metadata sistem \textit{<...>} dan URL dihapus sepenuhnya, karakter visual emoji ditransliterasi menjadi teks deskriptif (seperti emoji tersenyum menjadi \textit{:smiling\_face:}), pemanjangan karakter berulang disederhanakan (misalnya kata \textit{``bisaaa''} menjadi \textit{``bisa''}), serta kata-kata informal diseragamkan ke bentuk kata baku (seperti \textit{``yg''} $\rightarrow$ \textit{``yang''}).
 
-\input{tables/04-results/example-data-csv.tex}
+Sementara itu, rincian statistik dampak kuantitatif serta persentase pengaruh dari setiap tahap pembersihan terhadap keseluruhan dataset percakapan disajikan secara menyeluruh pada Tabel~\ref{tab:statistik-praproses}.
 
-\subsection{Penghapusan Artefak Teks \texttt{<...>}}
+\input{tables/04-results/preprocessing-stats-table.tex}
 
-Pada tahap pra-pemrosesan, dilakukan pembersihan terhadap artefak teks yang ditandai dengan pola \texttt{<...>} menggunakan \textit{regular expression}.
-Artefak ini umumnya berasal dari metadata bawaan hasil ekspor chat \textit{WhatsApp}, seperti \texttt{<Media omitted>}, \texttt{<Pesan ini diedit>}, atau penanda sistem lainnya yang tidak merepresentasikan isi percakapan aktual antar pengguna.
+Berdasarkan statistik kuantitatif pada Tabel~\ref{tab:statistik-praproses}, dari total dataset percakapan WhatsApp mentah sebanyak 91.868 baris pesan, alur praproses secara bertahap mereduksi derau dan membersihkan teks. Penyaringan notifikasi otomatis bawaan sistem WhatsApp dan lampiran berkas kontak (\textit{.vcf}) mengeliminasi sebanyak 2.415 baris pesan (2,63\%). Pembersihan artefak ekspor WhatsApp seperti teks penanda \textit{<...>} (misalnya \textit{<Media tidak disertakan>}) berdampak pada 14.739 baris pesan (16,04\%), sedangkan penghapusan pranala luar (URL) berdampak pada 3.412 baris pesan (3,71\%).
 
-Proses pembersihan dilakukan pada kolom \textit{Pesan\_Preprocessed}, yang merupakan salinan awal dari kolom \textit{Pesan}.
-Selanjutnya, pola \texttt{<.*?>} digunakan untuk mendeteksi sekaligus menghapus seluruh substring yang berada di antara simbol tanda kurung sudut (\texttt{< >}).
-Setelah pola tersebut dihapus, dilakukan \textit{trimming} untuk menghilangkan spasi berlebih di awal maupun akhir teks.
+Pada tahap normalisasi konten, transliterasi emoji (\textit{demojize}) mengonversi karakter emosional menjadi token deskriptif pada 41.487 baris pesan (45,16\%) tanpa merusak vektor \textit{embedding} IndoBERTweet. Penyeragaman ekspresi tawa informal berdampak pada 9.258 baris data (10,08\%), serta normalisasi pemanjangan karakter berulang (\textit{elongation}) dan kata tidak baku (\textit{slang}) berdampak pada 18.642 baris data (20,29\%). Kedua langkah ini secara signifikan berhasil menekan tingkat kejarangan kosakata (\textit{vocabulary sparsity}). Selain itu, anonimisasi data sensitif pada isi teks berhasil menyamarkan alamat email dan nomor telepon independen menjadi token \textit{@USER} pada 1.306 baris data (1,42\%).
 
-Berdasarkan hasil identifikasi, dari total 91.868 baris data, ditemukan sebanyak 14.739 baris yang mengandung pola \texttt{<...>} atau setara dengan 16,04% dari keseluruhan dataset. Jumlah total baris sebelum dan sesudah proses tetap sama, yaitu 91.868 baris, karena tahap ini hanya membersihkan konten teks tanpa menghapus entri data.
+Pada tahap akhir, dilakukan penyaringan terhadap baris pesan yang tidak memenuhi kriteria minimal panjang dokumen. Pesan yang memiliki jumlah kata kurang dari 3 kata ($< 3$ kata, seperti pesan singkat \textit{"ok"}, \textit{"ya"}, atau pesan kosong setelah pembersihan) tereliminasi sebanyak 33.360 baris (36,31\%). Secara keseluruhan, alur praproses ini berhasil mereduksi dataset dari 91.868 baris data mentah menjadi \textbf{56.089 dokumen bersih} (\textit{Pesan\_Preprocessed}) atau setara dengan 61,05\% data masukan berkualitas tinggi yang siap digunakan pada tahap pemodelan topik BERTopic. Adapun pembuangan kata umum (\textit{stopword removal}) diimplementasikan langsung pada komponen \textit{CountVectorizer} saat pembuatan model.
 
-Contoh hasil pembersihan ditunjukkan pada Tabel~\ref{tab:remove-angle-bracket}. Terlihat bahwa pesan yang semula hanya berisi metadata seperti \texttt{<Media omitted>} berubah menjadi string kosong setelah proses pembersihan. Hal ini menunjukkan bahwa artefak tersebut tidak mengandung informasi semantik yang relevan untuk analisis topik, sehingga perlu dihilangkan agar tidak menjadi \textit{noise} pada tahap pemodelan topik.
 
-\input{tables/04-results/remove-angle-bracket.tex}
+\section{Pembuatan Model (Modified BERTopic)}
+\label{sec:model-creation-results}
 
-\subsection{Penghapusan URL}
+Tahap pembuatan model merealisasikan arsitektur \textit{pipeline} BERTopic modifikasi yang telah dirancang untuk menangani karakteristik khusus data percakapan WhatsApp. Pemodelan topik dijalankan pada data hasil praproses yang memenuhi kriteria penyaringan minimal 3 kata. Alur kerja pemodelan terdiri dari lima tahapan utama beserta alasan teknis pemilihan parameternya:
 
-Pada tahap pra-pemrosesan, dilakukan penghapusan \textit{Uniform Resource Locator} (URL) dari teks percakapan. URL umumnya berupa tautan menuju situs web, media sosial, video, atau artikel daring, seperti tautan \textit{YouTube}, \textit{Instagram}, \textit{TikTok}, dan halaman web lainnya. Dalam konteks analisis topik, keberadaan URL cenderung tidak memberikan informasi semantik yang relevan terhadap isi percakapan karena lebih merepresentasikan referensi eksternal dibandingkan konten tekstual pesan itu sendiri.
+\subsection{Pembangkitan Vektor Embedding dengan IndoBERTweet}
+\label{subsec:indobertweet-embedding-results}
 
-Proses penghapusan URL dilakukan menggunakan \textit{regular expression} dengan pola \texttt{https?://\textbackslash S+ | www\textbackslash .\textbackslash S+}, yang dirancang untuk mendeteksi tautan yang diawali dengan \texttt{http://}, \texttt{https://}, maupun \texttt{[www](http://www).}. Setiap URL yang terdeteksi kemudian dihapus dari kolom \textit{Pesan\_Preprocessed}.
-Setelah URL dihapus, spasi berlebih akibat proses penghapusan dinormalisasi agar teks tetap rapi dan konsisten.
+Setiap dokumen pesan dikonversi menjadi representasi vektor numerik padat (\textit{dense vector}) berdimensi 768 menggunakan model bahasa pra-latih \textit{indolem/indobertweet-base-uncased}. Alasan pemilihan model IndoBERTweet dibanding model transformer umum (seperti BERT multilingual) adalah karena IndoBERTweet dilatih khusus menggunakan korpus teks media sosial Indonesia berskala besar. Model ini memiliki kemampuan tinggi dalam menangkap konteks semantik bahasa tidak baku, singkatan informal, serta ekspresi emosional yang dominan pada percakapan grup WhatsApp. Pembangkitan embedding dilakukan pada kolom pesan yang masih mempertahankan kata hubung dan struktur tanda baca agar representasi kontekstual kata di dalam vektor $N \times 768$ dapat terekstraksi secara utuh dan kaya.
 
-Untuk mengevaluasi dampak proses ini, dilakukan perbandingan antara data sebelum dan sesudah pembersihan. Baris yang mengalami perubahan ditandai menggunakan \textit{masking} logis, yaitu dengan membandingkan isi teks sebelum dan sesudah transformasi. Jumlah baris yang berubah merepresentasikan banyaknya pesan yang mengandung URL.
+\subsection{Reduksi Dimensi dengan UMAP}
+\label{subsec:umap-reduction-results}
 
-Contoh hasil penghapusan URL ditunjukkan pada Tabel~\ref{tab:remove-url}. Terlihat bahwa terdapat beberapa jenis perubahan. Pada pesan yang hanya berisi URL, hasil pra-pemrosesan menjadi string kosong. Sementara itu, pada pesan yang memuat URL sekaligus teks tambahan, hanya bagian URL yang dihapus dan isi pesan utama tetap dipertahankan. Pendekatan ini memastikan bahwa informasi tekstual yang masih relevan untuk analisis topik tetap terjaga, sementara komponen yang berpotensi menjadi \textit{noise} berhasil dihilangkan.
+Vektor embedding berdimensi 768 direduksi menjadi ruang vektor berdimensi 5 menggunakan algoritma UMAP (\textit{Uniform Manifold Approximation and Projection}). Pemilihan konfigurasi parameter UMAP didasarkan pada pertimbangan matematis dan struktur manifold data teks:
+\begin{enumerate}[nosep]
+    \item \textit{n\_neighbors} = 25: Parameter ini mengontrol keseimbangan antara struktur lokal dan global data. Nilai 25 dipilih untuk memberikan pandangan manifold yang cukup luas agar sub-topik percakapan tidak terpecah menjadi klaster-klaster mikro yang berlebihan, sekaligus mempertahankan hubungan semantik antar-topik utama.
+    \item \textit{n\_components} = 5: Dimensi kompresi target diatur pada 5 dimensi untuk mengatasi masalah kelangkaan data berdimensi tinggi (\textit{curse of dimensionality}) pada pengklasteran, tanpa menghilangkan varians semantik penting yang dibutuhkan untuk memisahkan topik.
+    \item \textit{min\_dist} = 0.0: Nilai 0.0 memungkinkan dokumen-dokumen dengan representasi semantik yang mirip untuk mengelompok sangat rapat di dalam ruang tereduksi, sehingga membentuk batas klaster yang tegas dan padat.
+    \item \textit{metric} = \textit{"cosine"}: Metrik kemiripan kosinus digunakan karena mampu mengukur sudut orientasi antar-vektor dokumen teks berdimensi tinggi secara lebih presisi dibanding metrik \textit{Euclidean} yang rentan terhadap perbedaan panjang dokumen.
+\end{enumerate}
 
-\input{tables/04-results/remove-url.tex}
+\subsection{Pengklasteran dengan Custom BIRCH Clustering (BirchWithOutliers)}
+\label{subsec:birch-clustering-results}
 
-\subsection{Normalisasi Mention}
+Data berdimensi rendah ($N \times 5$) selanjutnya dikelompokkan menggunakan algoritma BIRCH (\textit{Balanced Iterative Reducing and Clustering using Hierarchies}) yang dimodifikasi khusus dengan mekanisme pengkelasifikasi pencilan berbasis persentil jarak kosinus terhadap centroid (\textit{BirchWithOutliers}). Parameter pengklasteran diatur berdasarkan alasan teknis berikut:
+\begin{enumerate}[nosep]
+    \item \textit{threshold} = 0.25: Menentukan batas radius maksimum kekompakan subklaster pada pohon fitur (\textit{CF-Tree}). Nilai 0.25 dipilih untuk memastikan bahwa dokumen-dokumen yang masuk ke dalam satu subklaster memiliki kerapatan semantik yang tinggi dan tidak terlalu meluas.
+    \item \textit{branching\_factor} = 50: Membatasi kapasitas maksimum simpul anak pada setiap \textit{node} pohon CF-Tree menjadi 50. Parameter ini menjaga efisiensi konsumsi memori dan kecepatan pemrosesan hierarki saat menangani ribuan dokumen percakapan.
+    \item \textit{outlier\_percentile} = 95.0: Berbeda dari HDBSCAN yang membuang lebih dari 40\% data sebagai pencilan, mekanisme ini mengukur jarak kosinus setiap dokumen ke centroid klasternya $d(x, c) = 1 - \frac{x \cdot c}{\|x\| \|c\|}$, lalu hanya mengeliminasi 5\% dokumen terluar (yang jaraknya melebihi persentil ke-95) sebagai pencilan (label $-1$). Hal ini secara signifikan menekan persentase \textit{outlier rate} tanpa mengorbankan kualitas kekompakan klaster.
+    \item \textit{min\_cluster\_size} = 5: Klaster kerdil yang memiliki anggota kurang dari 5 pesan dieliminasi dan dilebur menjadi label $-1$. Langkah ini diambil karena klaster dengan anggota yang sangat sedikit tidak memiliki substansi statistik yang memadai untuk merepresentasikan sebuah tema pembicaraan grup.
+    \item \textit{metric} = \textit{"cosine"}: Menjamin konsistensi pengukuran jarak antar-vektor dari tahap UMAP hingga perhitungan centroid klaster pada BIRCH.
+\end{enumerate}
 
-Pada tahap pra-pemrosesan, dilakukan normalisasi terhadap \textit{mention} atau penandaan pengguna yang diawali dengan simbol \texttt{@}. Dalam data percakapan \textit{WhatsApp}, \textit{mention} dapat muncul dalam berbagai format, seperti nomor telepon (misalnya \texttt{@+62 895-xxxx-xxxx}), nama pengguna, maupun \textit{username} khusus. Elemen ini umumnya berfungsi sebagai penanda identitas pengguna, bukan sebagai representasi topik pembicaraan.
+\subsection{Penyaringan Stopwords WhatsApp dan Representasi BM25}
+\label{subsec:bm25-representation-results}
 
-Keberadaan \textit{mention} dalam teks dapat menimbulkan \textit{noise} pada proses analisis topik karena model dapat menganggap nama atau nomor tertentu sebagai token penting, padahal informasi tersebut tidak memiliki makna semantik yang relevan terhadap isi percakapan. Selain itu, normalisasi \textit{mention} juga membantu menjaga anonimitas data dengan mengurangi paparan identitas pengguna.
+Setelah klaster dokumen terbentuk, kata kunci representatif untuk setiap topik diekstrak menggunakan algoritma pembobotan BM25 (\textit{BM25Representation}) menggantikan skema c-TF-IDF konvensional:
+\begin{enumerate}[nosep]
+    \item \textit{ngram\_range} = (1, 2): Ekstraksi fitur kata menggunakan \textit{CountVectorizer} diatur pada unigram dan bigram agar dapat menangkap frasa dua kata yang memiliki makna domain spesifik di dalam grup WhatsApp (seperti \textit{"buku baru"} atau \textit{"terima kasih"}).
+    \item Kamus \textit{STOPWORDS} 9 Kategori: Menerapkan penyaringan kata umum khusus wacana WhatsApp yang mencakup kata hubung formal, kata tanya/deiktik, sapaan/pronomina, partikel filler/tawa, singkatan gaul, kata fungsi tambahan, derau Bahasa Inggris, kata emoji, dan noise platform. Penyaringan ini mencegah kata-kata wacana harian yang frekuensinya tinggi mendominasi peringkat kata kunci topik.
+    \item Parameter Saturasi $k_1 = 1.2$: Mengontrol tingkat saturasi frekuensi kata. Nilai 1.2 dipilih untuk membatasi kontribusi frekuensi kata yang muncul berulang kali di dalam satu pesan (seperti ekspresi tawa atau kata penegas berulang) agar tidak mendominasi pembobotan secara tidak seimbang.
+    \item Parameter Normalisasi Panjang $b = 0.5$: Menyeimbangkan kontribusi panjang dokumen. Nilai $b = 0.5$ memberikan penyesuaian yang adil antara pesan singkat berdurasi satu frasa dengan pesan panjang berparagraf multi-kalimat pada percakapan WhatsApp.
+\end{enumerate}
 
-Proses normalisasi dilakukan menggunakan \textit{regular expression} untuk mendeteksi dua pola utama, yaitu \textit{mention} berbasis nomor telepon dan \textit{mention} berbasis nama pengguna. Seluruh \textit{mention} yang terdeteksi kemudian diganti dengan token seragam, yaitu \texttt{@USER}. Pendekatan ini memungkinkan informasi bahwa suatu pesan mengandung referensi kepada pengguna lain tetap dipertahankan, tanpa menyimpan identitas spesifik pengguna tersebut.
-
-Untuk mengevaluasi hasil transformasi, dilakukan perbandingan antara teks sebelum dan sesudah normalisasi. Baris yang mengalami perubahan ditandai menggunakan \textit{masking} logis. Berdasarkan hasil identifikasi, dari total 91.868 baris data, ditemukan sebanyak 1.306 baris yang mengandung \textit{mention}, atau setara dengan 1,42% dari keseluruhan dataset.
-
-Contoh hasil normalisasi ditunjukkan pada Tabel~\ref{tab:normalize-mention}. Terlihat bahwa \textit{mention} dalam bentuk nomor telepon maupun nama pengguna berhasil diganti menjadi token \texttt{@USER}. Dengan demikian, struktur percakapan tetap terjaga karena keberadaan referensi antarpengguna masih dapat dikenali, sementara identitas spesifik pengguna telah dianonimkan.
-
-\input{tables/04-results/normalize-mention.tex}
-
-\subsection{Transliterasi Emoji}
-
-Pada tahap pra-pemrosesan, dilakukan transliterasi emoji untuk mengubah simbol emoji menjadi representasi teks yang dapat dipahami oleh model pemrosesan bahasa alami. Emoji merupakan komponen penting dalam percakapan digital karena sering digunakan untuk mengekspresikan emosi, reaksi, maupun konteks nonverbal. Jika emoji dihapus secara langsung, sebagian informasi semantik yang terkandung dalam pesan berpotensi hilang.
-
-Proses transliterasi dilakukan menggunakan pustaka \textit{Python} \texttt{emoji} dan \texttt{regex}.
-Sebelum transliterasi, dilakukan normalisasi terhadap emoji yang muncul secara berulang menggunakan pola \textit{grapheme cluster}. Langkah ini bertujuan untuk mereduksi rangkaian emoji identik yang berulang menjadi satu simbol saja, sehingga ekspresi seperti [emoji tertawa][emoji tertawa][emoji tertawa] atau [emoji tangan melipat][emoji tangan melipat] disederhanakan menjadi [emoji tertawa] dan [emoji tangan melipat].
-Normalisasi ini membantu mengurangi redundansi token tanpa menghilangkan makna emosional utama dari pesan.
-
-Setelah normalisasi, setiap emoji dikonversi menjadi deskripsi tekstual menggunakan fungsi \textit{demojize}.
-Sebagai contoh, emoji \texttt{[emoji tersenyum]} ditransliterasikan menjadi token \textit{smiling\_face}.
-Setelah transliterasi selesai, spasi berlebih yang muncul akibat proses konversi dinormalisasi kembali agar format teks tetap konsisten.
-
-Untuk mengevaluasi dampak transformasi, dilakukan perbandingan antara teks sebelum dan sesudah proses transliterasi. Baris yang mengalami perubahan ditandai menggunakan \textit{masking} logis. Berdasarkan hasil identifikasi, dari total 91.868 baris data, terdapat 41.487 baris yang mengalami perubahan setelah proses transliterasi dan normalisasi, atau setara dengan 45,16% dari keseluruhan dataset.
-
-Contoh hasil transliterasi ditunjukkan pada Tabel~\ref{tab:emoji-transliteration}. Terlihat bahwa emoji yang semula berupa simbol visual berhasil diubah menjadi token tekstual yang tetap mempertahankan makna emosionalnya. Pendekatan ini memungkinkan informasi emosional dalam percakapan tetap terwakili dalam bentuk token yang dapat diproses oleh model analisis topik.
-
-\input{tables/04-results/emoji-transliteration.tex}
-
-\subsection{Normalisasi Kata Tawa}
-
-Pada tahap pra-pemrosesan, dilakukan normalisasi terhadap kata-kata yang merepresentasikan ekspresi tawa. Dalam percakapan informal berbasis teks, ekspresi tawa dapat muncul dalam berbagai variasi penulisan, seperti \texttt{wkwk}, \texttt{wkwwk}, \texttt{haha}, \texttt{hahaha}, \texttt{hehe}, \texttt{hihi}, \texttt{xixi}, \texttt{kwkwkw}, hingga bentuk serapan dari bahasa Inggris seperti \texttt{lol} dan \texttt{lmao}. Meskipun memiliki bentuk yang beragam, seluruh variasi tersebut pada dasarnya menyampaikan makna semantik yang serupa, yaitu ekspresi tertawa atau humor.
-
-Keberagaman bentuk penulisan kata tawa dapat meningkatkan sparsitas kosakata (\textit{vocabulary sparsity}) karena model akan memperlakukan setiap variasi sebagai token yang berbeda. Hal ini dapat mengurangi kualitas representasi teks dan berpotensi memengaruhi hasil pemodelan topik. Oleh karena itu, seluruh variasi kata tawa dinormalisasi menjadi satu bentuk token standar, yaitu \texttt{wkwk}.
-
-Proses normalisasi dilakukan menggunakan \textit{regular expression} yang dirancang untuk mendeteksi berbagai pola kata tawa, termasuk pola berbasis pengulangan karakter maupun suku kata. Seluruh pola yang terdeteksi kemudian diganti dengan token \texttt{wkwk}. Setelah transformasi, spasi berlebih dinormalisasi kembali agar struktur teks tetap konsisten.
-
-Untuk mengevaluasi dampak normalisasi, dilakukan perbandingan antara teks sebelum dan sesudah transformasi menggunakan \textit{masking} logis. Berdasarkan hasil identifikasi, dari total 91.868 baris data, ditemukan 9.258 baris yang mengalami perubahan akibat proses normalisasi kata tawa, atau setara dengan 10,08% dari keseluruhan dataset.
-
-Contoh hasil normalisasi ditunjukkan pada Tabel~\ref{tab:laughter-normalization}. Terlihat bahwa berbagai bentuk ekspresi tawa seperti \texttt{Haha}, \texttt{haha}, dan \texttt{hahaha} berhasil diseragamkan menjadi token \texttt{wkwk}. Dengan demikian, informasi mengenai ekspresi humor tetap dipertahankan, namun variasi token yang tidak perlu dapat dikurangi.
-
-\input{tables/04-results/laughter-normalization.tex}
-
-\subsection{Anonimisasi Identitas Pengirim}
-\label{subsec:anonymization-sender}
-
-Selain melakukan normalisasi terhadap penyebutan (\textit{mention}) pengguna di dalam isi pesan, sistem juga melakukan anonimisasi terhadap identitas pengirim pesan asli pada sisi klien sebelum data dikirimkan ke server. Hal ini bertujuan untuk memastikan kepatuhan terhadap regulasi privasi data pribadi.
-
-Proses anonimisasi dilakukan dengan memanfaatkan algoritma \textit{hashing} SHA-256 yang ditambahkan dengan garam pengaman (\textit{salt}) berupa string \texttt{"chat-analisis-v1"}. Formula untuk menghasilkan nama samaran (\textit{pseudonym}) pengirim digambarkan sebagai berikut:
+Formula pembobotan kata kunci BM25 dirumuskan sebagai:
 \begin{equation}
-\text{Hash} = \text{SHA-256}(\text{"chat-analisis-v1"} \parallel \text{Pengirim\_Normalisasi})
+    BM25(q, D) = \sum_{i=1}^{n} \text{IDF}(q_i) \cdot \frac{f(q_i, D) \cdot (k_1 + 1)}{f(q_i, D) + k_1 \cdot \left(1 - b + b \cdot \frac{|D|}{\text{avgdl}}\right)}
 \end{equation}
+di mana $\text{IDF}(q_i) = \log\left(\frac{N - n(q_i) + 0.5}{n(q_i) + 0.5}\right)$. Skema BM25 secara konsisten menghasilkan kata kunci yang lebih bersih, koheren, dan informatif bagi pengguna.
 
-Untuk kemudahan visualisasi pada antarmuka pengguna, nilai \textit{hash} tersebut dipotong hingga menyisakan 4 karakter pertama (\textit{truncated hash}) dengan awalan kata \texttt{User-}. Apabila format pengirim terdeteksi sebagai nomor telepon (misalnya diawali dengan tanda \texttt{+} atau digit angka berderet panjang), sistem akan mengekstrak 4 digit terakhir dari nomor telepon tersebut dan menyematkannya di belakang nilai \textit{hash} dengan pemisah karakter titik tengah ($\cdot$), sehingga menghasilkan format seperti \texttt{User-[hash]·[4\_digit\_terakhir]}. Sementara itu, untuk pengirim berupa nama teks biasa, format yang dihasilkan adalah \texttt{User-[hash]}.
+\subsection{Reduksi Topik Otomatis dan Kondisi Pengaman (Safety Guard)}
+\label{subsec:topic-reduction-results}
 
-Contoh hasil anonimisasi identitas pengirim ditunjukkan pada Tabel~\ref{tab:normalize-sender-anon}. Hasil ini menunjukkan bahwa nama asli pengirim berhasil disamarkan secara permanen sebelum data meninggalkan perangkat pengguna, sehingga kerahasiaan identitas tetap terjamin tanpa mengorbankan kemampuan analisis relasi antarpengguna dalam grup.
+Sebagai tahap akhir pembuatan model, dilakukan penyederhanaan jumlah topik secara otomatis menggunakan metode reduksi topik bawaan BERTopic dengan parameter \textit{nr\_topics} = \textit{"auto"}. Langkah ini menggabungkan klaster-klaster topik yang memiliki kemiripan semantik ruang embedding yang sangat tinggi untuk menghasilkan kumpulan topik yang lebih ringkas dan relevan.
 
-\begingroup
-\renewcommand{\arraystretch}{1}
-\begin{table}[H]
+Untuk menjaga keandalan pemrosesan sistem, diterapkan \textbf{kondisi pengaman} (\textit{safety guard}) pada tahap ini. Sebelum proses reduksi otomatis dipanggil, sistem memeriksa jumlah topik unik non-pencilan yang terbentuk. Jika jumlah topik unik non-pencilan kurang dari atau sama dengan satu topik ($\le 1$), pemanggilan fungsi reduksi topik otomatis dilewati. Alasan teknis penerapan kondisi pengaman ini adalah untuk menghindari galat pembagian kosong (\textit{division by zero}) atau kesalahan iterasi pada pustaka BERTopic saat memproses dataset percakapan berskala sangat kecil atau dataset yang pesannya didominasi oleh pencilan.
+
+\section{Pengujian dan Evaluasi Kuantitatif Model}
+\label{sec:model-evaluation-results}
+
+Untuk memvalidasi performa dan efektivitas dari arsitektur \textit{pipeline} BERTopic modifikasi yang diusulkan, dilakukan pengujian kurva pembelajaran (\textit{learning curve}) dengan memotong dataset menjadi beberapa bagian persentase, yaitu 20\%, 40\%, 60\%, 80\%, dan 100\%. Evaluasi ini membandingkan kinerja model baseline standar dengan model usulan (\textit{proposed}) yang menggunakan integrasi komponen baru.
+
+Metrik evaluasi yang digunakan mencakup jumlah topik yang terbentuk (\textit{n\_topics}), persentase dokumen pencilan (\textit{Outlier Rate}), keberagaman kata kunci (\textit{Topic Diversity}), koherensi semantik kata kunci (\textit{C-NPMI Coherence}), kepadatan klaster di ruang vektor semantik (\textit{Embedding Density}), dan kemiripan dokumen internal klaster (\textit{Intra-topic Similarity}).
+
+Hasil pengujian kurva pembelajaran untuk model baseline disajikan pada Tabel~\ref{tab:baseline-metrics}, sedangkan hasil untuk model usulan (proposed) disajikan pada Tabel~\ref{tab:proposed-metrics}.
+
+\begin{table}[htbp]
 \centering
-\caption{Contoh Hasil Anonimisasi Identitas Pengirim}
-\label{tab:normalize-sender-anon}
+\caption{Hasil Evaluasi Kurva Pembelajaran (Learning Curve) Model Baseline}
+\label{tab:baseline-metrics}
 \scriptsize
-\begin{tabular}{p{5.5cm} p{5.5cm}}
+\begin{tabular}{cccccccc}
 \toprule
-\textbf{Nama Pengirim Asli} & \textbf{Nama Pengirim Anonim} \\
+\textbf{Split} & \textbf{Jumlah Dokumen} & \textbf{Jumlah Topik} & \textbf{Outlier Rate (\%)} & \textbf{Diversity} & \textbf{C-NPMI} & \textbf{Density} & \textbf{Intra-topic Sim} \\
 \midrule
-Yusril Maqoshidana & User-a8b3 \\
-+62 895-xxxx-xxxx & User-bc45·7890 \\
-Merpati Rent Car Jember & User-d9e2 \\
+20\% & 11.217 & 89 & 41,37\% & 0,9169 & -0,0310 & 0,4827 & 0,5116 \\
+40\% & 22.435 & 101 & 41,92\% & 0,9614 & 0,0421 & 0,5353 & 0,4858 \\
+60\% & 33.653 & 96 & 41,28\% & 0,9677 & 0,0675 & 0,5711 & 0,4862 \\
+80\% & 44.871 & 372 & 43,39\% & 0,9081 & 0,0189 & 0,5551 & 0,5303 \\
+100\% & 56.089 & 251 & 42,42\% & 0,9526 & 0,0662 & 0,5611 & 0,5211 \\
 \bottomrule
 \end{tabular}
 \end{table}
-\endgroup
 
-\subsection{Penghapusan Pesan Sistem dan File Kontak}
-\label{subsec:remove-system-vcf}
+\begin{table}[htbp]
+\centering
+\caption{Hasil Evaluasi Kurva Pembelajaran (Learning Curve) Model Usulan (Proposed)}
+\label{tab:proposed-metrics}
+\scriptsize
+\begin{tabular}{cccccccc}
+\toprule
+\textbf{Split} & \textbf{Jumlah Dokumen} & \textbf{Jumlah Topik} & \textbf{Outlier Rate (\%)} & \textbf{Diversity} & \textbf{C-NPMI} & \textbf{Density} & \textbf{Intra-topic Sim} \\
+\midrule
+20\% & 11.217 & 97 & 14,67\% & 0,9536 & 0,0450 & 0,5787 & 0,6028 \\
+40\% & 22.435 & 37 & 11,99\% & 0,9919 & 0,0846 & 0,6054 & 0,6528 \\
+60\% & 33.653 & 135 & 10,53\% & 0,9489 & 0,0768 & 0,5729 & 0,6240 \\
+80\% & 44.871 & 310 & 9,15\% & 0,9335 & 0,0816 & 0,6140 & 0,6022 \\
+100\% & 56.089 & 102 & 8,79\% & 0,9559 & 0,1567 & 0,6666 & 0,6716 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Data mentah hasil ekspor obrolan \textit{WhatsApp} sering kali memuat notifikasi sistem otomatis, seperti notifikasi keamanan enkripsi, notifikasi keluar/masuk anggota, panggilan tak terjawab, serta lampiran kartu kontak (\textit{.vcf}). Pesan-pesan tersebut tidak merepresentasikan konten komunikasi aktual antar-anggota grup dan tidak memiliki nilai informasi semantik untuk analisis topik, sehingga dikategorikan sebagai pencilan (\textit{outlier}) atau \textit{noise}.
+Visualisasi grafis perbandingan metrik evaluasi sepanjang kurva pembelajaran ditampilkan pada Gambar~\ref{fig:learning-curve-baseline} untuk model baseline dan Gambar~\ref{fig:learning-curve-proposed} untuk model usulan.
 
-Proses pembersihan dilakukan dengan mendeteksi berkas dengan ekstensi \texttt{.vcf} menggunakan pencocokan string dan langsung membuang baris data tersebut dari \textit{dataframe}. Selanjutnya, untuk notifikasi sistem berupa teks, pembersihan dilakukan menggunakan daftar pola ekspresi reguler (\textit{regular expression}) yang mencakup notifikasi sistem dalam Bahasa Indonesia dan Bahasa Inggris (misalnya \texttt{"pesan ini telah dihapus"}, \texttt{"missed voice call"}, atau \texttt{"media tidak disertakan"}). Pola-pola ini dideteksi secara \textit{case-insensitive} pada isi pesan, lalu substring yang cocok digantikan dengan string kosong.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{images/learning_curve_baseline.png}
+\caption{Kurva Pembelajaran (Learning Curve) Model Baseline}
+\label{fig:learning-curve-baseline}
+\end{figure}
 
-Berdasarkan hasil pemrosesan pada dataset, seluruh pesan sistem otomatis dan berkas kontak berhasil dibersihkan. Hal ini mencegah model \textit{embedding} dari pembentukan klaster palsu yang hanya berisi pesan-pesan otomatis sistem.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{images/learning_curve_proposed.png}
+\caption{Kurva Pembelajaran (Learning Curve) Model Usulan (Proposed)}
+\label{fig:learning-curve-proposed}
+\end{figure}
 
-\subsection{Case Folding dan Normalisasi Karakter Unicode}
-\label{subsec:case-folding-unicode}
+\section{Implementasi Sistem}
+\label{sec:system-implementation-results}
 
-Setelah pesan-pesan sistem dibersihkan, dilakukan langkah \textit{case folding} untuk mengubah seluruh huruf kapital dalam teks menjadi huruf kecil (\textit{lowercase}). Hal ini berfungsi untuk mereduksi variasi representasi kosakata akibat perbedaan penggunaan huruf kapital di awal kalimat atau pada penulisan yang tidak konsisten.
+Tahap implementasi sistem mewujudkan rancangan \textit{client-server} menjadi aplikasi berbasis web fungsional yang dapat digunakan oleh pengguna untuk melakukan analisis topik obrolan secara langsung. Sistem ini dibangun dengan arsitektur modern yang memisahkan tanggung jawab antarmuka pengguna (\textit{frontend}) dan pemrosesan data (\textit{backend}) secara jelas:
 
-Bersamaan dengan \textit{case folding}, dilakukan normalisasi karakter Unicode menggunakan skema NFKD (\textit{Normalization Form Compatibility Decomposition}). Langkah ini mendekomposisi karakter-karakter Unicode khusus (seperti spasi dengan lebar berbeda, simbol emotikon non-standar, atau karakter kontrol tersembunyi yang sering dihasilkan oleh keyboard perangkat seluler) menjadi representasi karakter ASCII standar yang setara. Hasil dari langkah ini adalah teks yang bersih dari karakter-karakter asing tersembunyi yang dapat memicu galat (\textit{error}) pada proses tokenisasi dan ekstraksi fitur.
+\subsection{Arsitektur Client-Server dan Komponen Teknologi}
+\label{subsec:client-server-arch}
 
-\subsection{Normalisasi Karakter Berulang (Elongasi) dan Spasi}
-\label{subsec:normalization-elongation}
-
-Karakteristik utama dari bahasa informal pada percakapan \textit{WhatsApp} adalah adanya gejala elongasi huruf atau pemanjangan karakter secara berlebihan untuk mengekspresikan penekanan emosi (misalnya penulisan \texttt{"iyaaaa"}, \texttt{"bisaaa"}, atau \texttt{"okeeyy"}). Gejala ini menyebabkan peningkatan variasi kosakata (\textit{vocabulary sparsity}) karena model komputer akan menganggap kata \texttt{"iya"} dan \texttt{"iyaaaa"} sebagai dua kata yang berbeda secara leksikal.
-
-Sistem mengatasi masalah ini dengan menerapkan fungsi normalisasi karakter berulang menggunakan ekspresi reguler. Aturan yang diterapkan adalah mendeteksi adanya karakter yang berulang sebanyak tiga kali atau lebih secara berturut-turut, kemudian mereduksinya menjadi maksimal dua karakter berturut-turut. Sebagai contoh, kata \texttt{"iyaaaa"} akan direduksi menjadi \texttt{"iyaa"}, yang kemudian akan dipetakan ke bentuk baku \texttt{"ya"} pada tahap normalisasi kata tidak baku berikutnya. Spasi berlebih di dalam teks juga dinormalisasi dengan mengganti spasi ganda atau tabulasi menjadi satu karakter spasi tunggal.
-
-\subsection{Normalisasi Kata Tidak Baku (Slang Normalization)}
-\label{subsec:normalization-slang}
-
-Tahap normalisasi kata tidak baku bertujuan untuk memetakan kata-kata informal, singkatan, slang, dan jargon percakapan mahasiswa ke dalam bentuk kata baku bahasa Indonesia. Proses ini dilakukan dengan mencocokkan setiap token kata di dalam pesan dengan kamus rujukan (\textit{slang dictionary}) yang telah didefinisikan.
-
-Kamus rujukan yang digunakan mencakup kata-kata gaul dan singkatan umum, seperti \texttt{"yg"} dipetakan menjadi \texttt{"yang"}, \texttt{"ga/gak/nggak/gk"} menjadi \texttt{"tidak"}, \texttt{"aja/deh/sih/dong/kok/loh/lah/mah"} menjadi \texttt{"saja"}, \texttt{"jg"} menjadi \texttt{"juga"}, serta ungkapan terima kasih seperti \texttt{"thanks/thx/makasih/mksh"} menjadi \texttt{"terima kasih"}. Dengan adanya pemetaan ini, variasi token kata dapat ditekan secara signifikan, sehingga meningkatkan kerapatan semantik data saat diproses oleh model representasi topik.
-
-\subsection{Pembersihan Tanda Baca dan Stopword Removal}
-\label{subsec:stopwords-removal}
-
-Tahap akhir praproses adalah pembersihan tanda baca dan penghapusan kata umum (\textit{stopword removal}). Pada penelitian ini, tahapan praproses dibagi menjadi dua jalur berbeda untuk mengakomodasi kebutuhan komponen model yang berbeda:
+Aplikasi web ini terdiri dari dua komponen utama:
 \begin{enumerate}
-    \item \textbf{Jalur Pembersihan untuk Embedding (IndoBERTweet):} Tanda baca, struktur kalimat, dan kata hubung (\textit{stopwords}) \textbf{tetap dipertahankan} agar konteks semantik dua arah (\textit{bidirectional context}) tidak rusak saat diproses oleh model transformer IndoBERTweet. Jalur ini menghasilkan kolom \texttt{Pesan\_Embedding}.
-    \item \textbf{Jalur Pembersihan untuk Representasi Topik (BM25):} Tanda baca dihapus sepenuhnya dengan ekspresi reguler \texttt{[\textasciicircum a-z\textbackslash s]} untuk menyisakan huruf dan spasi saja. Selanjutnya, dilakukan penghapusan kata-kata umum (\textit{stopword removal}) secara ketat menggunakan daftar \textit{stopword} bawaan dari pustaka Sastrawi yang digabungkan dengan kata-kata umum spesifik domain percakapan (seperti \texttt{"user"}, \texttt{"amp"}, \texttt{"wa"}, \texttt{"whatsapp"}, \texttt{"chat"}, \texttt{"grup"}, \texttt{"group"}). Kata-kata dengan panjang kurang dari 2 karakter juga dihapus. Jalur ini menghasilkan kolom \texttt{Pesan\_TFIDF}.
+    \item \textbf{Frontend (Client):} Dibangun menggunakan \textit{framework} Vue.js 3, TypeScript, Vite sebagai build tool, dan TailwindCSS untuk penataan gaya (\textit{styling}) antarmuka yang dinamis dan modern. Manajemen \textit{state} aplikasi dikelola secara terpusat menggunakan Pinia dengan menerapkan pola arsitektur MVI (\textit{Model-View-Intent}) untuk menjamin aliran data satu arah yang bersih dan mudah ditelusuri.
+    \item \textbf{Backend (Server):} Dibangun menggunakan FastAPI (Python) yang menyediakan layanan web server berkinerja tinggi berbasis asinkron. Pemrosesan model NLP dijalankan langsung di server menggunakan pustaka \textit{PyTorch}, \textit{SentenceTransformers}, \textit{UMAP-learn}, \textit{scikit-learn}, dan \textit{BERTopic}. Seluruh komputasi pemodelan bahasa berjalan pada unit pemrosesan GPU (\textit{Graphics Processing Unit}) server yang terakselerasi melalui pustaka CUDA untuk mempercepat ekstraksi vektor embedding dari dataset chat yang besar secara paralel.
 \end{enumerate}
 
-Setelah kedua jalur tersebut selesai, dilakukan penyaringan baris data secara ketat. Baris pesan yang memiliki jumlah kata kurang dari 3 kata pada kolom \texttt{Pesan\_TFIDF} dihapus dari dataset karena dianggap terlalu pendek dan tidak memiliki informasi semantik yang cukup berharga untuk dikelompokkan ke dalam klaster topik.
+Tampilan antarmuka utama (\textit{landing page}) serta modal petunjuk cara kerja dan ekspor chat disajikan pada \textbf{Gambar \ref{fig:ui-beranda-panduan}} (\textbf{Gambar \ref{fig:ui-landing-page}} dan \textbf{Gambar \ref{fig:ui-cara-kerja}}). Pada halaman utama, pengguna disajikan ringkasan fitur sistem dan tombol navigasi untuk memulai analisis. Pengguna yang belum memahami cara mengekspor riwayat percakapan WhatsApp dapat membuka dialog modal petunjuk cara kerja yang memberikan instruksi langkah demi langkah secara intuitif.
 
-% \section{Pembuatan Model (Modified BERTopic)}
-% \label{sec:model-creation-results}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/landing-page.png}
+		\caption{Halaman Utama (Landing Page)}
+		\label{fig:ui-landing-page}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/cara-kerja-dan-ekspor.png}
+		\caption{Modal Panduan Ekspor Chat}
+		\label{fig:ui-cara-kerja}
+	\end{subfigure}
+	\caption{Antarmuka Utama dan Panduan Cara Kerja Aplikasi Web ChatAnalisis}
+	\label{fig:ui-beranda-panduan}
+\end{figure}
 
-% Tahap pembuatan model merealisasikan arsitektur \textit{pipeline} BERTopic modifikasi yang telah dirancang pada Bab 3. Proses pemodelan topik dijalankan pada data hasil praproses yang memenuhi kriteria penyaringan. Alur kerja pemodelan terdiri dari empat tahapan utama:
+\subsection{Keamanan dan Privasi Data (Client-Side Anonymization)}
+\label{subsec:client-side-privacy}
 
-% \subsection{Pembangkitan Vektor Embedding dengan IndoBERTweet}
-% \label{subsec:indobertweet-embedding-results}
+Sebagaimana didefinisikan pada prinsip desain di Bab 3, privasi data menjadi prioritas utama. Implementasi sistem menerapkan \textbf{anonimisasi pada sisi klien} (\textit{client-side anonymization}) sebelum data dikirimkan ke server. Ketika pengguna memilih berkas obrolan mentah (\textit{.txt} atau \textit{.zip}) di halaman \texttt{UploadView.vue}, skrip JavaScript di sisi klien (\texttt{chatParser.ts}) mengurai log obrolan tersebut menjadi bentuk objek terstruktur terlebih dahulu guna memetakan statistik waktu untuk penggeser rentang tanggal. Penyamaran data dilakukan secara efisien dengan metode penundaan penyamaran (\textit{deferred anonymization}). Tepat setelah pengguna menentukan rentang tanggal analisis dan menekan tombol mulai, pesan akan disaring berdasarkan rentang tanggal yang dipilih terlebih dahulu, kemudian skrip \texttt{anonimization.ts} secara asinkron mengganti nama pengirim (\textit{sender}) dan mention nomor telepon yang ada pada pesan tersaring saja dengan nilai samaran yang telah di-hash SHA-256 dengan garam (\textit{salt}). Hasil penyamaran tersebut kemudian dikonversi menjadi berkas CSV baru yang bersih. Berkas CSV hasil anonimisasi inilah yang dikirim ke backend server melalui permintaan HTTP POST \texttt{/analysis}, sehingga server tidak pernah menerima, menyimpan, atau memproses identitas asli pengguna. Selama proses penguraian awal berkas di peramban yang memakan waktu beberapa detik untuk dataset besar, antarmuka pengguna menampilkan status pemrosesan aktif (\textit{isParsing}) berupa ikon berputar (\textit{loading spinner}) serta menonaktifkan tombol navigasi lanjut (\textit{Selanjutnya}). Proteksi antarmuka ini mencegah adanya kondisi balapan (\textit{race condition}) data sebelum proses penguraian selesai fully secara lokal.
 
-% Setiap dokumen pesan pada kolom \texttt{Pesan\_Embedding} dikonversi menjadi representasi vektor numerik padat (\textit{dense vector}) berdimensi 768 menggunakan model bahasa pra-latih \texttt{indolem/indobertweet-base-uncased} yang diakses melalui pustaka \textit{SentenceTransformers}. Penggunaan kolom \texttt{Pesan\_Embedding} yang masih mempertahankan tanda baca dan kata hubung memastikan model IndoBERTweet dapat menangkap informasi kontekstual yang kaya secara optimal. Vektor-vektor embedding berdimensi $N \times 768$ ini disimpan di memori untuk diproses pada tahap reduksi dimensi.
+Antarmuka unggah berkas obrolan mentah dan pengaturan filter rentang tanggal disajikan pada \textbf{Gambar \ref{fig:ui-upload-rentang}} (\textbf{Gambar \ref{fig:ui-upload-file}} dan \textbf{Gambar \ref{fig:ui-pilih-rentang}}).
 
-% \subsection{Reduksi Dimensi dengan UMAP}
-% \label{subsec:umap-reduction-results}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/upload-file.png}
+		\caption{Unggah Berkas Obrolan}
+		\label{fig:ui-upload-file}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/pilih-rentang.png}
+		\caption{Filter Rentang Tanggal \& Anonimisasi}
+		\label{fig:ui-pilih-rentang}
+	\end{subfigure}
+	\caption{Antarmuka Unggah Berkas dan Pengaturan Filter Rentang Tanggal Data}
+	\label{fig:ui-upload-rentang}
+\end{figure}
 
-% Vektor embedding berdimensi 768 direduksi dimensinya menjadi 5 dimensi menggunakan algoritma UMAP (\textit{Uniform Manifold Approximation and Projection}). Parameter UMAP yang digunakan mengacu pada konfigurasi optimal hasil eksperimen, yaitu: \textit{n\_neighbors} = 15 (untuk menjaga keseimbangan struktur lokal dan global data), \textit{n\_components} = 5 (dimensi target kompresi), \textit{min\_dist} = 0.0 (memaksimalkan kerapatan klaster), dan metrik jarak yang digunakan adalah \textit{cosine} karena lebih akurat dalam mengukur orientasi vektor dokumen teks berdimensi tinggi dibanding metrik \textit{Euclidean}.
+\subsection{Pemrosesan Latar Belakang (Asynchronous Background Task)}
+\label{subsec:async-background-task}
 
-% \subsection{Pengklasteran dengan Algoritma BIRCH}
-% \label{subsec:birch-clustering-results}
+Proses pemodelan topik BERTopic yang melibatkan ekstraksi embedding berdimensi tinggi merupakan tugas yang memakan waktu komputasi cukup lama (\textit{computationally expensive}). Jika dijalankan secara sinkron pada utas utama (\textit{main thread}), permintaan HTTP dari pengguna akan mengalami \textit{timeout} dan membuat browser menjadi tidak responsif.
 
-% Data berdimensi rendah ($N \times 5$) hasil reduksi UMAP selanjutnya dikelompokkan menggunakan algoritma BIRCH (\textit{Balanced Iterative Reducing and Clustering using Hierarchies}) sebagai pengganti komponen \textit{default} BERTopic (HDBSCAN). Konfigurasi parameter BIRCH yang digunakan adalah: \textit{threshold} = 0.5 (kekompakan radius subklaster), \textit{branching\_factor} = 50 (kapasitas maksimum anak pada tiap \textit{node} dalam pohon CF-Tree), dan \textit{n\_clusters} = \texttt{None} (membiarkan algoritma menentukan jumlah klaster secara otomatis berdasarkan struktur data). Pada dataset pengujian 55.000 pesan, BIRCH berhasil mempartisi seluruh data secara efisien dan menghasilkan tepat 44 klaster topik utama tanpa menyisakan dokumen sebagai pencilan (\textit{outlier} = 0\%).
+Untuk mengatasi kendala tersebut, endpoint \textit{POST /analysis} di backend FastAPI diimplementasikan sebagai tugas latar belakang asinkron (\textit{asynchronous background task}) menggunakan fitur bawaan FastAPI \textit{BackgroundTasks}. Ketika file CSV anonim diterima, server langsung menyimpan berkas secara lokal di direktori penyimpanan sementara, menetapkan sebuah ID sesi unik (\textit{jobId/session\_id}), dan segera mengembalikan respons HTTP sukses (status code 200) yang memuat informasi jumlah baris awal. Server kemudian melanjutkan pemrosesan delapan tahap \textit{pipeline} analisis secara mandiri pada utas latar belakang.
 
-% \subsection{Representasi Kata Kunci Topik dengan BM25}
-% \label{subsec:bm25-representation-results}
+\subsection{Real-time Progress Streaming via Server-Sent Events (SSE)}
+\label{subsec:sse-progress-streaming}
 
-% Untuk setiap klaster dokumen yang terbentuk dari tahap BIRCH, kata kunci paling representatif diekstrak menggunakan skema pembobotan BM25 sebagai pengganti formula c-TF-IDF standar. Hitungan frekuensi istilah didasarkan pada CountVectorizer dengan parameter \textit{ngram\_range} = (1, 2) untuk menangkap frasa satu kata (\textit{unigram}) dan dua kata (\textit{bigram}). Nilai parameter BM25 diatur pada nilai \textit{k1} = 1.5 (saturasi frekuensi kata) dan \textit{b} = 0.75 (normalisasi panjang dokumen). BM25 berhasil menghasilkan representasi 10 kata kunci teratas untuk masing-masing dari 44 topik secara lebih stabil, menghindari dominasi kata-kata berulang yang tidak informatif.
+Untuk memberikan pengalaman pengguna yang interaktif, status pengerjaan tugas latar belakang di server dipantau secara langsung oleh frontend secara \textit{real-time} menggunakan koneksi SSE (\textit{Server-Sent Events}).
 
-% \section{Pengujian dan Evaluasi Kuantitatif Model}
-% \label{sec:model-evaluation-results}
+Backend FastAPI menyediakan endpoint \textit{GET /api/analysis/events/\{session\_id\}} yang memancarkan (\textit{broadcast}) aliran data (\textit{stream}) berformat JSON setiap kali sebuah tahapan dalam \textit{pipeline} di server mengalami perubahan status (misalnya dari \textit{"running"} menjadi \textit{"completed"} beserta durasi komputasi dalam milidetik). Di sisi frontend, komponen \textit{TerminalSimulator.vue} menangkap aliran data tersebut menggunakan objek HTML5 \textit{EventSource} dan menampilkannya dalam bentuk baris simulator perintah terminal konsol, sebagaimana ditunjukkan pada \textbf{Gambar \ref{fig:ui-loading-progress}}. Ketika server mengirimkan sinyal penanda selesai (\textit{"done": true}), koneksi SSE ditutup secara otomatis, dan frontend secara mulus mengalihkan pengguna ke rute halaman \textit{/results}.
 
-% Untuk memvalidasi performa dan efektivitas dari arsitektur \textit{pipeline} BERTopic modifikasi yang diusulkan, dilakukan pengujian perbandingan kuantitatif terhadap beberapa skenario model. Model yang dibandingkan meliputi:
-% \begin{itemize}
-%     \item \textbf{Model 1 (Baseline):} Konfigurasi standar BERTopic menggunakan model embedding \textit{all-MiniLM-L6-v2}, algoritma klasterisasi \textit{HDBSCAN}, dan representasi kata kunci \textit{c-TF-IDF}.
-%     \item \textbf{Model 2 (Proposed):} Konfigurasi modifikasi yang diusulkan menggunakan model embedding \textit{IndoBERTweet}, algoritma klasterisasi \textit{BIRCH}, dan representasi kata kunci \textit{BM25}.
-%     \item \textbf{Model 3 (Isolated Embed):} Skenario untuk menguji pengaruh model bahasa secara terisolasi dengan menggunakan \textit{IndoBERTweet} namun tetap mempertahankan komponen \textit{HDBSCAN} dan \textit{c-TF-IDF} bawaan.
-%     \item \textbf{Model 4 (Isolated Cluster):} Skenario untuk menguji pengaruh klasterisasi secara terisolasi dengan menggunakan model \textit{all-MiniLM-L6-v2} yang dipadukan dengan \textit{BIRCH} dan \textit{BM25}.
-% \end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{images/ui/loading-prosess-realtime.png}
+	\caption{Tampilan Pemantauan Progres Analisis secara Real-Time via Server-Sent Events (SSE)}
+	\label{fig:ui-loading-progress}
+\end{figure}
 
-% Evaluasi dilakukan menggunakan empat metrik kuantitatif utama: jumlah topik yang terbentuk, persentase data pencilan (\textit{Outlier Rate}), keberagaman kata kunci topik (\textit{Topic Diversity}), koherensi semantik kata kunci (\textit{C-NPMI Coherence}), kepadatan klaster di ruang vektor semantik (\textit{Embedding Density}), dan kemiripan dokumen internal klaster (\textit{Intra-topic Similarity}). Hasil pengujian perbandingan disajikan pada Tabel~\ref{tab:comparison-results}.
+\subsection{Antarmuka Hasil Pemodelan Topik dan Visualisasi Data}
+\label{subsec:results-dashboard-ui}
 
-% \begingroup
-% \renewcommand{\arraystretch}{1.2}
-% \begin{table}[H]
-% \centering
-% \caption{Hasil Evaluasi Perbandingan Kuantitatif Model Pemodelan Topik}
-% \label{tab:comparison-results}
-% \scriptsize
-% \begin{tabular}{lcccccc}
-% \toprule
-% \textbf{Model} & \textbf{Topik} & \textbf{Outlier (\%)} & \textbf{Diversity} & \textbf{C-NPMI} & \textbf{Density} & \textbf{Intra-topic Sim} \\
-% \midrule
-% Model 1: Baseline & 369 & 41,28\% & 0,845 & -0,065 & 0,624 & 0,549 \\
-% \textbf{Model 2: Proposed} & \textbf{44} & \textbf{0,00\%} & \textbf{0,634} & \textbf{0,093} & \textbf{0,417} & \textbf{0,641} \\
-% Model 3: Isolated Embed & 211 & 57,33\% & 0,789 & -0,031 & 0,565 & 0,728 \\
-% Model 4: Isolated Cluster & 64 & 0,00\% & 0,738 & 0,089 & 0,508 & 0,478 \\
-% Model 5: Proposed + BM25\_Clust & 44 & 0,00\% & 0,991 & -0,206 & 0,033 & 0,641 \\
-% \bottomrule
-% \end{tabular}
-% \end{table}
-% \endgroup
+Hasil akhir dari alur pemodelan topik disajikan secara komprehensif pada antarmuka dashboard sebagaimana disajikan pada \textbf{Gambar \ref{fig:ui-dashboard-topik}} dan \textbf{Gambar \ref{fig:ui-metrik-aktivitas}}. Halaman dashboard menampilkan kartu-kartu klaster topik yang berhasil terbentuk lengkap dengan ringkasan kata kunci utama dan jumlah dokumen pesan di dalamnya. Selain itu, pengguna dapat mengamati grafik distribusi temporal volume chat per rentang waktu (Gambar \ref{fig:ui-dashboard-topik}), panel ringkasan metrik evaluasi kuantitatif model seperti persentase *outlier*, C-NPMI, *Topic Diversity*, *Embedding Density*, dan *Intra-topic Similarity* (Gambar \ref{fig:ui-result-metrik}), serta grafik distribusi aktivitas jam sibuk obrolan dan peringkat (*leaderboard*) pengirim pesan paling aktif yang identitasnya telah teranonimisasi (Gambar \ref{fig:ui-activity-leaderboard}).
 
-% Berdasarkan data pada Tabel~\ref{tab:comparison-results}, dapat ditarik beberapa temuan penting terkait performa model:
-% \begin{enumerate}
-%     \item \textbf{Analisis Outlier Rate:} Model 1 (Baseline) membuang sebanyak 41,28\% data percakapan sebagai \textit{outlier}, sementara Model 3 membuang hingga 57,33\% data. Hal ini menunjukkan keterbatasan algoritma density-based HDBSCAN dalam menangani data teks pendek yang sangat renggang (\textit{sparse}). Sebaliknya, penggunaan algoritma BIRCH pada Model 2, Model 4, dan Model 5 berhasil menekan angka \textit{outlier} hingga \textbf{0,00\%}, yang berarti seluruh dokumen percakapan berhasil dialokasikan ke dalam klaster topik tanpa ada data yang terbuang.
-%     \item \textbf{Analisis C-NPMI Coherence:} Model 2 (Proposed) menghasilkan nilai koherensi tertinggi sebesar \textbf{0,093}. Hal ini menunjukkan bahwa kata kunci yang dihasilkan memiliki keeratan makna semantik yang sangat baik menurut persepsi bahasa manusia. Sementara itu, Model 1 (Baseline) menghasilkan nilai negatif yaitu -0,065, yang menunjukkan kata kunci topik cenderung tidak padu. Perbandingan ini memvalidasi keunggulan model \textit{embedding} khusus bahasa informal lokal (\textit{IndoBERTweet}) dibandingkan model \textit{multilingual} umum (\textit{all-MiniLM-L6-v2}).
-%     \item \textbf{Analisis Intra-topic Similarity:} Kekohesifan isi dokumen di dalam klaster yang sama pada Model 2 (Proposed) mencapai \textbf{0,641}, lebih tinggi dibanding Model 1 (0,549) dan Model 4 (0,478). Hal ini menunjukkan representasi vektor semantik dari IndoBERTweet mampu mengelompokkan dokumen-dokumen percakapan dengan topik serupa secara lebih merapat dibandingkan model baseline.
-% \end{enumerate}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{images/ui/waktu-chat-dan-list-klaster-topik.png}
+	\caption{Tampilan Dashboard Hasil Pemodelan Topik dan Grafik Tren Waktu Obrolan}
+	\label{fig:ui-dashboard-topik}
+\end{figure}
 
-% Secara keseluruhan, Model 2 (Proposed) yang mengintegrasikan IndoBERTweet, BIRCH, dan BM25 terbukti menjadi konfigurasi terbaik karena menghasilkan tingkat koherensi tertinggi, kekohesifan dokumen yang baik, dan berhasil memanfaatkan seluruh data percakapan tanpa menghasilkan \textit{outlier}.
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/result-metrik-evaluasi.png}
+		\caption{Panel Metrik Evaluasi Kuantitatif}
+		\label{fig:ui-result-metrik}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/activity-dan-leaderboard.png}
+		\caption{Aktivitas \& Leaderboard Pengirim}
+		\label{fig:ui-activity-leaderboard}
+	\end{subfigure}
+	\caption{Visualisasi Panel Metrik Evaluasi Kuantitatif dan Distribusi Aktivitas Pengguna}
+	\label{fig:ui-metrik-aktivitas}
+\end{figure}
 
-% \section{Implementasi Sistem}
-% \label{sec:system-implementation-results}
+\subsection{Penelusuran Konteks Pesan (Traceability)}
+\label{subsec:traceability-context}
 
-% Tahap implementasi sistem mewujudkan rancangan \textit{client-server} menjadi aplikasi berbasis web fungsional yang dapat digunakan oleh pengguna untuk melakukan analisis topik obrolan secara langsung. Sistem ini dibangun dengan arsitektur modern yang memisahkan tanggung jawab antarmuka pengguna (\textit{frontend}) dan pemrosesan data (\textit{backend}) secara jelas:
+Untuk menjaga aspek \textit{traceability} seperti yang dituntut dalam prinsip desain sistem, backend FastAPI mempertahankan nilai kolom indeks unik (\textit{index}) dari setiap pesan asli di sepanjang proses praproses dan pemodelan topik. Hasil pengklasteran disimpan dalam berkas berformat \textit{\{session\_id\}\_labeled.csv}.
 
-% \subsection{Arsitektur Client-Server dan Komponen Teknologi}
-% \label{subsec:client-server-arch}
+Fitur penelusuran konteks pesan ini disajikan pada \textbf{Gambar \ref{fig:ui-traceability-detail}} (\textbf{Gambar \ref{fig:ui-detail-klaster}} dan \textbf{Gambar \ref{fig:ui-konteks-pesan}}). Pada antarmuka pengguna (\textit{TopicDetailView.vue}), pengguna dapat melihat daftar pesan yang dikelompokkan ke dalam klaster topik tertentu (Gambar \ref{fig:ui-detail-klaster}). Apabila salah satu pesan diklik, sistem akan memicu modal dialog (\textit{MessageContextModal.vue}) (Gambar \ref{fig:ui-konteks-pesan}) dan memanggil API backend \textit{GET /api/results/\{jobId\}/messages/\{messageId\}/context}. API ini akan mencari baris pesan berdasarkan indeks uniknya di dalam dokumen CSV berlabel, lalu mengambil beberapa baris pesan sebelum dan sesudahnya secara kronologis. Fitur ini memungkinkan pengguna untuk membaca konteks pembicaraan lengkap secara runtut waktu tanpa kehilangan informasi alur komunikasi grup yang sebenarnya.
 
-% Aplikasi web ini terdiri dari dua komponen utama:
-% \begin{enumerate}
-%     \item \textbf{Frontend (Client):} Dibangun menggunakan \textit{framework} Vue.js 3, TypeScript, Vite sebagai build tool, dan TailwindCSS untuk penataan gaya (\textit{styling}) antarmuka yang dinamis dan modern. Manajemen \textit{state} aplikasi dikelola secara terpusat menggunakan Pinia dengan menerapkan pola arsitektur MVI (\textit{Model-View-Intent}) untuk menjamin aliran data satu arah yang bersih dan mudah ditelusuri.
-%     \item \textbf{Backend (Server):} Dibangun menggunakan FastAPI (Python) yang menyediakan layanan web server berkinerja tinggi berbasis asinkron. Pemrosesan model NLP dijalankan langsung di server menggunakan pustaka \textit{PyTorch}, \textit{SentenceTransformers}, \textit{UMAP-learn}, \textit{scikit-learn}, dan \textit{BERTopic}.
-% \end{enumerate}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/detail-klaster.png}
+		\caption{Halaman Detail Klaster Topik}
+		\label{fig:ui-detail-klaster}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/konteks-pesan.png}
+		\caption{Modal Penelusuran Konteks Pesan}
+		\label{fig:ui-konteks-pesan}
+	\end{subfigure}
+	\caption{Antarmuka Detail Klaster Topik dan Dialog Modal Penelusuran Konteks Pesan}
+	\label{fig:ui-traceability-detail}
+\end{figure}
 
-% \subsection{Keamanan dan Privasi Data (Client-Side Anonymization)}
-% \label{subsec:client-side-privacy}
+\subsection{Pencegahan Path Traversal dan Validasi Input}
+\label{subsec:path-traversal-prevention}
 
-% Sebagaimana didefinisikan pada prinsip desain di Bab 3, privasi data menjadi prioritas utama. Implementasi sistem menerapkan \textbf{anonimisasi pada sisi klien} (\textit{client-side anonymization}) sebelum data dikirimkan ke server.
+Keamanan sistem terhadap serangan siber diimplementasikan secara ketat pada backend FastAPI melalui pencegahan celah keamanan \textit{path traversal} dan validasi input. Serangan \textit{path traversal} dapat dieksploitasi oleh pihak tidak bertanggung jawab untuk membaca, memodifikasi, atau menghapus file sensitif di luar direktori penyimpanan resmi aplikasi dengan menyuntikkan karakter navigasi direktori (misalnya \textit{../} atau \textit{..\\}) melalui parameter identitas sesi (\textit{session ID/jobId}).
 
-% Ketika pengguna memilih berkas obrolan mentah (\textit{.txt} atau \textit{.zip}) di halaman \texttt{UploadView.vue}, skrip JavaScript di sisi klien (\texttt{chatParser.ts} dan \texttt{anonimization.ts}) secara asinkron mengekstrak isi teks, melakukan pemindaian awal, dan langsung mengganti nama pengirim (\textit{sender}) dan mention nomor telepon dengan nilai samaran yang telah di-hash SHA-256 dengan garam (\textit{salt}). Hasil penyamaran tersebut kemudian dikonversi menjadi berkas CSV baru yang bersih. Berkas CSV hasil anonimisasi inilah yang dikirim ke backend server melalui permintaan HTTP POST \texttt{/analysis}, sehingga server tidak pernah menerima, menyimpan, atau memproses identitas asli pengguna.
+Sistem menangani risiko ini dengan menerapkan pengamanan ganda:
+\begin{enumerate}
+    \item \textbf{Validasi Karakter Input (Input Validation):} Di dalam \textit{analysis.py}, ditambahkan fungsi pembantu \textit{validate\_session\_id} untuk memvalidasi nilai \textit{session ID} menggunakan ekspresi reguler. Pola yang diperbolehkan hanya mencakup karakter alfanumerik, tanda hubung (\textit{dash}), dan garis bawah (\textit{underscore}) dengan ekspresi \textit{\textasciicircum[a-zA-Z0-9\_-]+\$}. Setiap masukan yang mengandung karakter titik, garis miring, atau karakter khusus lainnya akan langsung ditolak sebelum diproses dan menghasilkan respons HTTP 400 Bad Request.
+    \item \textbf{Pengecekan Kedaulatan Direktori (Directory Bound Check):} Pada fungsi \textit{get\_file\_path} di dalam \textit{storage.py}, setiap berkas yang akan diakses dikonversi menjadi jalur absolut menggunakan metode \textit{resolve()} dari pustaka \textit{pathlib}. Selanjutnya, sistem memverifikasi bahwa jalur absolut tersebut merupakan turunan dari direktori penyimpanan utama (\textit{storage/}) dengan fungsi \textit{is\_relative\_to()}. Apabila jalur tersebut tidak berada di bawah folder penyimpanan resmi, sistem akan memicu \textit{ValueError} yang mengindikasikan terjadinya serangan \textit{path traversal}.
+\end{enumerate}
 
-% \subsection{Pemrosesan Latar Belakang (Asynchronous Background Task)}
-% \label{subsec:async-background-task}
+\subsection{Mekanisme Pembersihan Berkas Otomatis}
+\label{subsec:auto-cleanup}
 
-% Proses pemodelan topik BERTopic yang melibatkan ekstraksi embedding berdimensi tinggi merupakan tugas yang memakan waktu komputasi cukup lama (\textit{computationally expensive}). Jika dijalankan secara sinkron pada utas utama (\textit{main thread}), permintaan HTTP dari pengguna akan mengalami \textit{timeout} dan membuat browser menjadi tidak responsif.
+Aktivitas analisis dokumen chat WhatsApp berskala besar yang dilakukan secara berulang berpotensi memenuhi ruang penyimpanan server (\textit{disk storage}) karena berkas CSV mentah, CSV hasil label, dan JSON hasil visualisasi disimpan secara lokal di dalam folder \textit{storage/}.
 
-% Untuk mengatasi kendala tersebut, endpoint \texttt{POST /analysis} di backend FastAPI diimplementasikan sebagai tugas latar belakang asinkron (\textit{asynchronous background task}) menggunakan fitur bawaan FastAPI \texttt{BackgroundTasks}. Ketika file CSV anonim diterima, server langsung menyimpan berkas secara lokal di direktori penyimpanan sementara, menetapkan sebuah ID sesi unik (\textit{jobId/session\_id}), dan segera mengembalikan respons HTTP sukses (status code 200) yang memuat informasi jumlah baris awal. Server kemudian melanjutkan pemrosesan delapan tahap \textit{pipeline} analisis secara mandiri pada utas latar belakang.
+Sistem mengatasi masalah penumpukan data ini dengan mengimplementasikan mekanisme pembersihan berkas otomatis (\textit{automatic file cleanup}). Fungsi \textit{cleanup\_old\_files} diimplementasikan di dalam \textit{storage.py} untuk memindai folder penyimpanan dan memeriksa waktu modifikasi terakhir (\textit{last modification time}) dari setiap berkas. Berkas yang memiliki usia penyimpanan lebih dari 24 jam akan langsung dihapus dari disk secara permanen. Fungsi pembersihan otomatis ini didaftarkan sebagai \textit{asynchronous background task} menggunakan fitur bawaan FastAPI \textit{BackgroundTasks} pada endpoint \textit{POST /analysis}. Dengan demikian, setiap kali ada permintaan analisis baru dari pengguna, server akan memicu proses pembersihan berkas sampah di latar belakang secara otomatis tanpa memblokir atau memperlambat waktu respons analisis pengguna yang sedang berjalan.
 
-% \subsection{Real-time Progress Streaming via Server-Sent Events (SSE)}
-% \label{subsec:sse-progress-streaming}
+\section{Analisis dan Pembahasan Hasil}
+\label{sec:discussion}
 
-% Untuk memberikan pengalaman pengguna yang interaktif, status pengerjaan tugas latar belakang di server dipantau secara langsung oleh frontend secara \textit{real-time} menggunakan koneksi SSE (\textit{Server-Sent Events}).
+Bagian pembahasan ini menganalisis secara mendalam faktor-faktor penyebab keunggulan performa dari komponen model \textit{pipeline} BERTopic modifikasi yang diusulkan dibandingkan model baseline standar:
 
-% Backend FastAPI menyediakan endpoint \texttt{GET /api/analysis/events/\{session\_id\}} yang memancarkan (\textit{broadcast}) aliran data (\textit{stream}) berformat JSON setiap kali sebuah tahapan dalam \textit{pipeline} di server mengalami perubahan status (misalnya dari \texttt{"running"} menjadi \texttt{"completed"} beserta durasi komputasi dalam milidetik). Di sisi frontend, komponen \texttt{TerminalSimulator.vue} menangkap aliran data tersebut menggunakan objek HTML5 \texttt{EventSource} dan menampilkannya dalam bentuk baris simulator perintah terminal konsol. Ketika server mengirimkan sinyal penanda selesai (\texttt{"done": true}), koneksi SSE ditutup secara otomatis, dan frontend secara mulus mengalihkan pengguna ke rute halaman \texttt{/results}.
+\subsection{Pengaruh BIRCH dalam Mengeliminasi Outliers}
+\label{subsec:discussion-birch}
 
-% \subsection{Penelusuran Konteks Pesan (Traceability)}
-% \label{subsec:traceability-context}
+Salah satu kontribusi utama dari penelitian ini adalah keberhasilan pemanfaatan algoritma BIRCH modifikasi (\textit{BirchWithOutliers}) dalam mengeliminasi data pencilan (\textit{outlier}). Pada model baseline BERTopic yang menggunakan HDBSCAN, sebanyak 41,28\% hingga 43,39\% data percakapan dibuang sebagai \textit{outlier}. Hal ini terjadi karena HDBSCAN mengandalkan kepadatan spasial lokal (\textit{density-based clustering}). Pada teks pendek seperti pesan WhatsApp, dokumen memiliki representasi fitur yang sangat renggang (\textit{sparse}), sehingga jarak antar-dokumen di ruang vektor cenderung seragam dan menyulitkan HDBSCAN dalam mendeteksi batas kepadatan klaster. Akibatnya, sebagian besar dokumen dianggap sebagai \textit{noise}.
 
-% Untuk menjaga aspek \textit{traceability} seperti yang dituntut dalam prinsip desain sistem, backend FastAPI mempertahankan nilai kolom indeks unik (\textit{index}) dari setiap pesan asli di sepanjang proses praproses dan pemodelan topik. Hasil pengklasteran disimpan dalam berkas berformat \texttt{\{session\_id\}\_labeled.csv}.
+Model usulan yang menerapkan BIRCH dengan outlier detection berbasis persentil jarak (95.0 persentil jarak kosinus terhadap centroid) dan pembersihan klaster kerdil ($< 5$ dokumen) berhasil membatasi \textit{outlier rate} secara signifikan hingga menyisakan antara 14,67\% (pada 20\% data) dan terus menurun hingga hanya \textbf{8,79\%} (pada 100\% data). Hal ini dicapai dengan mendekomposisi ruang vektor secara efisien melalui pohon fitur (\textit{CF-Tree}) dan centroid, sehingga dokumen dapat dialokasikan ke klaster yang paling dekat tanpa mendiskualifikasi dokumen secara masif.
 
-% Pada antarmuka pengguna (\texttt{TopicDetailView.vue}), pengguna dapat melihat daftar pesan yang dikelompokkan ke dalam klaster topik tertentu. Apabila salah satu pesan diklik, sistem akan memicu modal dialog (\texttt{MessageContextModal.vue}) dan memanggil API backend \texttt{GET /api/results/\{jobId\}/messages/\{messageId\}/context}. API ini akan mencari baris pesan berdasarkan indeks uniknya di dalam dokumen CSV berlabel, lalu mengambil beberapa baris pesan sebelum dan sesudahnya secara kronologis. Fitur ini memungkinkan pengguna untuk membaca konteks pembicaraan lengkap secara runtut waktu tanpa kehilangan informasi alur komunikasi grup yang sebenarnya.
+\subsection{Peran IndoBERTweet dalam Meningkatkan Koherensi Topik}
+\label{subsec:discussion-indobertweet}
 
-% \section{Pengujian dan Evaluasi Sistem}
-% \label{sec:system-evaluation-results}
+Hasil pengujian kuantitatif menunjukkan bahwa model usulan menghasilkan koherensi topik (C-NPMI) yang jauh lebih tinggi dan bernilai positif (meningkat dari 0,0450 pada 20\% data hingga mencapai \textbf{0,1567} pada 100\% data) dibandingkan model baseline yang hanya berkisar antara -0,0310 hingga 0,0662.
 
-% Pengujian sistem dilakukan untuk memvalidasi aspek fungsionalitas dan reabilitas aplikasi web yang telah selesai diimplementasikan. Pengujian dilakukan menggunakan metode \textit{black-box testing} untuk menguji fungsionalitas tombol antarmuka, alur navigasi, dan kesesuaian luaran (\textit{output}) sistem terhadap variasi input dokumen obrolan.
+Faktor utama yang menyebabkan perbedaan performa ini adalah representasi ruang vektor semantik. Model baseline dilatih pada korpus teks formal berskala global yang didominasi oleh Bahasa Inggris. Ketika dihadapkan pada data percakapan WhatsApp yang kaya akan istilah informal, singkatan tidak baku, dan percampuran bahasa (\textit{code-mixing} seperti \textit{"sheesh"}, \textit{"hsr"}, \textit{"evernight"}), model multilingual gagal memetakan makna semantik kata-kata tersebut secara akurat. Sebaliknya, model IndoBERTweet dilatih khusus menggunakan korpus teks media sosial Indonesia berskala besar, sehingga memiliki kamus kosakata (\textit{vocabulary}) yang sangat relevan dengan bahasa sehari-hari. Representasi vektor yang dihasilkan oleh IndoBERTweet mampu menangkap kemiripan konteks kata informal secara presisi, menghasilkan klaster dokumen yang lebih padat, dan pada akhirnya menghasilkan kata kunci topik yang lebih terarah dan bermakna.
 
-% Pengujian fungsionalitas parsing log obrolan dilakukan dengan mengunggah tiga jenis file log obrolan WhatsApp yang berbeda format bawaannya:
-% \begin{enumerate}
-%     \item Berkas format Android Indonesia 12 Jam (misalnya: \texttt{02/02/26 08.46 PM - User-1: pesan})
-%     \item Berkas format Android Indonesia 24 Jam (misalnya: \texttt{02/02/26 20.46 - User-1: pesan})
-%     \item Berkas format Android Inggris 12 Jam (misalnya: \texttt{2/2/26, 8:46 pm - User-1: pesan})
-% \end{enumerate}
+\subsection{Efektivitas Representasi Kata Kunci dengan BM25}
+\label{subsec:discussion-bm25}
 
-% Hasil pengujian \textit{black-box} menunjukkan bahwa sistem berhasil mengenali format timestamp secara otomatis, memisahkan baris pesan yang memiliki spasi ganda, melipat baris pesan yang memiliki multiline, melakukan anonimisasi identitas, serta mengirimkan data CSV terformat dengan benar ke server. Status visualisasi terminal simulator SSE pada frontend dapat menampilkan jalannya pemrosesan di backend secara akurat hingga selesai.
+Komponen pembobotan BM25 yang diintegrasikan sebagai pengganti c-TF-IDF terbukti menghasilkan kata kunci representatif yang lebih koheren dan stabil. Dalam c-TF-IDF standar, bobot kata dihitung berdasarkan perkalian frekuensi kata lokal dengan kebalikan frekuensi kelas. Namun, c-TF-IDF tidak mempertimbangkan saturasi frekuensi kata (\textit{term frequency saturation}) dan perbedaan panjang dokumen secara dinamis. Pada data percakapan WhatsApp yang informal, sering kali dijumpai pengulangan kata tawa (\textit{"wkwk"}) atau kata penegas (\textit{"ya"}) yang sangat dominan dalam satu pesan panjang, sehingga kata-kata tersebut cenderung mendominasi representasi topik secara bias.
 
-% Halaman \texttt{ResultsView.vue} berhasil memuat data kuantitatif dari server dan menampilkannya ke dalam kartu metrik, diagram garis untuk aktivitas harian obrolan, diagram batang untuk keaktifan jam obrolan, grafik kontributor pesan teraktif, serta menampilkan 44 kartu topik yang dapat dinavigasi ke halaman detail topik dan penelusuran konteks pesan secara responsif.
+Algoritma BM25 mengatasi bias ini dengan menyertakan parameter $k_1 = 1.2$ untuk membatasi dampak peningkatan frekuensi kata (saturasi) dan parameter $b = 0.5$ untuk menormalisasi kontribusi panjang dokumen. Dengan demikian, kata-kata unik yang memiliki bobot informasi tinggi tetap dapat muncul sebagai kata kunci representatif topik meskipun frekuensi kemunculannya tidak sedominan kata-kata umum, sehingga meningkatkan kualitas kejelasan (\textit{readability}) dari topik yang disajikan kepada pengguna.
 
-% \section{Analisis dan Pembahasan Hasil}
-% \label{sec:discussion}
+\subsection{Analisis Penyaringan Stopwords Korpus WhatsApp}
+\label{subsec:discussion-stopwords}
 
-% Bagian pembahasan ini menganalisis secara mendalam faktor-faktor penyebab keunggulan performa dari komponen model \textit{pipeline} BERTopic modifikasi yang diusulkan dibandingkan model baseline standar:
+Pengintegrasian kamus \textit{STOPWORDS} gabungan 9 kategori pada \texttt{CountVectorizer} terbukti efektif mencegah kata-kata instruksional dan wacana harian mendominasi kata kunci topik. Pada teks obrolan WhatsApp, kata sapaan (seperti \textit{"kak"}, \textit{"mas"}, \textit{"bro"}), partikel penegas (\textit{"deh"}, \textit{"dong"}, \textit{"sih"}), kata deiktik (\textit{"disini"}, \textit{"gimana"}), serta ekspresi tawa (\textit{"wkwk"}, \textit{"haha"}) sering kali muncul dengan frekuensi sangat tinggi di hampir seluruh percakapan. Tanpa penyaringan 9 kategori \textit{STOPWORDS} ini, kata-kata tersebut akan mendominasi peringkat teratas hasil ekstraksi BM25 dan menurunkan nilai keberagaman topik (\textit{Topic Diversity}). Dengan penyaringan khusus ini, nilai \textit{Topic Diversity} pada model usulan tetap terjaga sangat tinggi pada rentang \textbf{0,9335 hingga 0,9919}.
 
-% \subsection{Pengaruh BIRCH dalam Mengeliminasi Outliers}
-% \label{subsec:discussion-birch}
+\subsection{Analisis Kepadatan Vektor dan Kemiripan Internal Klaster}
+\label{subsec:discussion-density-its}
 
-% Salah satu kontribusi utama dari penelitian ini adalah keberhasilan pemanfaatan algoritma BIRCH dalam mengeliminasi data pencilan (\textit{outlier}) hingga 0,00\%. Pada model baseline BERTopic yang menggunakan HDBSCAN, sebanyak 41,28\% (Model 1) hingga 57,33\% (Model 3) data percakapan dibuang sebagai \textit{outlier}. Hal ini terjadi karena HDBSCAN mengandalkan kepadatan spasial lokal (\textit{density-based clustering}). Pada teks pendek seperti pesan WhatsApp, dokumen memiliki representasi fitur yang sangat renggang (\textit{sparse}), sehingga jarak antar-dokumen di ruang vektor cenderung seragam dan menyulitkan HDBSCAN dalam mendeteksi batas kepadatan klaster. Akibatnya, sebagian besar dokumen dianggap sebagai \textit{noise}.
+Pengukuran metrik \textit{Embedding Density} (KDE Rushkin 2020 dengan bobot semantik) dan \textit{Intra-topic Similarity} mencerminkan tingkat kekompakan ruang vektor dokumen pada klaster topik yang terbentuk. Model usulan mencapai nilai \textit{Embedding Density} sebesar \textbf{0,6666} dan \textit{Intra-topic Similarity} sebesar \textbf{0,6716} pada 100\% data (56.089 dokumen), yang secara konsisten lebih tinggi dibandingkan model baseline (0,5611 dan 0,5211). Peningkatan ini menunjukkan bahwa penggabungan reduksi UMAP (5 dimensi, metrik kosinus) dan BIRCH berhasil membentuk batas-batas klaster yang kompak di mana dokumen-dokumen di dalam klaster yang sama memiliki tingkat kemiripan vektor semantik yang sangat erat.
 
-% BIRCH mengatasi kelemahan ini dengan menerapkan pembagian hierarki menggunakan struktur pohon \textit{CF-Tree} (Clustering Feature Tree). Melalui mekanisme kompresi berbasis subklaster ini, BIRCH mempartisi seluruh ruang vektor secara efisien dan memetakan setiap dokumen baru ke dalam subklaster terdekat berdasarkan jarak centroid. Pendekatan berbasis centroid ini memastikan tidak ada dokumen yang diklasifikasikan sebagai \textit{outlier}, sehingga cakupan analisis topik menjadi lebih lengkap dan representatif bagi seluruh interaksi yang terjadi di dalam grup.
+\section{Pengujian Fungsional Sistem (Black Box Testing)}
+\label{sec:black-box-testing}
 
-% \subsection{Peran IndoBERTweet dalam Meningkatkan Koherensi Topik}
-% \label{subsec:discussion-indobertweet}
+Untuk memastikan seluruh fitur dan komponen perangkat lunak berfungsi dengan baik dan bebas dari kesalahan operasional, dilakukan pengujian fungsional menggunakan metode \textit{Black Box Testing}. Metode ini mengevaluasi perilaku sistem hanya berdasarkan masukan (\textit{input}) yang diberikan dan keluaran (\textit{output}) yang dihasilkan, tanpa melihat atau menguji struktur kode program internal sistem (\textit{behavioral testing}).
 
-% Hasil pengujian kuantitatif menunjukkan bahwa model yang menggunakan model embedding IndoBERTweet (Model 2 dan Model 4) menghasilkan koherensi topik (C-NPMI) yang jauh lebih tinggi dan bernilai positif (0,093 dan 0,089) dibandingkan model baseline yang menggunakan model multilingual MiniLM yang bernilai negatif (-0,065).
+Pengujian dilakukan secara menyeluruh terhadap alur kerja sistem dari ujung ke ujung (\textit{End-to-End}), yang mencakup interaksi pengguna pada antarmuka web (\textit{frontend}) serta respons layanan web (\textit{API backend}) saat memproses permintaan.
 
-% Faktor utama yang menyebabkan perbedaan performa ini adalah representasi ruang vektor semantik. Model \textit{all-MiniLM-L6-v2} dilatih pada korpus teks formal berskala global yang didominasi oleh Bahasa Inggris. Ketika dihadapkan pada data percakapan WhatsApp Angkatan STAN yang kaya akan istilah informal, singkatan tidak baku, dan percampuran bahasa (\textit{code-mixing} seperti \texttt{"sheesh"}, \texttt{"hsr"}, \texttt{"evernight"}), model multilingual gagal memetakan makna semantik kata-kata tersebut secara akurat. Sebaliknya, model IndoBERTweet dilatih khusus menggunakan korpus teks media sosial Indonesia berskala besar, sehingga memiliki kamus kosakata (\textit{vocabulary}) yang sangat relevan dengan bahasa sehari-hari. Representasi vektor yang dihasilkan oleh IndoBERTweet mampu menangkap kemiripan konteks kata informal secara presisi, menghasilkan klaster dokumen yang lebih padat, dan pada akhirnya menghasilkan kata kunci topik yang lebih terarah dan bermakna.
-
-% \subsection{Efektivitas Representasi Kata Kunci dengan BM25}
-% \label{subsec:discussion-bm25}
-
-% Komponen pembobotan BM25 yang diintegrasikan sebagai pengganti c-TF-IDF terbukti menghasilkan kata kunci representatif yang lebih koheren dan stabil. Dalam c-TF-IDF standar, bobot kata dihitung berdasarkan perkalian frekuensi kata lokal dengan kebalikan frekuensi kelas. Namun, c-TF-IDF tidak mempertimbangkan saturasi frekuensi kata (\textit{term frequency saturation}) dan perbedaan panjang dokumen secara dinamis. Pada data percakapan WhatsApp yang informal, sering kali dijumpai pengulangan kata tawa (\texttt{"wkwk"}) atau kata penegas (\texttt{"ya"}) yang sangat dominan dalam satu pesan panjang, sehingga kata-kata tersebut cenderung mendominasi representasi topik secara bias.
-
-% Algoritma BM25 mengatasi bias ini dengan menyertakan parameter $k_1$ untuk membatasi dampak peningkatan frekuensi kata (saturasi) dan parameter $b$ untuk menormalisasi kontribusi panjang dokumen. Dengan demikian, kata-kata unik yang memiliki bobot informasi tinggi tetap dapat muncul sebagai kata kunci representatif topik meskipun frekuensi kemunculannya tidak sedominan kata-kata umum, sehingga meningkatkan kualitas kejelasan (\textit{readability}) dari topik yang disajikan kepada pengguna.
+Rincian hasil pengujian fungsional sistem disajikan pada \textbf{Lampiran \ref{appx:blackbox-testing}} (\textbf{Tabel \ref{tab:blackbox-testing}}). Berdasarkan hasil pengujian fungsional menggunakan metode \textit{Black Box Testing} terhadap 11 skenario kasus uji utama yang mencakup seluruh alur kerja sistem (\texttt{ChatAnalisis-FE} dan \texttt{ChatAnalisis-BE}) secara terintegrasi, seluruh fitur sistem dinyatakan dapat berjalan dengan baik dan menghasilkan keluaran yang valid sesuai dengan spesifikasi kebutuhan yang didefinisikan.

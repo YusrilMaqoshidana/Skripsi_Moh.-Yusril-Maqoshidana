@@ -37,13 +37,19 @@
   {0.5em}                                % Space antara label dan title
   {}                                   % Formatting title (none)
 
-% --- KONFIGURASI SUBSUBSECTION (Bagian 1.1.1) ---
-% Format: Bold, Normal size (12pt), Bernomor
-\titleformat{\subsubsection}
-  {\bfseries\normalsize}               % Style: Bold, Normal size
-  {\thesubsubsection}                  % Label: "1.1.1", dll
-  {0.5em}                                % Space antara label dan title
+% --- KONFIGURASI SUBSUBSECTION (Bagian a., b., dll) ---
+% Format: Normal font (12pt, tidak bold), Format huruf kecil (a., b., dll)
+% Tidak masuk ke Daftar Isi (tocdepth = 2)
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\renewcommand{\thesubsubsection}{\alph{subsubsection}.}
+\titleformat{\subsubsection}[block]
+  {\normalfont\normalsize}             % Style: Normal font (TIDAK BOLD), Normal size
+  {\hspace*{0.5cm}\thesubsubsection}   % Label: "a.", "b.", dll (menjorok sedang 0.5cm)
+  {0.5em}                              % Space antara label dan title
   {}                                   % Formatting title (none)
+
+\titlespacing*{\subsubsection}{0pt}{10pt}{4pt}  % Spacing: indent=0pt, before=10pt, after=4pt
 
 % --- KONFIGURASI PARAGRAPH ---
 % Untuk case yang lebih spesifik (jarang digunakan dalam juknis)

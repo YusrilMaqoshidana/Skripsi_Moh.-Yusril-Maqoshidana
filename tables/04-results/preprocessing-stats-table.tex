@@ -1,0 +1,25 @@
+\begingroup
+\renewcommand{\arraystretch}{1.2}
+\begin{table}[htbp]
+\centering
+\caption{Statistik Hasil Pengolahan Praproses Data Pada Dataset Percakapan WhatsApp}
+\label{tab:statistik-praproses}
+\scriptsize
+\begin{tabular}{p{0.5cm} p{6.5cm} c c}
+\toprule
+\textbf{No} & \textbf{Tahap Praproses Data} & \textbf{Jumlah Baris Berdampak} & \textbf{Persentase (\%)} \\
+\midrule
+1 & Eliminasi Notifikasi Sistem Automatis \& Berkas Kontak (\textit{.vcf}) & 2.415 baris & 2,63\% \\
+2 & Penghapusan Artefak Metadata Sistem (\textit{<...>}) & 14.739 baris & 16,04\% \\
+3 & Penghapusan Pranala Luar (\textit{URL / Hyperlink}) & 3.412 baris & 3,71\% \\
+4 & Anonimisasi Penyebutan (\textit{Mention}) \& Kontak Telepon & 1.306 baris & 1,42\% \\
+5 & Transliterasi Emoji \& Emotikon (\textit{Demojize}) & 41.487 baris & 45,16\% \\
+6 & Normalisasi Ekspresi Tawa (\textit{Laughter Normalization}) & 9.258 baris & 10,08\% \\
+7 & Normalisasi Elongasi Karakter \& Kata Tidak Baku & 18.642 baris & 20,29\% \\
+8 & Penyaringan Pesan Pendek ($< 3$ Kata) \& Baris Kosong & 33.360 baris & 36,31\% \\
+\midrule
+\multicolumn{2}{l}{\textbf{Total Dokumen Bersih Siap Pemodelan (\textit{Pesan\_Preprocessed})}} & \textbf{56.089 dokumen} & \textbf{61,05\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+\endgroup

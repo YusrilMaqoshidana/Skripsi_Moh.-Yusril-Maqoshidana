@@ -114,6 +114,14 @@
 % --- GARIS TANDA TANGAN ---
 \newcommand{\signatureLine}{(\dotfill)}
 
+% --- COMMAND UNTUK SUBSUBSECTION KHUSUS (a., b., dll. - Normal font, Menjorok Lurus Angka Akhir Subsection) ---
+% Penggunaan: \subsubsubsection{Judul Subsubsection}
+\newcommand{\subsubsubsection}[1]{%
+  \par\vspace{10pt}%
+  \refstepcounter{subsubsection}%
+  \hspace*{1.2cm}{\normalfont\normalsize \alph{subsubsection}. #1}\par\nopagebreak\vspace{4pt}%
+}
+
 % ====================================================================
 % CATATAN PENGGUNAAN:
 % - Gunakan custom command ini secara konsisten di seluruh dokumen

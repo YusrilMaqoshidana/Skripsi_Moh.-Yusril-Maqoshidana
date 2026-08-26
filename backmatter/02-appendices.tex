@@ -14,26 +14,30 @@
 
 \appendix
 \frontmatterchapter{LAMPIRAN}
-\noindent\textbf{Lampiran - Alur Implementasi Sistem}
+\renewcommand{\thesection}{\arabic{section}}
+\setcounter{section}{0}
+\noindent\section{Lampiran - Alur Implementasi Sistem}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/bab-3-alur-implementasi-sistem.png}
+\includegraphics[width=0.9\textwidth]{images/bab-3-alur-sistem-chat-analisis.jpg}
 \caption{Alur Implementasi Sistem}
 \label{fig:bab-3-alur-implementasi-sistem}
 \end{figure}
 
 \newpage
-\noindent\textbf{Lampiran - Alur Teknis Implementasi Sistem Web}
+\noindent\section{Lampiran - Alur Teknis Pemrosesan Sistem Web}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/bab-4-alur-teknis-implementasi-sistem.png}
-\caption{Alur Teknis Implementasi Sistem}
+\includegraphics[width=0.9\textwidth]{images/ui/loading-prosess-realtime.png}
+\caption{Alur Teknis Pemrosesan Sistem Web}
 \label{fig:bab-4-alur-teknis-implementasi-sistem}
-\end{figure}\section{Surat Izin Penelitian dari Kampus}
+\end{figure}
+
+\noindent\section{Lampiran - Surat Izin Penelitian dari Kampus}
 \label{appx:surat-izin-penelitian}
-Dokumen administratif berupa Surat Izin Penelitian resmi dari pihak kampus untuk permohonan pengambilan data percakapan grup WhatsApp Angkatan STAN Tahun 2022.
+Dokumen administratif berupa Surat Izin Penelitian resmi dari pihak kampus untuk permohonan pengambilan data percakapan grup WhatsApp Komunitas Buku.
 
 \begin{figure}[H]
 \centering
@@ -42,30 +46,42 @@ Dokumen administratif berupa Surat Izin Penelitian resmi dari pihak kampus untuk
 \label{fig:surat-izin-penelitian}
 \end{figure}
 
-\section{Bukti Persetujuan Admin Grup WhatsApp}
+\noindent\section{Lampiran - Bukti Persetujuan Admin Grup WhatsApp}
 \label{appx:bukti-izin-admin}
-Tangkapan layar persetujuan tertulis dari administrator grup WhatsApp Angkatan STAN Tahun 2022 untuk penggunaan riwayat percakapan sebagai dataset penelitian dengan syarat penyamaran identitas.
+Tangkapan layar persetujuan tertulis dari administrator grup WhatsApp Komunitas Buku untuk penggunaan riwayat percakapan sebagai dataset penelitian dengan syarat penyamaran identitas.
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/Izin1.jpeg}
-\caption{Bukti Persetujuan Admin Grup WhatsApp Halaman 1}
-\label{fig:bukti-izin-admin-1}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/Izin1.png}
+        \caption{Bukti Persetujuan 1}
+        \label{fig:bukti-izin-admin-1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/Izin2.png}
+        \caption{Bukti Persetujuan 2}
+        \label{fig:bukti-izin-admin-2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/Izin3.png}
+        \caption{Bukti Persetujuan 3}
+        \label{fig:bukti-izin-admin-3}
+    \end{subfigure}
+    \caption{Bukti Persetujuan Admin Grup WhatsApp}
+    \label{fig:bukti-izin-admin}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/Izin2.jpeg}
-\caption{Bukti Persetujuan Admin Grup WhatsApp Halaman 2}
-\label{fig:bukti-izin-admin-2}
-\end{figure}
+\newpage
+\noindent\section{Lampiran - Hasil Pengujian Fungsional Sistem (Black-Box Testing)}
+\label{appx:blackbox-testing}
+Rincian 34 skenario kasus uji fungsional sistem menggunakan metode \textit{Black-Box Testing} yang mengevaluasi perilaku masukan dan keluaran antarmuka web (\textit{frontend}) serta layanan API (\textit{backend}).
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/Izin3.jpeg}
-\caption{Bukti Persetujuan Admin Grup WhatsApp Halaman 3}
-\label{fig:bukti-izin-admin-3}
-\end{figure}
+\input{tables/04-results/blackbox-testing.tex}
 
 % ====================================================================
 % CATATAN PENGISIAN LAMPIRAN:
