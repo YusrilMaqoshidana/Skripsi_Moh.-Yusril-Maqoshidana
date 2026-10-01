@@ -10,34 +10,19 @@
 \frontmatterchapter{RINGKASAN}
 
 % --- ISI RINGKASAN ---
-% Ringkasan adalah versi yang lebih panjang dari abstrak, dengan penjelasan
-% yang lebih detail namun tetap padat. Gunakan 1-2 halaman penuh.
+\noindent WhatsApp merupakan salah satu platform pesan instan paling populer yang dimanfaatkan sebagai sarana komunikasi kelompok, koordinasi tim, dan interaksi komunitas daring. Pada grup percakapan aktif dengan volume pesan tinggi, dinamika pertukaran informasi berlangsung sangat cepat. Akumulasi ribuan pesan harian tersebut memicu fenomena \textit{information overload}, di mana anggota kelompok mengalami kendala dalam memahami pokok pembicaraan, menyaring poin krusial, dan memetakan topik tanpa membaca riwayat pesan secara manual.
 
-\noindent Penelitian ini dilakukan dengan latar belakang \ldots
-(Jelaskan konteks, motivasi, dan pentingnya penelitian secara lebih detail dibanding abstrak.)
+Penerapan teknik pemodelan topik (\textit{topic modeling}) pada percakapan WhatsApp menghadapi tantangan teks pendek, tata bahasa informal, derau tinggi (singkatan, elongasi, ekspresi tawa, emoji), dan \textit{code-mixing}. Model konvensional berbasis \textit{bag-of-words} mengalami masalah kelangkaan data (\textit{sparsity}), sedangkan \textit{framework} BERTopic standar dengan HDBSCAN secara inheren membuang 41\%--43\% dokumen sebagai pencilan (\textit{outlier}), sehingga menghilangkan banyak substansi obrolan. Selain itu, model bahasa umum kurang optimal menangkap konteks percakapan lokal Indonesia, serta skema c-TF-IDF rentan bias akibat pengulangan frekuensi kata pada teks pendek.
 
-% Latar Belakang
-Dalam era \ldots (Tambahkan konteks temporal dan kontekstual penelitian Anda).
+Guna mengatasi permasalahan tersebut, penelitian ini mengusulkan modifikasi arsitektur BERTopic yang memadukan model \textit{embedding} IndoBERTweet, algoritma pengklasteran hierarkis BIRCH (\textit{BirchWithOutliers}) dengan mekanisme persentil jarak kosinus untuk menekan \textit{outlier}, serta skema pembobotan BM25 dengan penyaringan \textit{stopwords} wacana percakapan 9 kategori. Penelitian ini bertujuan untuk: (1) mengimplementasikan arsitektur BERTopic modifikasi pada obrolan grup WhatsApp berbahasa Indonesia; (2) mengevaluasi performa model usulan secara kuantitatif melalui kurva pembelajaran (\textit{learning curve}) dibandingkan \textit{baseline} BERTopic menggunakan metrik \textit{Topic Coherence} (C-NPMI), \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity}; serta (3) membangun sistem aplikasi berbasis web interaktif dengan jaminan privasi data di sisi klien dan penelusuran konteks pesan (\textit{traceability}).
 
-% Masalah dan Tujuan
-Masalah yang dihadapi adalah \ldots (Jelaskan masalah penelitian dan mengapa penting untuk diteliti).
-Oleh karena itu, penelitian ini bertujuan untuk \ldots (Jelaskan tujuan utama penelitian).
+Metodologi penelitian menerapkan pendekatan kuantitatif eksperimental dan \textit{Research and Development} (R\&D). Dataset bersumber dari grup WhatsApp Komunitas Buku (2023--2026) sebanyak 91.868 pesan teks dari 1.307 partisipan, yang menghasilkan 56.089 dokumen bersih melalui \textit{Single-Path Preprocessing} (parsing ISO 8601, anonimisasi SHA-256 sisi klien, pembersihan notifikasi/URL/metadata, transliterasi emoji, normalisasi kata/tawa, dan filter panjang $\ge 3$ kata). Pemodelan topik memadukan IndoBERTweet (768 dimensi), reduksi UMAP (5 dimensi, kosinus), pengklasteran BIRCH, ekstraksi BM25 ($k_1=1,2; b=0,5$), dan reduksi topik otomatis dengan \textit{safety guard}. Sistem web dibangun menggunakan arsitektur \textit{client-server} (Vue.js 3 dan FastAPI) yang dilengkapi pemrosesan latar belakang asinkron, pemantauan status \textit{real-time} via \textit{Server-Sent Events} (SSE), serta pengujian fungsional \textit{Black-Box Testing}.
 
-% Metode
-Metode penelitian yang digunakan adalah \ldots (Jelaskan dengan detail: pendekatan, design, populasi/sampel, instrumen, teknik pengumpulan data, dan analisis data).
+Hasil evaluasi kuantitatif sepanjang kurva pembelajaran (20\%--100\% data) membuktikan keunggulan model usulan. Algoritma BIRCH berhasil membatasi proporsi pencilan (\textit{outlier rate}) menjadi hanya 8,79\% pada 100\% data (56.089 dokumen), jauh mengungguli model \textit{baseline} yang membuang 42,42\% data. Pemanfaatan IndoBERTweet dan BM25 meningkatkan nilai C-NPMI secara signifikan dari 0,0662 menjadi 0,1567, serta menjaga \textit{Topic Diversity} pada level tinggi (0,9559). Metrik kekompakan ruang vektor juga meningkat dengan \textit{Embedding Density} mencapai 0,6666 (vs 0,5611) dan \textit{Intra-topic Similarity} mencapai 0,6716 (vs 0,5211). Pengujian \textit{Black-Box Testing} terhadap 34 skenario kasus uji menunjukkan seluruh fitur sistem beroperasi 100\% valid.
 
-% Hasil
-Temuan penelitian menunjukkan bahwa \ldots (Jelaskan hasil utama, temuan penting, dan interpretasi awal).
+Dapat disimpulkan bahwa integrasi IndoBERTweet, pengklasteran BIRCH, dan representasi BM25 pada BERTopic terbukti efektif mengatasi tantangan pemodelan topik teks pendek WhatsApp, meminimalkan kehilangan data percakapan, serta menghasilkan klaster topik yang koheren dan representatif. Secara praktis, sistem web yang dikembangkan memberikan solusi aplikatif yang memudahkan pengguna dan pengelola komunitas dalam menganalisis dinamika obrolan grup secara aman, efisien, dan interaktif.
 
-% Kesimpulan dan Manfaat
-Berdasarkan hasil penelitian, dapat disimpulkan bahwa \ldots (Berikan kesimpulan yang comprehensive).
-Penelitian ini diharapkan dapat memberikan manfaat bagi \ldots (Jelaskan kontribusi praktis dan akademis).
-
-\vspace{1cm}
-
-% --- ISI ALTERNATIF MENGGUNAKAN LIPSUM ---
-% Jika Anda ingin placeholder lebih panjang, gunakan:
-% \lipsum[8-9]
+\vspace{0.5cm}
 
 \newpage
 

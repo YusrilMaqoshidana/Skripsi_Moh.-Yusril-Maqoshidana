@@ -2,67 +2,24 @@
 % ABSTRAK (BAHASA INDONESIA)
 % ====================================================================
 % File ini berisi abstrak dalam bahasa Indonesia (200-300 kata).
-% Abstrak harus menjelaskan:
-% 1. Latar belakang dan masalah penelitian
-% 2. Tujuan penelitian
-% 3. Metode penelitian (singkat)
-% 4. Hasil utama
-% 5. Kesimpulan
-%
 % EDIT konten sesuai dengan penelitian Anda.
 % ====================================================================
 
 \frontmatterchapter{ABSTRAK}
 
 % --- ISI ABSTRAK ---
-% Ganti konten berikut dengan abstrak penelitian Anda
-\noindent Latar belakang penelitian ini adalah \ldots (Jelaskan konteks dan motivasi penelitian Anda di sini, minimal 2-3 kalimat).
+\noindent Tingginya aktivitas pertukaran pesan pada grup WhatsApp kerap memicu fenomena \textit{information overload}, yang menyulitkan pengguna dalam mengikuti dinamika diskusi dan menyaring informasi penting tanpa membaca riwayat pesan secara manual. Kendati teknik \textit{topic modeling} dapat mengekstraksi topik secara otomatis, penerapannya pada percakapan WhatsApp menghadapi tantangan teks pendek, struktur informal, derau tinggi, dan \textit{code-mixing}. Di samping itu, algoritma pengklasteran HDBSCAN pada \textit{framework} BERTopic standar mengeliminasi hingga 41\%--43\% data sebagai \textit{outlier}, sehingga menghilangkan banyak substansi percakapan penting.
 
-Rumusan masalah dalam penelitian ini adalah \ldots (Jelaskan masalah utama yang ingin dipecahkan).
+Penelitian ini bertujuan mengembangkan modifikasi arsitektur BERTopic yang memadukan model \textit{embedding} IndoBERTweet, algoritma pengklasteran hierarkis BIRCH untuk menekan proporsi \textit{outlier}, serta skema pembobotan BM25 untuk representasi kata kunci topik. Model dievaluasi terhadap \textit{baseline} BERTopic menggunakan metrik \textit{Topic Coherence} (C-NPMI), \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity}, serta diimplementasikan ke dalam aplikasi analisis berbasis web.
 
-Tujuan penelitian ini adalah untuk \ldots (Jelaskan tujuan yang ingin dicapai dari penelitian Anda).
+Metodologi penelitian menerapkan pendekatan eksperimental dan R\&D menggunakan dataset 91.868 pesan grup WhatsApp Komunitas Buku (2023--2026) yang menghasilkan 56.089 dokumen bersih setelah \textit{Single-Path Preprocessing}. Pemodelan topik memadukan IndoBERTweet (768 dimensi), reduksi UMAP (5 dimensi), pengklasteran BIRCH, ekstraksi kata kunci BM25 dengan penyaringan \textit{stopwords} 9 kategori, serta reduksi topik otomatis. Sistem dibangun dengan arsitektur \textit{client-server} (Vue.js dan FastAPI) yang dilengkapi pemantauan progres \textit{real-time} berbasis SSE, penelusuran konteks pesan (\textit{traceability}), dan privasi data di sisi klien.
 
-Metode penelitian yang digunakan adalah \ldots (Jelaskan metode penelitian secara ringkas: jenis penelitian, sampel, instrumen, teknik analisis).
+% --- KESIMPULAN (Belum diisi sesuai instruksi) ---
+% Kesimpulan dan temuan empiris final akan dilengkapi setelah evaluasi menyeluruh.
 
-Hasil penelitian menunjukkan bahwa \ldots (Jelaskan temuan utama dari penelitian Anda).
-
-Kesimpulannya adalah \ldots (Berikan kesimpulan singkat dan implikasi dari penelitian).
-
-% --- ISI ALTERNATIF MENGGUNAKAN LIPSUM ---
-% Jika Anda ingin placeholder lebih panjang, gunakan:
-% \lipsum[7]
-
-\vspace{1cm}
+\vspace{0.3cm}
 
 % --- KATA KUNCI ---
-\noindent \textbf{Kata Kunci:} \textit{\keywordOne, \keywordTwo, \keywordThree}
+\noindent \textbf{Kata Kunci:} \textit{BERTopic, IndoBERTweet, BIRCH Clustering, BM25, Topic Modeling, Analisis Grup WhatsApp, Pemrosesan Bahasa Alami}
 
 \newpage
-
-% ====================================================================
-% PETUNJUK PENGISIAN ABSTRAK:
-%
-% 1. PANJANG: 200-300 kata (sesuai juknis)
-% 2. STRUKTUR:
-%    - Jelaskan latar belakang masalah
-%    - Rumusan masalah penelitian
-%    - Tujuan penelitian
-%    - Metode (singkat)
-%    - Hasil utama
-%    - Kesimpulan
-%
-% 3. GAYA PENULISAN:
-%    - Paragraf padat (single spacing di dalam, but dokumen masih 1.5)
-%    - Gunakan past tense untuk metodologi
-%    - Gunakan present tense untuk hasil/kesimpulan
-%
-% 4. KATA KUNCI:
-%    - Minimum 3 kata kunci, maksimal 5
-%    - Edit di metadata.tex: \keywordOne, \keywordTwo, \keywordThree
-%    - Terurut alphabetically jika memungkinkan
-%
-% 5. TIPS:
-%    - Jangan gunakan referensi atau sitasi di abstrak
-%    - Hindari singkatan (kecuali yang sangat umum)
-%    - Hindari tabel/gambar
-% ====================================================================

@@ -9,27 +9,19 @@
 \frontmatterchapter{ABSTRACT}
 
 % --- ISI ABSTRACT ---
-% Ganti konten berikut dengan abstrak penelitian Anda dalam bahasa Inggris
-\noindent The background of this research is \ldots (Explain the context and motivation of your research here, at least 2-3 sentences).
+\noindent High message activity in WhatsApp groups frequently causes information overload, making it challenging for users to track discussions and extract key insights without manually reading lengthy chat histories. While topic modeling can automate thematic extraction, applying it to WhatsApp conversations presents substantial challenges due to short text length, informal grammar, noise, and code-mixing. Furthermore, the standard BERTopic framework relies on HDBSCAN clustering, which inherently discards 41\%--43\% of messages as outliers, causing critical conversational data loss.
 
-The research problem investigated in this study is \ldots (Explain the main problem to be solved).
+This study aims to develop an enhanced BERTopic architecture that integrates the IndoBERTweet embedding model, BIRCH hierarchical clustering to minimize outlier rates, and the BM25 weighting scheme for topic keyword representation. The model is evaluated against the baseline BERTopic using Topic Coherence (C-NPMI), Topic Diversity, Embedding Density, and Intra-topic Similarity, and is implemented into an end-to-end web-based analytics platform.
 
-The purpose of this research is to \ldots (Explain the objectives to be achieved from your research).
+The research employs an experimental and R\&D methodology utilizing 91,868 raw messages from the ``Komunitas Buku'' WhatsApp group (2023--2026), producing 56,089 clean documents via Single-Path Preprocessing. The topic modeling pipeline incorporates IndoBERTweet (768-d), UMAP reduction (5-d), BIRCH clustering, BM25 keyword representation with a 9-category stopword filter, and automatic topic reduction. The system is built on a client-server architecture (Vue.js and FastAPI) featuring real-time SSE progress streaming, message context traceability, and client-side privacy preservation.
 
-The research method used is \ldots (Explain the research method briefly: research type, sample, instruments, analysis techniques).
+% --- CONCLUSION (Belum diisi sesuai instruksi) ---
+% The conclusion and main empirical findings will be provided upon complete final evaluation.
 
-The research results show that \ldots (Explain the main findings from your research).
-
-The conclusion is that \ldots (Provide a brief conclusion and implications of the research).
-
-% --- ISI ALTERNATIF MENGGUNAKAN LIPSUM ---
-% Jika Anda ingin placeholder lebih panjang, gunakan:
-% \lipsum[8]
-
-\vspace{1cm}
+\vspace{0.3cm}
 
 % --- KEYWORDS ---
-\noindent \textbf{Keywords:} \textit{\keywordOne, \keywordTwo, \keywordThree}
+\noindent \textbf{Keywords:} \textit{BERTopic, IndoBERTweet, BIRCH Clustering, BM25, Topic Modeling, WhatsApp Group Analysis, Natural Language Processing}
 
 \newpage
 

@@ -62,6 +62,15 @@
 % --- KONFIGURASI IDENTASI ---
 \setlength{\parindent}{1cm}  % Atur jarak indentasi
 
+% --- KONFIGURASI KETEBALAN GARIS TABEL (STANDAR JURNAL AKADEMIK) ---
+% Menyeragamkan ketebalan garis pada seluruh tabel (booktabs dan standard) agar rapi, proporsional, dan elegan
+\setlength{\heavyrulewidth}{0.75pt}  % Garis atas (\toprule) & garis bawah (\bottomrule)
+\setlength{\lightrulewidth}{0.45pt}  % Garis pemisah header (\midrule)
+\setlength{\cmidrulewidth}{0.35pt}   % Garis sub-kolom (\cmidrule)
+\setlength{\arrayrulewidth}{0.45pt}  % Garis pemisah standar (\hline pada tabular/longtable)
+\setlength{\aboverulesep}{0.35ex}    % Jarak vertikal di atas garis booktabs
+\setlength{\belowrulesep}{0.35ex}    % Jarak vertikal di bawah garis booktabs
+
 % --- KONFIGURASI DAFTAR ISI / TABEL / GAMBAR ---
 % Dipusatkan di file ini supaya styling tetap konsisten dengan struktur dokumen
 \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
