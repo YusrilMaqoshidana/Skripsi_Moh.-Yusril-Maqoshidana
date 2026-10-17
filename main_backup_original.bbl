@@ -49,11 +49,6 @@ Jian, F., Huang, J.~X., Zhao, J., Ying, Z., and Wang, Y. (2020).
 \newblock A topic-based term frequency normalization framework to enhance probabilistic information retrieval.
 \newblock {\em Computational Intelligence}, 36(2):486--521.
 
-\bibitem[Kharisudin and Masri'an, 2022]{kharisudin2022topic}
-Kharisudin, I. and Masri'an, H. (2022).
-\newblock Topic modeling on whatsapp user reviews using latent dirichlet allocation.
-\newblock {\em Scientific Journal of Informatics}, 9:51--62.
-
 \bibitem[Koto et~al., 2021]{koto2021indobertweet}
 Koto, F., Lau, J.~H., and Baldwin, T. (2021).
 \newblock Indobertweet: A pretrained language model for indonesian twitter with effective domain-specific vocabulary initialization.
@@ -62,11 +57,6 @@ Koto, F., Lau, J.~H., and Baldwin, T. (2021).
 \bibitem[Koto et~al., 2020]{Indobert2020}
 Koto, F., Rahimi, A., Lau, J., and Baldwin, T. (2020).
 \newblock Indolem and indobert: A benchmark dataset and pre-trained language model for indonesian nlp.
-
-\bibitem[Kumar and Naik, 2023]{10425363}
-Kumar, R.~P. and Naik, N.~M. (2023).
-\newblock Whatsapp chat analyzer using machine learning and natural language processing.
-\newblock In {\em 2023 2nd International Conference on Futuristic Technologies (INCOFT)}, pages 1--6.
 
 \bibitem[McInnes et~al., 2018]{mcinnes2018umap}
 McInnes, L., Healy, J., and Melville, J. (2018).
@@ -88,15 +78,15 @@ Prayogi, A., Novriyenny, N., and Prahmana, I.~G. (2025).
 \newblock Dinamika sentimen komunikasi mahasiswa dan dosen dengan pemanfaatan analisis pesan whatsapp akademis menggunakan machine learning.
 \newblock {\em Repeater: Publikasi Teknik Informatika dan Jaringan}, 3(2):45--54.
 
+\bibitem[Ramadhani et~al., 2020]{Ramadhani_2020}
+Ramadhani, F., Zarlis, M., and Suwilo, S. (2020).
+\newblock Improve birch algorithm for big data clustering.
+\newblock {\em IOP Conference Series: Materials Science and Engineering}, 725(1):012090.
+
 \bibitem[Rani et~al., 2022]{rani2022whatsapp}
 Rani, S.~J., Prabhu, T., and Chellam, J. A.~I. (2022).
 \newblock Whatsapp sentiment analysis using r.
 \newblock In {\em 2022 3rd International Conference for Emerging Technology (INCET)}, pages 1--4. IEEE.
-
-\bibitem[Retna et~al., 2021]{9388596}
-Retna, V.~A., Brundha, P., and RajKumar, G. (2021).
-\newblock People’s behaviour analysis in chat message using natural language processing.
-\newblock In {\em 2021 Third International Conference on Intelligent Communication Technologies and Virtual Mobile Networks (ICICV)}, pages 1128--1133.
 
 \bibitem[R\"{o}der et~al., 2015]{2685324}
 R\"{o}der, M., Both, A., and Hinneburg, A. (2015).
@@ -114,9 +104,9 @@ Shan, X., Liu, C., Xia, Y., Chen, Q., Zhang, Y., Luo, A., and Luo, Y. (2020).
 \newblock {\em CoRR}, abs/2007.05186.
 
 \bibitem[Siregar et~al., 2025]{siregar2025}
-Siregar, U.~A., Ramadani, N., and Siregar, F. P.~R. (2025).
+Siregar, U., Ramadani, N., and Siregar, F. (2025).
 \newblock Syntactic analysis in whatsapp conversations among peers.
-\newblock {\em Jurnal Hata Poda}, 4(2):150--157.
+\newblock {\em Jurnal Hata Poda}, 4:150--157.
 
 \bibitem[Sutarma, 2017]{sutarma2017}
 Sutarma, I. G.~P. (2017).

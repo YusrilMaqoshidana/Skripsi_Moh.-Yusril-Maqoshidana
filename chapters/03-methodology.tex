@@ -17,9 +17,9 @@
 \section{Jenis Penelitian}
 \label{sec:method-type}
 
-Penelitian ini termasuk kategori kuantitatif eksperimental dengan pendekatan Research and Development (R\&D).
-Aspek R\&D terletak pada pengembangan sistem analisis topik percakapan WhatsApp berbasis web,
-sedangkan aspek eksperimental kuantitatif digunakan untuk memvalidasi performa pipeline BERTopic dengan modifikasi IndoBERTweet sebagai model embedding dan BIRCH sebagai model clustering.
+Penelitian ini termasuk kategori kuantitatif eksperimental dengan pendekatan \textit{Research and Development} (R\&D).
+Aspek R\&D terletak pada pengembangan sistem analisis topik percakapan WhatsApp berbasis \textit{web},
+sedangkan aspek eksperimental kuantitatif digunakan untuk memvalidasi performa \textit{pipeline} BERTopic dengan modifikasi IndoBERTweet sebagai model \textit{embedding} dan BIRCH sebagai model \textit{clustering}.
 
 % --- BAGIAN 3.2: POPULASI DAN SAMPEL ---
 \section{Objek Penelitian}
@@ -136,11 +136,9 @@ Sebagaimana ditunjukkan pada Gambar \ref{fig:framework-bertopic-modifikasi}, alu
 	      Dokumen yang telah direduksi dimensinya dikelompokkan menggunakan
 	      algoritma BIRCH (\textit{Balanced Iterative Reducing and Clustering
 		      using Hierarchies}) sebagai pengganti HDBSCAN standar. BIRCH dipilih
-	      karena kemampuannya dalam mengalokasikan seluruh dokumen ke dalam
+	      karena kemampuannya dalam mengalokasikan dokumen ke dalam
 	      klaster tanpa menghasilkan \textit{outlier} dalam jumlah besar, serta
-	      efisiensi komputasi dan penggunaan memori yang lebih baik \citep{10.1145/235968.233324,iaes2025indobert}. Parameter
-	      BIRCH yang digunakan meliputi \textit{threshold},
-	      \textit{branching\_factor}, dan \textit{n\_clusters}.
+	      efisiensi komputasi dan penggunaan memori yang lebih baik \citep{10.1145/235968.233324,iaes2025indobert,IJECE25896,Ramadhani_2020}. Pada model usulan, algoritma BIRCH dimodifikasi menjadi \textit{ImprovedBirch} yang mengombinasikan inisialisasi ambang otomatis rentang mikrogugus $[0{,}20, 0{,}25]$ berbasis konvergensi iteratif \citep{IJECE25896}, pemotongan pencilan deviasi $2\sigma$ jarak kosinus terhadap \textit{centroid} \citep{iaes2025indobert}, serta eliminasi klaster kerdil ($N < 5$) \citep{Ramadhani_2020}.
 
 	\item \textit{Topic Representation} menggunakan BM25 \\
 	      Setiap klaster yang terbentuk direpresentasikan menggunakan skema
@@ -157,17 +155,17 @@ Sebagaimana ditunjukkan pada Gambar \ref{fig:framework-bertopic-modifikasi}, alu
 \subsection{Evaluasi Model}
 \label{subsec:model-evaluation}
 
-Tahap evaluasi model bertujuan untuk mengukur kualitas topik yang dihasilkan
-oleh model BERTopic secara kuantitatif. Evaluasi dilakukan menggunakan empat
-metrik yang telah dijabarkan pada bagian~\ref{sec:literature-theory} (Topic Coherence
-(NPMI), Topic Diversity, Embedding Density, dan Intra-topic Similarity).
-dua metrik pertama menilai kualitas topik dari sisi representasi kata (\textit{lexical}),
-sementara dua metrik berikutnya menilai kualitas topik dari sisi representasi semantik pada ruang \textit{embedding}.
+Tahap evaluasi model bertujuan untuk mengukur kualitas topik yang dihasilkan oleh model BERTopic secara kuantitatif serta memvalidasi efektivitas modifikasi arsitektur yang diajukan. Evaluasi dilakukan menggunakan empat metrik performa yang telah dijabarkan pada bagian~\ref{sec:literature-theory}, yaitu \textit{Topic Coherence} ($C_{\text{NPMI}}$) dan \textit{Topic Diversity} (TD) untuk menilai kualitas topik dari dimensi representasi leksikal kata kunci, serta \textit{Embedding Density} (ED) dan \textit{Intra-topic Similarity} (ITS) untuk menilai kekompakan dan kekohesifan semantik dokumen di dalam ruang vektor \textit{embedding}.
 
-Pada penelitian ini, keempat metrik dihitung pada lima proporsi data uji
-(20\%, 40\%, 60\%, 80\%, dan 100\%) untuk mengamati kestabilan performa model
-seiring penambahan volume data (\textit{learning curve}).
-Model dinyatakan memenuhi kriteria apabila kombinasi parameter yang diujikan menghasilkan skor terbaik, kemudian hasil terbaik dari BERTopic yang diajukan dibandingkan dengan model \textit{baseline} BERTopic.
+Guna memberikan pembuktian ilmiah yang adil, simetris, dan terkontrol (*controlled experiment*), skenario evaluasi dirancang dalam sebuah skema komparasi faktorial $2 \times 2$ yang melibatkan empat variasi model:
+\begin{enumerate}[nosep]
+	\item \textbf{Model Baseline Standar:} Mengimplementasikan arsitektur dasar BERTopic konvensional (\textit{sentence-transformers/all-MiniLM-L6-v2}, UMAP, HDBSCAN mode \textit{excess of mass} dengan \textit{min\_cluster\_size} = 10, dan c-TF-IDF standar) tanpa alur reduksi topik (\textit{nr\_topics} = \textit{None}).
+	\item \textbf{Model Baseline Proposed:} Menggunakan arsitektur dasar BERTopic konvensional yang diadaptasi parameternya untuk mengekstrak klaster mikro (\textit{min\_cluster\_size} = 5, \textit{min\_samples} = 2, metode seleksi \textit{leaf}) yang dipadukan dengan alur reduksi topik otomatis (\textit{nr\_topics} = \textit{"auto"}). Model ini berfungsi sebagai pembanding berimbang yang setara secara alur kerja terhadap model usulan.
+	\item \textbf{Model Jurnal Referensi \citep{iaes2025indobert}:} Mereplikasi metodologi pemodelan teks pendek dari penelitian acuan terdahulu menggunakan model bahasa IndoBERTweet, UMAP, algoritma BIRCH dengan inisialisasi ambang otomatis Ridler-Calvard (\textit{auto-threshold}) \citep{IJECE25896}, dan representasi kata BM25 tanpa penerapan reduksi topik (\textit{nr\_topics} = \textit{None}).
+	\item \textbf{Model Usulan (Proposed Model):} Mengintegrasikan model bahasa IndoBERTweet, reduksi dimensi UMAP kosinus, algoritma pengklasteran usulan \textit{ImprovedBirch} (ambang otomatis mikrogugus $[0{,}20, 0{,}25]$, batas pemotongan deviasi $2\sigma$ jarak kosinus terhadap \textit{centroid}, pembersihan klaster kerdil $N < 5$), representasi kata BM25 yang diperkaya kamus \textit{stopwords} 9 kategori wacana WhatsApp, serta tahap reduksi topik otomatis (\textit{nr\_topics} = \textit{"auto"}) yang dilengkapi mekanisme pengaman (\textit{safety guard}).
+\end{enumerate}
+
+Keempat model tersebut diuji secara longitudinal pada lima proporsi volume data latih yang dipartisi secara bertahap, yaitu 20\%, 40\%, 60\%, 80\%, dan 100\% dari keseluruhan korpus data bersih hasil tahap praproses. Pendekatan kurva pembelajaran (\textit{learning curve}) ini diterapkan untuk mengamati dinamika konvergensi topik, resiliensi terhadap fenomena derau teks percakapan, serta kemampuan adaptasi masing-masing algoritma seiring bertambahnya skala korpus data masukan secara bertahap.
 
 \subsection{Implementasi Sistem}
 \label{subsec:system-implementation}

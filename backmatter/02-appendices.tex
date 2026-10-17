@@ -83,6 +83,101 @@ Rincian 34 skenario kasus uji fungsional sistem menggunakan metode \textit{Black
 
 \input{tables/04-results/blackbox-testing.tex}
 
+\newpage
+\noindent\section{Lampiran - Tangkapan Layar Implementasi Antarmuka Sistem Web}
+\label{appx:ui-screenshots}
+Rincian tangkapan layar antarmuka pengguna (\textit{frontend}) aplikasi web ChatAnalisis yang mengimplementasikan arsitektur \textit{client-side anonymization}, pemantauan \textit{streaming} SSE, visualisasi hasil pemodelan topik, serta penelusuran konteks pesan (\textit{traceability}).
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/landing-page.png}
+		\caption{Halaman Utama (Landing Page)}
+		\label{fig:ui-landing-page}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/cara-kerja-dan-ekspor.png}
+		\caption{Modal Panduan Ekspor Chat}
+		\label{fig:ui-cara-kerja}
+	\end{subfigure}
+	\caption{Antarmuka Utama dan Panduan Cara Kerja Aplikasi Web ChatAnalisis}
+	\label{fig:ui-beranda-panduan}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/upload-file.png}
+		\caption{Unggah Berkas Obrolan}
+		\label{fig:ui-upload-file}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/pilih-rentang.png}
+		\caption{Filter Rentang Tanggal \& Anonimisasi}
+		\label{fig:ui-pilih-rentang}
+	\end{subfigure}
+	\caption{Antarmuka Unggah Berkas dan Pengaturan Filter Rentang Tanggal Data}
+	\label{fig:ui-upload-rentang}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{images/ui/loading-prosess-realtime.png}
+	\caption{Tampilan Pemantauan Progres Analisis secara Real-Time via Server-Sent Events (SSE)}
+	\label{fig:ui-loading-progress}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{images/ui/waktu-chat-dan-list-klaster-topik.png}
+	\caption{Tampilan Dashboard Hasil Pemodelan Topik dan Grafik Tren Waktu Obrolan}
+	\label{fig:ui-dashboard-topik}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/result-metrik-evaluasi.png}
+		\caption{Panel Metrik Evaluasi Kuantitatif}
+		\label{fig:ui-result-metrik}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/activity-dan-leaderboard.png}
+		\caption{Aktivitas \& Leaderboard Pengirim}
+		\label{fig:ui-activity-leaderboard}
+	\end{subfigure}
+	\caption{Visualisasi Panel Metrik Evaluasi Kuantitatif dan Distribusi Aktivitas Pengguna}
+	\label{fig:ui-metrik-aktivitas}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/detail-klaster.png}
+		\caption{Halaman Detail Klaster Topik}
+		\label{fig:ui-detail-klaster}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/ui/konteks-pesan.png}
+		\caption{Modal Penelusuran Konteks Pesan}
+		\label{fig:ui-konteks-pesan}
+	\end{subfigure}
+	\caption{Antarmuka Detail Klaster Topik dan Dialog Modal Penelusuran Konteks Pesan}
+	\label{fig:ui-traceability-detail}
+\end{figure}
+
 % ====================================================================
 % CATATAN PENGISIAN LAMPIRAN:
 %
