@@ -10,7 +10,7 @@
 % 3. Compile dengan: pdflatex → bibtex → pdflatex → pdflatex
 % ====================================================================
 
-\setlength{\bibsep}{0pt} % Mengurangi spasi antar referensi (opsional)
+\setlength{\bibsep}{6pt} % Jarak proporsional 50% (6pt) antarentri pustaka
 \renewcommand{\bibname}{%
 \begin{center}
     {\normalfont\bfseries\fontsize{14pt}{16pt}\selectfont DAFTAR PUSTAKA}
@@ -20,9 +20,11 @@
 \addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
 
 % --- MENGGUNAKAN BIBTEX (AKTIF) ---
-% Gunakan file daftar_pustaka.bib untuk menyimpan semua referensi
+% Format: APA Style (7th Edition) dengan 1 spasi dalam entri dan hanging indent
+\begin{spacing}{1.0}
 \bibliographystyle{apalike}
 \bibliography{daftar_pustaka}
+\end{spacing}
 
 % ====================================================================
 % PANDUAN PENGUMPULAN REFERENSI:

@@ -122,6 +122,19 @@
   \hspace*{1.2cm}{\normalfont\normalsize \alph{subsubsection}. #1}\par\nopagebreak\vspace{4pt}%
 }
 
+% --- COMMAND UNTUK ENTRI LAMPIRAN (DAFTAR LAMPIRAN & HEADING) ---
+% Penggunaan: \lampiranitem{Judul Lampiran}\label{appx:label}
+% Opsi: \lampiranitem[Judul di Daftar Lampiran]{Judul Lengkap di Halaman}
+\newcommand{\lampiranitem}[2][]{%
+  \refstepcounter{lampiran}%
+  \section*{Lampiran \thelampiran.\hspace{0.5em}#2}%
+  \if\relax\detokenize{#1}\relax
+    \addcontentsline{loa}{lampiran}{\protect\numberline{\thelampiran}#2}%
+  \else
+    \addcontentsline{loa}{lampiran}{\protect\numberline{\thelampiran}#1}%
+  \fi
+}
+
 % ====================================================================
 % CATATAN PENGGUNAAN:
 % - Gunakan custom command ini secara konsisten di seluruh dokumen

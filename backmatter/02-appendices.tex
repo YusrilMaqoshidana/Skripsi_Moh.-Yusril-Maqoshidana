@@ -14,28 +14,34 @@
 
 \appendix
 \frontmatterchapter{LAMPIRAN}
-\renewcommand{\thesection}{\arabic{section}}
-\setcounter{section}{0}
-\noindent\section{Lampiran - Alur Implementasi Sistem}
+\captionsetup{list=no}
+\captionsetup[table]{list=no}
+\captionsetup[figure]{list=no}
+\setcounter{lampiran}{0}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/bab-3-alur-sistem-chat-analisis.jpg}
-\caption{Alur Implementasi Sistem}
-\label{fig:bab-3-alur-implementasi-sistem}
-\end{figure}
+\lampiranitem{Cuplikan Data Mentah Log Obrolan WhatsApp}
+\label{appx:raw-data-example}
+Cuplikan baris data mentah hasil ekspor percakapan WhatsApp grup Komunitas Buku sebelum dilakukan praproses dan penyamaran identitas.
+
+\input{tables/04-results/raw-data-example.tex}
 
 \newpage
-\noindent\section{Lampiran - Alur Teknis Pemrosesan Sistem Web}
+\lampiranitem{Contoh Transformasi Teks Praproses Data}
+\label{appx:preprocessing-summary}
+Contoh transformasi teks pesan sebelum dan sesudah tahap praproses yang meliputi eliminasi notifikasi sistem, penghapusan tanda kurung sudut, normalisasi emoji, tawa, elongasi, dan kata tidak baku.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/ui/loading-prosess-realtime.png}
-\caption{Alur Teknis Pemrosesan Sistem Web}
-\label{fig:bab-4-alur-teknis-implementasi-sistem}
-\end{figure}
+\input{tables/04-results/preprocessing-summary-table.tex}
 
-\noindent\section{Lampiran - Surat Izin Penelitian dari Kampus}
+\newpage
+\lampiranitem{Rincian Data Evaluasi Kurva Pembelajaran}
+\label{appx:learning-curve-table}
+Rincian kuantitatif metrik evaluasi pemodelan topik pada setiap fraksi partisi data latih (20\%, 40\%, 60\%, 80\%, dan 100\%) yang membandingkan performa Model Modified \citep{iaes2025indobert} terhadap Model Usulan.
+
+\input{tables/04-results/learning-curve-table.tex}
+
+\newpage
+
+\lampiranitem{Surat Izin Penelitian dari Kampus}
 \label{appx:surat-izin-penelitian}
 Dokumen administratif berupa Surat Izin Penelitian resmi dari pihak kampus untuk permohonan pengambilan data percakapan grup WhatsApp Komunitas Buku.
 
@@ -46,7 +52,7 @@ Dokumen administratif berupa Surat Izin Penelitian resmi dari pihak kampus untuk
 \label{fig:surat-izin-penelitian}
 \end{figure}
 
-\noindent\section{Lampiran - Bukti Persetujuan Admin Grup WhatsApp}
+\lampiranitem{Bukti Persetujuan Admin Grup WhatsApp}
 \label{appx:bukti-izin-admin}
 Tangkapan layar persetujuan tertulis dari administrator grup WhatsApp Komunitas Buku untuk penggunaan riwayat percakapan sebagai dataset penelitian dengan syarat penyamaran identitas.
 
@@ -77,14 +83,14 @@ Tangkapan layar persetujuan tertulis dari administrator grup WhatsApp Komunitas 
 \end{figure}
 
 \newpage
-\noindent\section{Lampiran - Hasil Pengujian Fungsional Sistem (Black-Box Testing)}
+\lampiranitem{Hasil Pengujian Fungsional Sistem (\textit{Black-Box Testing})}
 \label{appx:blackbox-testing}
-Rincian 34 skenario kasus uji fungsional sistem menggunakan metode \textit{Black-Box Testing} yang mengevaluasi perilaku masukan dan keluaran antarmuka web (\textit{frontend}) serta layanan API (\textit{backend}).
+Rincian 14 skenario kasus uji fitur fungsional inti (\textit{Minimum Viable Product}/MVP) sistem menggunakan metode \textit{Black-Box Testing} yang mengevaluasi perilaku masukan dan keluaran antarmuka web (\textit{frontend}) serta layanan API (\textit{backend}).
 
 \input{tables/04-results/blackbox-testing.tex}
 
 \newpage
-\noindent\section{Lampiran - Tangkapan Layar Implementasi Antarmuka Sistem Web}
+\lampiranitem{Tangkapan Layar Implementasi Antarmuka Sistem Web}
 \label{appx:ui-screenshots}
 Rincian tangkapan layar antarmuka pengguna (\textit{frontend}) aplikasi web ChatAnalisis yang mengimplementasikan arsitektur \textit{client-side anonymization}, pemantauan \textit{streaming} SSE, visualisasi hasil pemodelan topik, serta penelusuran konteks pesan (\textit{traceability}).
 

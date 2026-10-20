@@ -23,7 +23,7 @@ Akumulasi pesan yang masif ini kerap menimbulkan fenomena \textit{information ov
 Oleh karena itu, diperlukan sistem yang mampu memodelkan dan mengekstraksi topik percakapan grup WhatsApp secara otomatis.
 
 \textit{Topic modeling} merupakan teknik dalam \textit{Natural Language Processing} (NLP) untuk menemukan struktur tematik laten dari sekumpulan dokumen teks \citep{ABDELRAZEK2023102131}.
-Namun, penerapan pemodelan topik pada percakapan grup WhatsApp menghadapi tantangan besar akibat karakteristik data yang berupa teks pendek, tidak terstruktur, mengandung \textit{noise} tinggi (seperti singkatan dan ekspresi tawa), serta sarat fenomena \textit{code-mixing} dan struktur kalimat eliptis yang fragmentaris \citep{10.1145/3507900,9243443,sutarma2017,siregar2025}.
+Namun, penerapan pemodelan topik pada percakapan grup WhatsApp menghadapi tantangan besar akibat karakteristik data yang berupa teks pendek, tidak terstruktur, mengandung \textit{noise} tinggi, serta sarat fenomena \textit{code-mixing} dan struktur kalimat eliptis yang fragmentaris \citep{10.1145/3507900,9243443,sutarma2017,siregar2025}.
 
 Meskipun arsitektur modular BERTopic terbukti unggul pada teks pendek dibandingkan metode konvensional berbasis \textit{bag-of-words} seperti LDA dan NMF \citep{grootendorst2022bertopic,10.3389/fsoc.2022.886498}, algoritma klasterisasi bawaannya, yaitu HDBSCAN, secara inheren mengeliminasi dokumen yang tidak memenuhi ambang stabilitas kepadatan sebagai \textit{outlier} \citep{grootendorst2022bertopic,11271424}.
 Akibatnya, hingga 23\%--24\% pesan obrolan dapat terbuang dan tidak terpetakan ke dalam topik manapun \citep{iaes2025indobert}.
@@ -40,7 +40,7 @@ Sementara itu, penerapan BM25 pada tahap representasi topik menyempurnakan c-TF-
 \noindent Berdasarkan latar belakang tersebut, rumusan masalah dalam penelitian ini adalah sebagai berikut:
 \begin{enumerate}[nosep]
 	\item Bagaimana penerapan BERTopic dengan integrasi IndoBERTweet, BIRCH \textit{clustering}, dan representasi topik BM25 untuk mengidentifikasi topik pada percakapan grup WhatsApp berbahasa Indonesia?
-	\item Bagaimana kualitas topik yang dihasilkan oleh BERTopic yang diajukan dibandingkan dengan model baseline BERTopic berdasarkan evaluasi metrik \textit{Topic Coherence}, \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity}?
+	\item Bagaimana kualitas topik yang dihasilkan oleh BERTopic yang diajukan dibandingkan dengan model \textit{baseline} BERTopic berdasarkan evaluasi metrik \textit{Topic Coherence}, \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity}?
 	\item Bagaimana merancang dan mengimplementasikan sistem berbasis \textit{web} untuk analisis topik percakapan grup WhatsApp menggunakan BERTopic dengan IndoBERTweet, BIRCH \textit{clustering}, dan BM25?
 \end{enumerate}
 
@@ -51,7 +51,7 @@ Sementara itu, penerapan BM25 pada tahap representasi topik menyempurnakan c-TF-
 \noindent Berdasarkan rumusan masalah tersebut, tujuan penelitian ini dirumuskan sebagai berikut:
 \begin{enumerate}[nosep]
 	\item Menerapkan BERTopic dengan model \textit{embedding} IndoBERTweet, algoritma BIRCH sebagai metode \textit{clustering}, dan skema BM25 sebagai representasi topik untuk mengidentifikasi topik pada percakapan grup WhatsApp berbahasa Indonesia.
-	\item Mengevaluasi dan membandingkan performa BERTopic yang diajukan dengan baseline BERTopic berdasarkan metrik \textit{Topic Coherence}, \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity}.
+	\item Mengevaluasi dan membandingkan performa BERTopic yang diajukan dengan \textit{baseline} BERTopic berdasarkan metrik \textit{Topic Coherence}, \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity}.
 	\item Merancang dan mengimplementasikan sistem berbasis \textit{web} untuk analisis topik percakapan grup WhatsApp yang memanfaatkan BERTopic dengan IndoBERTweet, BIRCH \textit{clustering}, dan BM25 agar dapat digunakan secara praktis oleh pengguna akhir.
 \end{enumerate}
 
@@ -75,7 +75,7 @@ Sementara itu, penerapan BM25 pada tahap representasi topik menyempurnakan c-TF-
 
 \begin{enumerate}[nosep]
 	\item Sistem hanya menganalisis percakapan teks berbahasa Indonesia dari grup WhatsApp, tidak mencakup media gambar, video, audio, maupun dokumen.
-	\item Data masukan pada \textit{website} berupa file ekspor chat WhatsApp format .txt atau .zip yang diperoleh dari perangkat Android.
+	\item Data masukan pada \textit{website} berupa berkas ekspor \textit{chat} WhatsApp format .txt atau .zip yang diperoleh dari perangkat Android.
 	\item Data yang digunakan merupakan riwayat percakapan grup Komunitas Buku pada periode 2023--2026 dengan jumlah pesan sebanyak 91.868.
 	\item Penelitian berfokus pada pemodelan topik dan tidak mencakup analisis sentimen, klasifikasi emosi, maupun prediksi perilaku pengguna.
 	\item Representasi topik menggunakan metode skema pembobotan BM25 sebagai pengganti skema representasi topik bawaan BERTopic, yaitu c-TF-IDF.

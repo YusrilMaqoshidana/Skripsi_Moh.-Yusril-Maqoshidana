@@ -49,7 +49,7 @@ masalah kelangkaan data (\textit{data sparsity}) pada metode pemodelan topik kon
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.45\textwidth]{images/framework-bertopic-modifikasi-indobert-birch-bm25.png}
-	\caption{Framework BERTopic dengan modifikasi IndoBERT, BIRCH, dan BM25 \citep{iaes2025indobert}}
+	\caption{\textit{Framework} BERTopic dengan modifikasi IndoBERT, BIRCH, dan BM25 \citep{iaes2025indobert}}
 	\label{fig:framework-bertopic}
 \end{figure}
 
@@ -70,7 +70,7 @@ Dalam proses adaptasi tersebut, peneliti melakukan penyesuaian kosakata domain-s
 
 \input{tables/02-literature/tabel-indobertweet-kinerja.tex}
 
-Berdasarkan Tabel \ref{tab:kinerja-indobertweet} yang diadaptasi dari \cite{koto2021indobertweet}, model IndoBERTweet dan variannya subsecara konsisten mencapai performa tinggi pada tujuh tugas NLP berbahasa Indonesia, meliputi \textit{sentiment analysis}, \textit{emotion classification}, \textit{hate speech detection}, dan \textit{named entity recognition}.
+Berdasarkan Tabel \ref{tab:kinerja-indobertweet} yang diadaptasi dari \cite{koto2021indobertweet}, model IndoBERTweet dan variannya secara konsisten mencapai performa tinggi pada tujuh tugas NLP berbahasa Indonesia, meliputi \textit{sentiment analysis}, \textit{emotion classification}, \textit{hate speech detection}, dan \textit{named entity recognition}.
 Hasil terbaik secara rata-rata ditunjukkan oleh varian IndoBERT dengan adaptasi kosakata dan pelatihan lanjutan 200K langkah (86{,}5), sedangkan IndoBERTweet yang dilatih dari awal juga menunjukkan kinerja kompetitif (86{,}1).
 Temuan ini memperkuat asumsi bahwa model berbasis domain media sosial berpotensi lebih sesuai untuk teks pendek, informal, dan bising seperti percakapan grup WhatsApp berbahasa Indonesia, meskipun efektivitas akhirnya tetap perlu divalidasi pada penelitian ini.
 
@@ -137,7 +137,7 @@ Sintesis matematis ini memastikan representasi subklaster tetap kompak, bebas da
 
 
 
-\subsection{Topic Representation Dengan BM25}
+\subsection{\textit{Topic Representation} dengan BM25}
 \label{subsec:bm25}
 
 Skema pembobotan BM25 adalah algoritma fungsi peringkat (\textit{ranking
@@ -190,7 +190,6 @@ dalam representasi topik.
 Dalam konteks studi tersebut, pendekatan ini dilaporkan memberikan representasi
 topik yang lebih stabil dibandingkan c-TF-IDF pada korpus teks pendek
 berbahasa Indonesia \citep{iaes2025indobert}.
-
 Meskipun komponen IDF pada BM25 secara inheren mampu meredam bobot kata-kata yang frekuensinya merata di seluruh korpus, kajian temu balik informasi (\textit{information retrieval}) dan pemodelan teks pendek menegaskan bahwa skema pembobotan statistik tetap rentan terhadap derau leksikal spesifik domain \citep{doi.org/10.1111/coin.12248,10.1145/3507900}. Pada data percakapan instan seperti WhatsApp, partikel obrolan harian (\textit{filler}), ekspresi tawa, kata penegas, dan singkatan gaul kerap kali muncul secara sporadis dengan frekuensi lokal yang sangat tinggi di beberapa dokumen tanpa terdistribusi merata di $>50\%$ total dokumen korpus. Akibatnya, nilai IDF kata-kata obrolan tersebut tidak otomatis nol dan berisiko merebut peringkat kata kunci teratas. Oleh karena itu, diperlukan integrasi penyaringan kosakata derau (\textit{domain-specific stopword filtering}) pada lapisan \textit{CountVectorizer} sebelum pembobotan BM25 dihitung, agar kata-kata yang terpilih sebagai representasi topik benar-benar merefleksikan kata informatif bermakna substansial (\textit{content words}) \citep{doi.org/10.1111/coin.12248}.
 
 \subsection{Reduksi Topik Hierarkis (\textit{Hierarchical Topic Reduction})}
@@ -206,7 +205,7 @@ Mekanisme ini mengevaluasi kemiripan semantik antar-topik berdasarkan vektor rep
 
 \noindent di mana $\mathbf{v}_i$ dan $\mathbf{v}_j$ merupakan vektor pembobotan kata dari topik ke-$i$ dan ke-$j$. Pasangan topik dengan nilai kesamaan tertinggi secara bertahap digabungkan (\textit{hierarchical agglomerative merging}), diikuti oleh penghitungan ulang representasi kata pada klaster gabungan baru. Kajian komparatif mutakhir dari \citet{11271424} membuktikan bahwa alur reduksi topik hierarkis otomatis (\textit{automatic topic reduction}) mampu memadatkan klaster berlebih secara efisien hingga mencapai titik jenuh optimal (\textit{knee point}), sekaligus secara signifikan meningkatkan koherensi semantik topik dan mengeliminasi redundansi kata kunci.
 
-\subsection{Topic Coherence}
+\subsection{\textit{Topic Coherence}}
 \label{subsec:topic-coherence}
 
 \textit{Topic coherence} digunakan untuk mengukur keterkaitan semantik antar kata teratas dalam topik. Dari banyaknya \textit{topic coherence}, penelitian ini menggunakan \textit{Normalized Pointwise Mutual Information} (NPMI) karena memberikan korelasi tertinggi dengan penilaian manusia dalam konteks context vectors \citep{2685324}:
@@ -224,7 +223,7 @@ Mekanisme ini mengevaluasi kemiripan semantik antar-topik berdasarkan vektor rep
 \noindent dengan $P(w_i,w_j)$ sebagai probabilitas ko-okurensi, serta $P(w_i)$ dan $P(w_j)$ sebagai probabilitas
 marjinal kemunculan kata. Nilai dari NPMI berkisar antara [-1, 1], dengan nilai 1 menunjukkan keterkaitan semantik yang sempurna, 0 menunjukkan tidak ada keterkaitan, dan nilai negatif menunjukkan keterkaitan yang berlawanan \citep{11271424}.
 
-\subsection{Topic Diversity}
+\subsection{\textit{Topic Diversity}}
 \label{subsec:topic-diversity}
 
 \textit{Topic diversity} didefinisikan dengan keberagaman topik sebagai persentase kata unik dalam 25 kata teratas dari semua topik. Keberagaman mendekati 0 menunjukan bahwa topik yang berlebihan dan keberagaman mendekati 1 menunjukkan topik yang beragam \citep{dieng2020topic}. Nilainya dihitung

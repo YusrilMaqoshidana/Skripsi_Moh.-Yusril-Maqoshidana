@@ -1,0 +1,31 @@
+\begingroup
+\renewcommand{\arraystretch}{1.2}
+\begin{table}[htbp]
+\centering
+\caption{Perbandingan Metrik Evaluasi Kurva Pembelajaran Model Modified vs. Model Usulan}
+\label{tab:birch-learning-curve}
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{clccccc}
+\toprule
+\textbf{Split Data} & \textbf{Model Evaluasi} & \textbf{Jumlah Topik} & \textbf{Topic Diversity} & \textbf{$C_{\text{NPMI}}$} & \textbf{Intra-Topic Sim} & \textbf{Outlier Rate (\%)} \\
+\midrule
+\multirow{2}{*}{20\% (10.316)} & Modified (Muhajir et al.) & 40 & 0,6800 & -0,2162 & 0,6448 & 4,80\% \\
+ & Model Usulan & 46 & 0,9457 & -0,0290 & 0,6258 & 14,32\% \\
+\midrule
+\multirow{2}{*}{40\% (20.633)} & Modified (Muhajir et al.) & 56 & 0,5964 & -0,1485 & 0,6462 & 4,74\% \\
+ & Model Usulan & 187 & 0,9567 & +0,0111 & 0,6134 & 10,94\% \\
+\midrule
+\multirow{2}{*}{60\% (30.950)} & Modified (Muhajir et al.) & 53 & 0,5868 & -0,0489 & 0,6472 & 4,72\% \\
+ & Model Usulan & 124 & 0,9540 & +0,0421 & 0,6147 & 8,22\% \\
+\midrule
+\multirow{2}{*}{80\% (41.267)} & Modified (Muhajir et al.) & 73 & 0,5219 & -0,0002 & 0,6467 & 4,60\% \\
+ & Model Usulan & 316 & 0,9604 & +0,0462 & 0,6194 & 7,62\% \\
+\midrule
+\multirow{2}{*}{100\% (51.584)} & Modified (Muhajir et al.) & 70 & 0,5257 & +0,0090 & 0,6495 & 4,58\% \\
+ & Model Usulan & 40 & 0,9875 & +0,1075 & 0,6534 & 7,21\% \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+\endgroup

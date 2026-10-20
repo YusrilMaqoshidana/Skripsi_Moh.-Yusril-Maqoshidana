@@ -59,8 +59,16 @@
   {0.5em}
   {}
 
-% --- KONFIGURASI IDENTASI ---
+% --- KONFIGURASI IDENTASI & JUSTIFIKASI ---
 \setlength{\parindent}{1cm}  % Atur jarak indentasi
+
+% Mencegah overfull \hbox dan teks tembus margin kanan:
+% Memberikan kelonggaran bagi algoritma TeX untuk mematahkan baris
+% secara rapi dengan format justified (rata kanan-kiri)
+\emergencystretch=3em
+\tolerance=2000
+\hbadness=2000
+
 
 % --- KONFIGURASI KETEBALAN GARIS TABEL (STANDAR JURNAL AKADEMIK) ---
 % Menyeragamkan ketebalan garis pada seluruh tabel (booktabs dan standard) agar rapi, proporsional, dan elegan
@@ -102,3 +110,27 @@
 \setlength{\cftbeforetoctitleskip}{-20pt}
 \setlength{\cftbeforelottitleskip}{-20pt}
 \setlength{\cftbeforeloftitleskip}{-20pt}
+
+% --- PENGATURAN JARAK VERTIKAL ANTAR ENTRI DAFTAR ISI, TABEL, & GAMBAR ---
+% Memberi jarak proporsional dan nyaman agar antar section (mis. 1.1 dan 1.2) tidak terlalu mepet
+\setlength{\cftbeforechapskip}{8pt plus 1pt}       % Jarak sebelum entri BAB
+\setlength{\cftbeforesecskip}{5pt plus 1pt}        % Jarak antar Section (1.1, 1.2, dst.)
+\setlength{\cftbeforesubsecskip}{3pt plus 1pt}     % Jarak antar Subsection (1.1.1, dst.)
+\setlength{\cftbeforesubsubsecskip}{2pt plus 1pt}  % Jarak antar Subsubsection (a., b., dst.)
+\setlength{\cftbeforetabskip}{4pt plus 1pt}        % Jarak antar entri Daftar Tabel
+\setlength{\cftbeforefigskip}{4pt plus 1pt}        % Jarak antar entri Daftar Gambar
+
+% --- KONFIGURASI DAFTAR LAMPIRAN (LIST OF APPENDICES) ---
+\newlistof{lampiran}{loa}{DAFTAR LAMPIRAN}
+\renewcommand{\cftloatitlefont}{%
+  \hfill\bfseries\fontsize{14pt}{16pt}\selectfont\MakeUppercase
+}
+\renewcommand{\cftafterloatitle}{\hfill}
+\setlength{\cftafterloatitleskip}{40pt}
+\setlength{\cftbeforeloatitleskip}{-20pt}
+\setlength{\cftbeforelampiranskip}{4pt plus 1pt}
+\renewcommand{\cftlampiranleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftlampiranpresnum}{Lampiran }
+\renewcommand{\cftlampiranaftersnum}{.}
+\setlength{\cftlampirannumwidth}{2.8cm}
+

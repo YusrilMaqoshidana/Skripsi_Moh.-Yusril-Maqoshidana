@@ -1,11 +1,11 @@
 # Fasilkom UNEJ Thesis Compliance Audit Report
-Generated at: 2026-10-12 15:54:49
+Generated at: 2026-10-19 23:04:09
 
 ## Summary Statistics
 - **PASS:** 45
 - **WARNING:** 1
 - **FAIL:** 0
-- **INFO:** 0
+- **INFO:** 1
 
 ## Detailed Findings Matrix
 
@@ -43,20 +43,21 @@ Generated at: 2026-10-12 15:54:49
 | PASS | RULE-TIT-02 | `metadata.tex` | Panjang judul 12 kata (di luar kata sambung/depan) <= 15 kata |
 | PASS | RULE-STR-02 | `frontmatter/00-cover.tex` | Logo UNEJ pada cover berdiameter 5.0 cm (width=5cm) |
 | PASS | RULE-STR-04 | `frontmatter/00-cover.tex` | Urutan hierarki institusi pada cover sesuai (Kementerian -> Universitas -> Fakultas -> Prodi -> Jember -> Tahun) |
-| PASS | RULE-STR-05 | `frontmatter/05-abstract-id.tex` | Panjang Abstrak ID 218 kata memenuhi rentang wajib 200-300 kata |
+| PASS | RULE-STR-05 | `frontmatter/05-abstract-id.tex` | Panjang Abstrak ID 205 kata memenuhi rentang wajib 200-300 kata |
 | PASS | RULE-FLT-07 | `chapters/02-literature.tex` | Judul gambar diletakkan di BAWAH gambar |
 | PASS | RULE-FLT-07 | `chapters/02-literature.tex` | Judul gambar diletakkan di BAWAH gambar |
 | PASS | RULE-FLT-07 | `chapters/03-methodology.tex` | Judul gambar diletakkan di BAWAH gambar |
 | PASS | RULE-FLT-07 | `chapters/03-methodology.tex` | Judul gambar diletakkan di BAWAH gambar |
 | PASS | RULE-FLT-05 | `chapters/04-results.tex` | Tabel menggunakan format terbuka tanpa garis vertikal |
-| PASS | RULE-FLT-05 | `chapters/04-results.tex` | Tabel menggunakan format terbuka tanpa garis vertikal |
-| PASS | RULE-FLT-04 | `chapters/04-results.tex` | Judul tabel diletakkan di ATAS tabel |
 | PASS | RULE-FLT-04 | `chapters/04-results.tex` | Judul tabel diletakkan di ATAS tabel |
 | PASS | RULE-FLT-07 | `chapters/04-results.tex` | Judul gambar diletakkan di BAWAH gambar |
 | PASS | RULE-FLT-07 | `chapters/04-results.tex` | Judul gambar diletakkan di BAWAH gambar |
-| PASS | RULE-CIT-03 | `daftar_pustaka.bib` | Total pustaka 30 referensi memenuhi batas minimal 15 pustaka |
-| PASS | RULE-CIT-05 | `daftar_pustaka.bib` | Pustaka 10 tahun terakhir (2016-2026) mencapai 90.0% (syarat min 50%) |
-| WARNING | RULE-PAG-08 | `main.aux / chapters/04-results.tex` | Bagian Utama berbobot 45 halaman (Bab 4: 19 hlm, batas anjuran: 20 hlm Bab 4 / 40 hlm total). KEBIJAKAN KETAT: JANGAN MENGUBAH TEKS EKSISTING SECARA SEPIHAK. Beri warning pada teks berpotensi redundan atau tawarkan relokasi tabel/gambar besar ke Lampiran HANYA atas persetujuan pengguna. |
+| PASS | RULE-FLT-07 | `chapters/04-results.tex` | Judul gambar diletakkan di BAWAH gambar |
+| PASS | RULE-FLT-07 | `chapters/04-results.tex` | Judul gambar diletakkan di BAWAH gambar |
+| PASS | RULE-CIT-03 | `daftar_pustaka.bib` | Total pustaka 31 referensi memenuhi batas minimal 15 pustaka |
+| PASS | RULE-CIT-05 | `daftar_pustaka.bib` | Pustaka 10 tahun terakhir (2016-2026) mencapai 90.3% (syarat min 50%) |
+| WARNING | RULE-PAG-08 | `main.aux / chapters/04-results.tex` | Bagian Utama berbobot 49 halaman (Bab 4: 20 hlm, batas anjuran: 20 hlm Bab 4 / 40 hlm total). KEBIJAKAN KETAT: JANGAN MENGUBAH TEKS EKSISTING SECARA SEPIHAK. Beri warning pada teks berpotensi redundan atau tawarkan relokasi tabel/gambar besar ke Lampiran HANYA atas persetujuan pengguna. |
+| INFO | RULE-PAG-08 | `chapters/04-results.tex` | Deteksi Potensi Pembahasan Ganda: Bab 4 memuat pembahasan arsitektur model IndoBERTweet. Pastikan fokus Bab 4 adalah hasil pengolahan data empiris dan bukan mengulang definisi teoretis Bab 2. Gunakan rujukan silang ke Bab 2 tanpa menghapus teks secara sepihak. |
 
 ## Recommended Action Items
-1. **[RULE-PAG-08]** (WARNING): Bagian Utama berbobot 45 halaman (Bab 4: 19 hlm, batas anjuran: 20 hlm Bab 4 / 40 hlm total). KEBIJAKAN KETAT: JANGAN MENGUBAH TEKS EKSISTING SECARA SEPIHAK. Beri warning pada teks berpotensi redundan atau tawarkan relokasi tabel/gambar besar ke Lampiran HANYA atas persetujuan pengguna. (Lokasi: `main.aux / chapters/04-results.tex`)
+1. **[RULE-PAG-08]** (WARNING): Bagian Utama berbobot 49 halaman (Bab 4: 20 hlm, batas anjuran: 20 hlm Bab 4 / 40 hlm total). KEBIJAKAN KETAT: JANGAN MENGUBAH TEKS EKSISTING SECARA SEPIHAK. Beri warning pada teks berpotensi redundan atau tawarkan relokasi tabel/gambar besar ke Lampiran HANYA atas persetujuan pengguna. (Lokasi: `main.aux / chapters/04-results.tex`)

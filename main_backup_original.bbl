@@ -7,12 +7,12 @@ Abdelrazek, A., Eid, Y., Gawish, E., Medhat, W., and Hassan, A. (2023).
 
 \bibitem[Alzu'bi and Barham, 2022]{IJECE25896}
 Alzu'bi, A. and Barham, M. (2022).
-\newblock Automatic birch thresholding with features transformation for hierarchical breast cancer clustering.
+\newblock Automatic {BIRCH} thresholding with features transformation for hierarchical breast cancer clustering.
 \newblock {\em International Journal of Electrical and Computer Engineering (IJECE)}, 12(2):1498--1507.
 
 \bibitem[Banerjee and Pan, 2024]{10643545}
 Banerjee, S. and Pan, A. (2024).
-\newblock From colonial legacies to linguistic inclusion: A bertopic enhanced bibliometric insight into global south higher education.
+\newblock From colonial legacies to linguistic inclusion: A {BERTopic} enhanced bibliometric insight into global south higher education.
 \newblock {\em IEEE Access}, 12:117418--117435.
 
 \bibitem[Churchill and Singh, 2022]{10.1145/3507900}
@@ -27,22 +27,23 @@ Dieng, A.~B., Ruiz, F. J.~R., and Blei, D.~M. (2020).
 
 \bibitem[Egger and Yu, 2022]{10.3389/fsoc.2022.886498}
 Egger, R. and Yu, J. (2022).
-\newblock A topic modeling comparison between lda, nmf, top2vec, and bertopic to demystify twitter posts.
-\newblock {\em Frontiers in Sociology}, Volume 7 - 2022.
+\newblock A topic modeling comparison between {LDA}, {NMF}, {Top2Vec}, and {BERTopic} to demystify {Twitter} posts.
+\newblock {\em Frontiers in Sociology}, 7:886498.
 
 \bibitem[Grootendorst, 2022]{grootendorst2022bertopic}
 Grootendorst, M. (2022).
-\newblock Bertopic: Neural topic modeling with a class-based tf-idf procedure.
+\newblock {BERTopic}: Neural topic modeling with a class-based {c-TF-IDF} procedure.
+\newblock {\em arXiv preprint arXiv:2203.05794}.
 
 \bibitem[Janssens et~al., 2025]{11271424}
 Janssens, W., Bogaert, M., and van~den Poel, D. (2025).
-\newblock A comparative analysis of topic reduction techniques for bertopic.
+\newblock A comparative analysis of topic reduction techniques for {BERTopic}.
 \newblock {\em IEEE Access}, 13:204087--204103.
 
 \bibitem[Jesse et~al., 2022]{10.1007/s11257-022-09351-w}
 Jesse, M., Bauer, C., and Jannach, D. (2022).
 \newblock Intra-list similarity and human diversity perceptions of recommendations: the details matter.
-\newblock {\em User Modeling and User-Adapted Interaction}, 33(4):769–802.
+\newblock {\em User Modeling and User-Adapted Interaction}, 33(4):769--802.
 
 \bibitem[Jian et~al., 2020]{doi.org/10.1111/coin.12248}
 Jian, F., Huang, J.~X., Zhao, J., Ying, Z., and Wang, Y. (2020).
@@ -51,47 +52,48 @@ Jian, F., Huang, J.~X., Zhao, J., Ying, Z., and Wang, Y. (2020).
 
 \bibitem[Koto et~al., 2021]{koto2021indobertweet}
 Koto, F., Lau, J.~H., and Baldwin, T. (2021).
-\newblock Indobertweet: A pretrained language model for indonesian twitter with effective domain-specific vocabulary initialization.
-\newblock In {\em Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP 2021)}.
+\newblock {IndoBERTweet}: A pretrained language model for {Indonesian} {Twitter} with effective domain-specific vocabulary initialization.
+\newblock In {\em Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP 2021)}, pages 10660--10668.
 
 \bibitem[Koto et~al., 2020]{Indobert2020}
 Koto, F., Rahimi, A., Lau, J., and Baldwin, T. (2020).
-\newblock Indolem and indobert: A benchmark dataset and pre-trained language model for indonesian nlp.
+\newblock {IndoLEM} and {IndoBERT}: A benchmark dataset and pre-trained language model for {Indonesian} {NLP}.
+\newblock {\em arXiv preprint arXiv:2011.00677}.
 
 \bibitem[McInnes et~al., 2018]{mcinnes2018umap}
 McInnes, L., Healy, J., and Melville, J. (2018).
-\newblock Umap: Uniform manifold approximation and projection for dimension reduction.
+\newblock {UMAP}: Uniform manifold approximation and projection for dimension reduction.
 \newblock {\em arXiv preprint arXiv:1802.03426}.
 
 \bibitem[Mohta et~al., 2020]{9243443}
 Mohta, A., Jain, A., Saluja, A., and Dahiya, S. (2020).
-\newblock Pre-processing and emoji classification of whatsapp chats for sentiment analysis.
+\newblock Pre-processing and emoji classification of {WhatsApp} chats for sentiment analysis.
 \newblock In {\em 2020 Fourth International Conference on I-SMAC (IoT in Social, Mobile, Analytics and Cloud) (I-SMAC)}, pages 514--519.
 
 \bibitem[Muhajir et~al., 2025]{iaes2025indobert}
 Muhajir, M., Gunardi, G., Danardono, D., and Rosadi, D. (2025).
-\newblock Integrating indobert and balanced iterative reducing and clustering using hierarchies of bertopic in indonesian short text.
-\newblock {\em IAES International Journal of Artificial Intelligence (IJ-AI)}, 14:4192.
+\newblock Integrating {IndoBERT} and balanced iterative reducing and clustering using hierarchies of {BERTopic} in {Indonesian} short text.
+\newblock {\em IAES International Journal of Artificial Intelligence (IJ-AI)}, 14(5):4192--4201.
 
 \bibitem[Prayogi et~al., 2025]{prayogi2025dinamika}
 Prayogi, A., Novriyenny, N., and Prahmana, I.~G. (2025).
-\newblock Dinamika sentimen komunikasi mahasiswa dan dosen dengan pemanfaatan analisis pesan whatsapp akademis menggunakan machine learning.
+\newblock Dinamika sentimen komunikasi mahasiswa dan dosen dengan pemanfaatan analisis pesan {WhatsApp} akademis menggunakan {Machine Learning}.
 \newblock {\em Repeater: Publikasi Teknik Informatika dan Jaringan}, 3(2):45--54.
 
 \bibitem[Ramadhani et~al., 2020]{Ramadhani_2020}
 Ramadhani, F., Zarlis, M., and Suwilo, S. (2020).
-\newblock Improve birch algorithm for big data clustering.
+\newblock Improve {BIRCH} algorithm for big data clustering.
 \newblock {\em IOP Conference Series: Materials Science and Engineering}, 725(1):012090.
 
 \bibitem[Rani et~al., 2022]{rani2022whatsapp}
-Rani, S.~J., Prabhu, T., and Chellam, J. A.~I. (2022).
-\newblock Whatsapp sentiment analysis using r.
+Rani, S.~J., Prabhu, T.~N., and Chellam, J. A.~I. (2022).
+\newblock {WhatsApp} sentiment analysis using {R}.
 \newblock In {\em 2022 3rd International Conference for Emerging Technology (INCET)}, pages 1--4. IEEE.
 
 \bibitem[R\"{o}der et~al., 2015]{2685324}
 R\"{o}der, M., Both, A., and Hinneburg, A. (2015).
 \newblock Exploring the space of topic coherence measures.
-\newblock In {\em Proceedings of the Eighth ACM International Conference on Web Search and Data Mining}, WSDM '15, page 399–408, New York, NY, USA. Association for Computing Machinery.
+\newblock In {\em Proceedings of the Eighth ACM International Conference on Web Search and Data Mining}, WSDM '15, pages 399--408, New York, NY, USA. Association for Computing Machinery.
 
 \bibitem[Rushkin, 2020]{2009-00672}
 Rushkin, I. (2020).
@@ -100,38 +102,38 @@ Rushkin, I. (2020).
 
 \bibitem[Shan et~al., 2020]{DBLP:journals/corr/abs-2007-05186}
 Shan, X., Liu, C., Xia, Y., Chen, Q., Zhang, Y., Luo, A., and Luo, Y. (2020).
-\newblock {BISON:} bm25-weighted self-attention framework for multi-fields document search.
+\newblock {{BISON}:} {BM25}-weighted self-attention framework for multi-fields document search.
 \newblock {\em CoRR}, abs/2007.05186.
 
 \bibitem[Siregar et~al., 2025]{siregar2025}
 Siregar, U., Ramadani, N., and Siregar, F. (2025).
-\newblock Syntactic analysis in whatsapp conversations among peers.
-\newblock {\em Jurnal Hata Poda}, 4:150--157.
+\newblock Syntactic analysis in {WhatsApp} conversations among peers.
+\newblock {\em Jurnal Hata Poda}, 4(2):150--157.
 
 \bibitem[Sutarma, 2017]{sutarma2017}
 Sutarma, I. G.~P. (2017).
-\newblock Analisis wujud bentuk linguistik dalam penggunaan bahasa indonesia di media sosial “whatsapp”.
+\newblock Analisis wujud bentuk linguistik dalam penggunaan {Bahasa Indonesia} di media sosial ``{WhatsApp}''.
 \newblock {\em Soshum: Jurnal Sosial dan Humaniora}, 6(3):227.
 
-\bibitem[{WhatsApp Inc.}, 2026]{WhatsAppAbout}
-{WhatsApp Inc.} (2026).
-\newblock Tentang whatsapp.
+\bibitem[{WhatsApp LLC}, 2026]{WhatsAppAbout}
+{WhatsApp LLC} (2026).
+\newblock Tentang {WhatsApp}.
 \newblock Diakses pada 7 Januari 2026.
 
 \bibitem[Wilie et~al., 2020]{wilie2020indonlu}
 Wilie, B., Vincentio, K., Winata, G.~I., Cahyawijaya, S., Li, X., Lim, Z.~Y., Soleman, S., Mahendra, R., Fung, P., Bahar, S., and Purwarianti, A. (2020).
-\newblock Indonlu: Benchmark and resources for evaluating indonesian natural language understanding.
-\newblock In {\em Proceedings of the 1st Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and the 10th International Joint Conference on Natural Language Processing}.
+\newblock {IndoNLU}: Benchmark and resources for evaluating {Indonesian} natural language understanding.
+\newblock In {\em Proceedings of the 1st Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and the 10th International Joint Conference on Natural Language Processing}, pages 514--530.
 
 \bibitem[Zhang et~al., 1996]{10.1145/235968.233324}
 Zhang, T., Ramakrishnan, R., and Livny, M. (1996).
-\newblock Birch: an efficient data clustering method for very large databases.
-\newblock {\em SIGMOD Rec.}, 25(2):103–114.
+\newblock {BIRCH}: An efficient data clustering method for very large databases.
+\newblock {\em SIGMOD Rec.}, 25(2):103--114.
 
 \bibitem[Zhang et~al., 1997]{10.1023/A:1009783824328}
 Zhang, T., Ramakrishnan, R., and Livny, M. (1997).
-\newblock Birch: A new data clustering algorithm and its applications.
-\newblock {\em Data Min. Knowl. Discov.}, 1(2):141–182.
+\newblock {BIRCH}: A new data clustering algorithm and its applications.
+\newblock {\em Data Min. Knowl. Discov.}, 1(2):141--182.
 
 \bibitem[Zhao et~al., 2018]{zhao2018inter}
 Zhao, H., Du, L., Buntine, W., and Zhou, M. (2018).

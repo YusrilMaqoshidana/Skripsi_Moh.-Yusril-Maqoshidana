@@ -1,71 +1,29 @@
 % ====================================================================
 % BAB 5: KESIMPULAN DAN SARAN
 % ====================================================================
-% File ini berisi kesimpulan dan saran penelitian yang mencakup:
-% - Kesimpulan (menjawab rumusan masalah secara komprehensif)
-% - Saran (rekomendasi akademik dan praktis)
-% ====================================================================
-
 \chapter{KESIMPULAN DAN SARAN}
 
 % --- BAGIAN 5.1: KESIMPULAN ---
 \section{Kesimpulan}
 \label{sec:conclusion}
 
-Berdasarkan seluruh rangkaian tahapan penelitian, perancangan sistem, implementasi, serta pengujian dan evaluasi kuantitatif yang telah dilaksanakan pada data percakapan grup WhatsApp, diperoleh beberapa kesimpulan utama yang menjawab rumusan masalah penelitian sebagai berikut:
+Berdasarkan hasil perancangan sistem, pengujian empiris, dan evaluasi performa yang telah dilakukan, dapat ditarik kesimpulan sebagai berikut:
 
 \begin{enumerate}
-    \item \textbf{Penerapan Modified BERTopic pada Percakapan WhatsApp:} \\
-    Penelitian ini berhasil merancang dan menerapkan modifikasi arsitektur \textit{framework} BERTopic yang disesuaikan secara spesifik untuk menangani karakteristik wacana percakapan grup WhatsApp berbahasa Indonesia. Integrasi alur \textit{Single-Path Preprocessing} berhasil mereduksi derau (\textit{noise}) dan membersihkan 91.868 pesan mentah menjadi 51.584 dokumen berkualitas tinggi. Pada tahap pemodelan, pemanfaatan model bahasa \textit{embedding} IndoBERTweet (vektor 768 dimensi), reduksi dimensi UMAP (5 komponen dengan metrik kosinus), algoritma pengklasteran hierarkis usulan \textit{ImprovedBirch} (sintesis \textit{threshold} 0,25, pemotongan deviasi $2\sigma$ jarak kosinus terhadap \textit{centroid}, dan pembersihan klaster kerdil $<5$), representasi BM25 ($k_1 = 1,2; b = 0,5$) yang diperkaya kamus \textit{STOPWORDS} 9 kategori, serta reduksi topik otomatis dengan mekanisme pengaman (\textit{safety guard}) terbukti mampu mengekstraksi topik percakapan secara terstruktur dan adaptif.
+    \item Penerapan arsitektur BERTopic yang mengintegrasikan model \textit{embedding} IndoBERTweet, pengklasteran \textit{ImprovedBirch} (ambang adaptif $[0{,}20, 0{,}25]$ dan eliminasi \textit{outlier} $2\sigma$), pembobotan BM25 dengan eliminasi \textit{stopwords} percakapan, serta reduksi topik berbasis kemiripan kosinus berhasil mengekstraksi 40 topik tematik yang terstruktur dari 51.584 pesan teks grup WhatsApp.
 
-    \item \textbf{Kualitas dan Performa Model Usulan Dibandingkan Baseline dan Model Jurnal:} \\
-    Hasil pengujian kurva pembelajaran (\textit{learning curve}) faktorial $2 \times 2$ pada proporsi 20\% hingga 100\% data membuktikan keunggulan komprehensif model usulan (\textit{proposed}) terhadap model \textit{baseline} maupun model jurnal acuan terdahulu \citep{iaes2025indobert}:
-    \begin{enumerate}[label=\alph*.]
-        \item \textit{Penyelesaian Paradoks Outlier}: Algoritma usulan \textit{ImprovedBirch} berhasil menekan persentase dokumen pencilan secara signifikan hingga menyisakan hanya \textbf{7,21\%} pada 100\% data (jauh lebih efisien dibanding Baseline Standar sebesar 42,47\% dan Baseline Proposed sebesar 56,66\%). Model usulan mengamankan \textbf{92,79\%} cakupan data percakapan ke dalam klaster topik yang valid sekaligus menghindari kelemahan BIRCH murni tanpa reduksi topik.
-        \item \textit{Peningkatan Koherensi Topik ($C_{\text{NPMI}}$)}: Model usulan menghasilkan koherensi semantik kata kunci positif sebesar \textbf{+0,1075} pada 100\% data, membalikkan skor negatif pada Baseline Standar (-0,0263) dan melompati skor tipis Model Jurnal Muhajir et al. (+0,0090).
-        \item \textit{Keunggulan Keberagaman Topik (Topic Diversity)}: Nilai \textit{Topic Diversity} pada model usulan mencapai skor tertinggi \textbf{0,9875} (mendekati nilai sempurna 1,0), melompat secara masif dibanding Model Jurnal Muhajir et al. yang mengalami degradasi ke angka 0,5257 dan mengungguli Baseline Standar (0,9344).
-        \item \textit{Kekohesifan Internal Klaster dan Kepadatan Vektor}: Model usulan membukukan kemiripan internal klaster (\textit{Intra-topic Similarity}) tertinggi sebesar \textbf{0,6534} dan \textit{Embedding Density} sebesar \textbf{0,6197}, menegaskan terbentuknya batas klaster yang homogen, selaras, dan terpusat di ruang vektor semantik.
-    \end{enumerate}
+    \item Model usulan menghasilkan kualitas topik yang lebih unggul dibandingkan model acuan pada metrik keberagaman topik ($TD = 0{,}9875$), kekohesifan dokumen internal ($ITS = 0{,}6534$), dan kepadatan klaster ($ED = 0{,}6197$), serta mempertahankan retensi data tertinggi sebesar 92,79\% (hanya menyisakan 7,21\% \textit{outlier}). Sebagai bentuk kompromi (\textit{trade-off}), nilai koherensi semantik ($C_{\text{NPMI}} = +0{,}1075$) sedikit di bawah Model \textit{Baseline Proposed} (+0,1171), namun model usulan berhasil mempertahankan konteks percakapan tanpa membuang 56,66\% data obrolan.
 
-    \item \textbf{Perancangan dan Implementasi Sistem Web Terintegrasi:} \\
-    Penelitian ini berhasil merancang dan mengimplementasikan sistem analisis percakapan grup WhatsApp berbasis web (\textit{ChatAnalisis}) dengan arsitektur \textit{client-server} yang memisahkan antarmuka pengguna (\textit{frontend} Vue.js 3, TypeScript, TailwindCSS, Pinia) dan layanan pemrosesan komputasi (\textit{backend} FastAPI terakselerasi GPU/CUDA). Sistem mengintegrasikan fitur privasi data melalui \textit{client-side salted SHA-256 anonymization}, pemrosesan latar belakang asinkron (\textit{BackgroundTasks}), pemantauan progres \textit{real-time} berbasis \textit{Server-Sent Events} (SSE), penelusuran konteks pesan historis (\textit{message context traceability}), proteksi keamanan \textit{path traversal}, dan pembersihan berkas disk otomatis. Pengujian fungsional sistem menggunakan metode \textit{Black-Box Testing} terhadap 34 skenario kasus uji menunjukkan bahwa seluruh fitur pada modul antarmuka dan API \textit{backend} beroperasi 100\% valid sesuai dengan spesifikasi kebutuhan.
+    \item Sistem analisis topik percakapan grup WhatsApp berbasis \textit{web} (\textit{ChatAnalisis}) berhasil dirancang dan diimplementasikan menggunakan arsitektur \textit{client-server} (Vue.js 3 dan FastAPI). Pengujian \textit{Black-Box Testing} terhadap 14 skenario uji fitur fungsional inti (MVP) pada 5 modul utama membuktikan seluruh fungsionalitas sistem berjalan dengan sukses (100\% valid), didukung anonimisasi SHA-256 di sisi klien untuk perlindungan privasi serta pemantauan komputasi \textit{real-time} melalui \textit{Server-Sent Events} (SSE).
 \end{enumerate}
-
-Secara keseluruhan, integrasi IndoBERTweet, BIRCH \textit{clustering}, dan skema representasi BM25 pada \textit{framework} BERTopic yang diwujudkan dalam aplikasi web interaktif telah terbukti secara empiris dan aplikatif mampu menjadi solusi komprehensif dalam mengatasi tantangan \textit{information overload} serta ekstraksi wawasan tematik pada percakapan grup WhatsApp berskala besar.
 
 % --- BAGIAN 5.2: SARAN ---
 \section{Saran}
 \label{sec:recommendations}
 
-Berdasarkan hasil temuan penelitian, evaluasi sistem, serta keterbatasan yang dihadapi selama pelaksanaan penelitian, berikut adalah beberapa saran yang dapat diajukan untuk pengembangan akademik selanjutnya dan implementasi praktis:
+Berdasarkan temuan dan keterbatasan penelitian, diajukan beberapa saran untuk pengembangan akademik lanjutan:
 
-\subsection{Saran untuk Penelitian Selanjutnya}
-\label{subsec:future-research}
-
-\begin{enumerate}
-    \item \textbf{Eksplorasi Model Bahasa dan Arsitektur Embedding Mutakhir:} \\
-    Penelitian selanjutnya dapat mengeksplorasi perbandingan performa menggunakan model bahasa generasi terbaru, seperti model berbasis \textit{Large Language Models} (LLM) berbahasa Indonesia atau model representasi kalimat dwibahasa mutakhir, guna menguji peningkatan pemahaman semantik pada percakapan dengan tingkat \textit{code-mixing} yang lebih kompleks.
-
-    \item \textbf{Pengembangan Pemodelan Topik Dinamis (Dynamic Topic Modeling):} \\
-    Penelitian dapat diperluas dengan menambahkan dimensi waktu (\textit{temporal dynamics}) untuk mengamati pergeseran dan evolusi topik percakapan dari waktu ke waktu (\textit{topic drift}), sehingga tren pembicaraan komunitas dapat dipetakan secara kronologis per periode tertentu.
-
-    \item \textbf{Integrasi Analisis Wacana Lanjutan:} \\
-    Pengembangan dapat mengombinasikan pemodelan topik dengan analisis sentimen, analisis emosi, atau analisis jejaring sosial (\textit{Social Network Analysis}) untuk memahami polaritas opini anggota kelompok dan pola interaksi sosial di dalam setiap tema pembicaraan.
-
-    \item \textbf{Pengujian pada Domain dan Format Perangkat Beragam:} \\
-    Disarankan untuk menguji generalisabilitas model pada domain percakapan grup yang berbeda (seperti grup koordinasi kerja, komunitas akademik, atau layanan publik) serta memperluas format data masukan dari sistem operasi lain (misalnya berkas ekspor chat dari perangkat iOS).
-\end{enumerate}
-
-\subsection{Saran untuk Praktisi dan Pengembangan Terapan}
-\label{subsec:practical-recommendations}
-
-\begin{enumerate}
-    \item \textbf{Dukungan Multi-Platform Aplikasi Pesan Instan:} \\
-    Pengembang aplikasi dapat menambahkan fitur penguraian (\textit{parser}) untuk platform pesan instan lainnya, seperti Telegram, Discord, atau Slack, sehingga platform web analisis ini dapat digunakan secara universal oleh berbagai komunitas digital.
-
-    \item \textbf{Peningkatan Skalabilitas dan Manajemen Antrean Server:} \\
-    Untuk implementasi pada lingkungan produksi berskala besar dengan banyak pengguna bersamaan (\textit{concurrent users}), disarankan untuk mengintegrasikan sistem antrean tugas terdistribusi (seperti Celery dan Redis) serta orkestrasi kontainer (Docker/Kubernetes).
-
-    \item \textbf{Fitur Ekspor Laporan dan Notifikasi Berkala:} \\
-    Disarankan untuk menambahkan fitur ekspor laporan hasil analisis topik ke dalam format PDF/Excel interaktif serta modul ringkasan berkala yang dapat dikirimkan secara otomatis kepada administrator grup.
+\begin{enumerate}[nosep]
+    \item Mengeksplorasi penggunaan model bahasa generasi terbaru, seperti model berbasis \textit{Large Language Models} (LLM) berbahasa Indonesia atau model representasi kalimat dwibahasa mutakhir, guna meningkatkan pemahaman semantik pada percakapan dengan variasi campur kode (\textit{code-mixing}) yang lebih kompleks.
+    \item Mengintegrasikan pemodelan topik dengan analisis sentimen untuk memahami polaritas opini anggota komunitas dalam setiap tema pembicaraan.
 \end{enumerate}
