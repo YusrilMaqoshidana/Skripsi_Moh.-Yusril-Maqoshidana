@@ -195,10 +195,24 @@ Untuk mencegah penumpukan data pada penyimpanan server (\textit{disk storage}), 
 Pemodelan topik teks berskala besar merupakan tugas yang memakan waktu komputasi intensif. Untuk menjamin pengalaman pengguna yang responsif dan interaktif, sistem mengintegrasikan pemrosesan asinkron dan antarmuka visual berikut.
 
 \subsubsection{Pemrosesan Latar Belakang dan Streaming SSE \textit{Real-Time}}
-Permintaan analisis diproses pada utas latar belakang (\textit{asynchronous background task}) menggunakan \textit{BackgroundTasks} bawaan FastAPI. Perkembangan komputasi dipancarkan secara langsung (\textit{real-time}) ke antarmuka pengguna melalui koneksi SSE (\textit{Server-Sent Events}) pada endpoint \textit{GET /api/analysis/events/\{session\_id\}}. Komponen \textit{TerminalSimulator.vue} menangkap aliran data tersebut dan menampilkannya dalam format konsol simulator terminal, sebagaimana disajikan pada Lampiran~\ref{appx:ui-screenshots} (Gambar~\ref{fig:ui-loading-progress}).
+Permintaan analisis diproses pada utas latar belakang (\textit{asynchronous background task}) menggunakan \textit{BackgroundTasks} bawaan FastAPI. Perkembangan komputasi dipancarkan secara langsung (\textit{real-time}) ke antarmuka pengguna melalui koneksi SSE (\textit{Server-Sent Events}) pada endpoint \textit{GET /api/analysis/events/\{session\_id\}}. Komponen \textit{TerminalSimulator.vue} menangkap aliran data tersebut dan menampilkannya dalam format konsol simulator terminal interaktif, sebagaimana disajikan pada Gambar~\ref{fig:ui-loading-progress}. Tampilan alur sistem ini memberikan transparansi progres secara bertahap kepada pengguna mulai dari pembersihan teks, pembangkitan vektor \textit{embedding} IndoBERTweet, pengklasteran BIRCH, hingga ekstraksi representasi kata kunci BM25.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{images/ui/loading-prosess-realtime.png}
+\caption{Antarmuka Pemantauan Alur Pemrosesan Analisis secara \textit{Real-Time} via SSE}
+\label{fig:ui-loading-progress}
+\end{figure}
 
 \subsubsection{Dashboard Visualisasi Topik dan Metrik Evaluasi}
-Setelah pemrosesan selesai, pengguna diarahkan ke antarmuka dashboard hasil analisis yang menyajikan kartu-kartu topik teridentifikasi beserta kata kunci representatifnya, grafik distribusi volume \textit{chat} temporal, panel metrik evaluasi kuantitatif ($C_{\text{NPMI}}$, TD, ED, ITS, dan \textit{outlier rate}), serta visualisasi jam sibuk obrolan dan peringkat keaktifan pengirim teranonimasi, sebagaimana disajikan pada Lampiran~\ref{appx:ui-screenshots} (Gambar~\ref{fig:ui-dashboard-topik} dan Gambar~\ref{fig:ui-metrik-aktivitas}).
+Setelah proses komputasi selesai, pengguna diarahkan ke antarmuka \textit{dashboard} hasil analisis yang menyajikan kartu-kartu topik teridentifikasi beserta kata kunci representatifnya, panel metrik evaluasi kuantitatif ($C_{\text{NPMI}}$, TD, ED, ITS, dan \textit{outlier rate}), serta grafik tren keaktifan obrolan. Gambaran sederhana hasil pemodelan topik dan metrik evaluasi sistem pada antarmuka web disajikan pada Gambar~\ref{fig:ui-result-metrik}. Rincian fitur antarmuka pelengkap seperti visualisasi grafik keaktifan dan daftar topik obrolan lengkap tetap didokumentasikan pada Lampiran~\ref{appx:ui-screenshots} (Gambar~\ref{fig:ui-dashboard-topik} dan Gambar~\ref{fig:ui-activity-leaderboard}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{images/ui/result-metrik-evaluasi.png}
+\caption{Tampilan Ringkasan Sederhana Hasil Pemodelan Topik dan Panel Metrik Evaluasi pada Antarmuka Web}
+\label{fig:ui-result-metrik}
+\end{figure}
 
 \subsubsection{Penelusuran Konteks Pesan (\textit{Traceability})}
 Sistem mempertahankan kolom indeks unik (\textit{index}) di sepanjang alur praproses dan pemodelan topik. Pengguna dapat memilih suatu pesan pada halaman detail klaster untuk memicu dialog modal (\textit{MessageContextModal.vue}) yang memanggil API backend untuk mengambil beberapa pesan sebelum dan sesudahnya secara kronologis (Lampiran~\ref{appx:ui-screenshots}, Gambar~\ref{fig:ui-traceability-detail}), sehingga konteks obrolan utuh dapat ditelusuri kembali dengan mudah.
