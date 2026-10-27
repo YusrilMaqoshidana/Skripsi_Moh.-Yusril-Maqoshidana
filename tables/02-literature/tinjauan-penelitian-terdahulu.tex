@@ -1,24 +1,22 @@
 \begingroup
 \pagestyle{fancy}
 \singlespacing
-\setlength{\extrarowheight}{4pt}
-% \setlength{\LTleft}{-2cm}
-% \setlength{\LTright}{-1cm}
-\setlength{\LTpre}{-10pt}
-\setlength{\LTpost}{1pt}
+\setlength{\extrarowheight}{3pt}
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{4pt}
 
 \begin{scriptsize}
-	\begin{longtable}{>{\centering\arraybackslash}p{0.3cm} p{2.5cm} p{3cm} p{3cm} p{3cm}}
+	\begin{longtable}{>{\centering\arraybackslash}p{0.4cm} p{2.6cm} p{2.9cm} p{2.9cm} p{3.0cm}}
 
-		\caption{Tinjauan Penelitian Terdahulu} \label{tab:tinjauan}                                                                                                                                                                                                                                                                                                                              \\[6pt]
+		\caption{Tinjauan Penelitian Terdahulu} \label{tab:tinjauan} \\[4pt]
 		\hline
-		\textbf{No}                                                                                                                                                                                                                                                                          & \textbf{Judul Penelitian} & \textbf{Hasil Penelitian} & \textbf{Celah (\textit{Gap})} & \textbf{Kontribusi} \\
+		\textbf{No} & \textbf{Judul \& Pustaka} & \textbf{Hasil Penelitian} & \textbf{Celah (\textit{Gap})} & \textbf{Kontribusi Usulan} \\
 		\hline
 		\endfirsthead
 
-		\caption*{\textbf{Tabel \ref{tab:tinjauan}} Tinjauan Penelitian Terdahulu}                                                                                                                                                                                                                                                                                                                \\[6pt]
+		\caption*{\textbf{Tabel \ref{tab:tinjauan}} Tinjauan Penelitian Terdahulu (Lanjutan)} \\[4pt]
 		\hline
-		\textbf{No}                                                                                                                                                                                                                                                                          & \textbf{Judul Penelitian} & \textbf{Hasil Penelitian} & \textbf{Celah (\textit{Gap})} & \textbf{Kontribusi} \\
+		\textbf{No} & \textbf{Judul \& Pustaka} & \textbf{Hasil Penelitian} & \textbf{Celah (\textit{Gap})} & \textbf{Kontribusi Usulan} \\
 		\hline
 		\endhead
 
@@ -28,28 +26,23 @@
 		\hline
 		\endlastfoot
 
-		1                                                                                                                                                                                                                                                                                    &
-		\textit{A Topic Modeling Comparison Between LDA, NMF, Top2Vec, and BERTopic to Demystify Twitter Posts} \citep{10.3389/fsoc.2022.886498} (Jurnal Q1)                                                                                                                                 &
-		Penelitian ini membandingkan BERTopic, NMF, LDA, dan Top2Vec pada data Twitter. BERTopic direkomendasikan untuk pendekatan berbasis \textit{embedding}, sedangkan NMF menjadi alternatif tradisional yang lebih unggul untuk data media sosial.                                      &
-		Meskipun BERTopic menunjukkan performa yang baik, penggunaan \textit{embedding} multilingual dan \textit{clustering} default (HDBSCAN) masih memiliki keterbatasan dalam mengatasi \textit{outlier} dan meningkatkan stabilitas topik. Belum ada sistem aplikatif yang dikembangkan. &
-		Penelitian ini menggunakan IndoBERTweet sebagai model \textit{embedding} khusus bahasa Indonesia serta BIRCH sebagai alternatif HDBSCAN untuk meningkatkan stabilitas \textit{clustering} dan mengurangi \textit{outlier}. Selain itu, dikembangkan sistem berbasis \textit{web} untuk analisis percakapan WhatsApp.                                                                      \\
+		1 &
+		\textit{A Topic Modeling Comparison Between LDA, NMF, Top2Vec, and BERTopic...} \citep{10.3389/fsoc.2022.886498} (Jurnal Q1) &
+		BERTopic unggul untuk pemodelan berbasis \textit{embedding}, namun HDBSCAN menghasilkan proporsi \textit{outlier} yang tinggi pada data media sosial. &
+		Menggunakan model \textit{multilingual}; belum adaptif terhadap teks percakapan informal bahasa Indonesia dan belum ada sistem terintegrasi. &
+		Menerapkan IndoBERTweet sebagai model \textit{embedding} spesifik bahasa Indonesia serta algoritma BIRCH teroptimasi guna menekan \textit{outlier}. \\
 		\hline
-		2                                                                                                                                                                                                                                                                                    &
-		\textit{Integrating IndoBERT and BIRCH in BERTopic for Indonesian short text} \citep{iaes2025indobert} (Jurnal Q2)                                                                                                                                                                   &
-		Penelitian ini memodifikasi BERTopic dengan IndoBERT, BM25, dan BIRCH dengan dataset dari X,
-		Google Reviews, dan YouTube yang bersifat teks monolog. Berhasil menurunkan \textit{outlier} secara signifikan serta meningkatkan stabilitas topik pada teks pendek.                                                                                                                 &
-		Pendekatan ini belum dieksplorasi pada data percakapan grup WhatsApp yang memiliki karakteristik lebih kompleks berupa \textit{multi-turn dialogue}, evolusi percakapan yang cepat dan volume pesan yang tinggi.
-		Selain itu, penelitian terdahulu belum menyediakan sistem aplikasi bagi pengguna akhir.                                                                                                                                                                                              &
-		Penelitian ini mengimplementasikan arsitektur modifikasi BERTopic (IndoBERTweet, algoritma usulan BIRCH \textit{clustering}, representasi BM25, dan reduksi topik otomatis) pada dataset percakapan grup WhatsApp yang diintegrasikan ke dalam sistem analisis interaktif untuk memvisualisasikan dinamika topik secara otomatis.                                                                                                                                                                                                                                                                                                                        \\
+		2 &
+		\textit{Integrating IndoBERT and BIRCH in BERTopic for Indonesian short text} \citep{iaes2025indobert} (Jurnal Q2) &
+		Modifikasi IndoBERT, BIRCH, dan BM25 berhasil menurunkan \textit{outlier} dan menaikkan stabilitas klaster pada korpus monolog (X, Review, YouTube). &
+		Belum diuji pada dialog percakapan WhatsApp yang bersifat \textit{multi-turn}, cepat berkembang, serta kaya akan campur kode (\textit{code-mixing}). &
+		Mengadaptasi arsitektur pada korpus percakapan WhatsApp dengan penambahan mekanisme pemotongan pencilan $2\sigma$ dan reduksi topik otomatis. \\
 		\hline
-		3                                                                                                                                                                                                                                                                                    &
-		\textit{BERTopic Enhanced Bibliometric Insight Into Global South Higher Education} \citep{10643545} (Jurnal Q1)                                                                                                                                                                      &
-		Penelitian ini menyelidiki keragaman linguistik dan proses dekolonisasi dalam sistem pendidikan tinggi di wilayah Global South menggunakan kerangka kerja empiris tiga tingkat yang menggabungkan Analisis Ko-okurensi Bibliometrik (Bibliometric Co-occurrence Analysis), pemodelan topik LDA, dan pemodelan BERTopic.
-		BERTopic menunjukkan performa lebih baik dibanding LDA dalam koherensi dan jumlah topik yang dihasilkan pada data akademik.                                                                                                                                                          &
-		Penelitian tersebut belum mengeksplorasi alternatif algoritma klasterisasi yang dapat meminimalkan \textit{outlier} sejak awal proses, serta belum menguji efektivitas BERTopic pada bahasa Indonesia dengan karakteristik teks percakapan informal yang memiliki noise tinggi dan fenomena \textit{code-mixing}.
-		Penelitian tersebut juga belum menyediakan sistem aplikasi bagi pengguna akhir.                                                                                                                                                                                                                                         &
-		Penelitian ini berkontribusi merancang algoritma pengklasteran usulan BIRCH /textit{clustering} yang mengombinasikan efisiensi hierarkis BIRCH dengan eliminasi pencilan terukur berbasis deviasi jarak kosinus terhadap \textit{centroid} dan pembersihan klaster kerdil, guna menekan \textit{outlier rate} tanpa membiarkan dokumen derau mencemari kemurnian topik utama, serta menerapkan IndoBERTweet dan BM25 yang diintegrasikan ke dalam sistem aplikasi berbasis \textit{web} interaktif.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-		\\
+		3 &
+		\textit{BERTopic Enhanced Bibliometric Insight Into Global South...} \citep{10643545} (Jurnal Q1) &
+		BERTopic menunjukkan koherensi topik yang lebih unggul dibandingkan LDA pada korpus literatur akademik berskala besar. &
+		Belum mengeksplorasi algoritma klaster alternatif untuk meminimalkan \textit{outlier} dan belum menyentuh karakteristik teks obrolan informal. &
+		Merancang mekanisme eliminasi klaster kerdil dan pemurnian kata kunci topik untuk menangani obrolan komunitas yang sarat singkatan tidak baku. \\
 	\end{longtable}
 \end{scriptsize}
 \setlength{\extrarowheight}{0pt}

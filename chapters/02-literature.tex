@@ -17,10 +17,7 @@
 
 \input{tables/02-literature/tinjauan-penelitian-terdahulu.tex}
 
-Berdasarkan penelitian terdahulu yang telah diulas pada Tabel \ref{tab:tinjauan}, dapat disimpulkan bahwa
-meskipun telah banyak penelitian yang membandingkan berbagai model \textit{topic modeling} untuk analisis teks pendek, hasil penelitian terdahulu menunjukkan bahwa BERTopic cenderung lebih unggul dibandingkan pendekatan konvensional pada data media sosial dan data akademik, tetapi masih memiliki keterbatasan ketika menggunakan \textit{embedding} multilingual dan algoritma \textit{clustering} bawaan seperti HDBSCAN.
-Pada sejumlah penelitian tersebut, penggunaan model yang lebih spesifik terhadap bahasa dan domain, seperti IndoBERTweet, serta algoritma BIRCH sebagai alternatif klasterisasi, terbukti menjanjikan dalam mengurangi \textit{outlier}.
-Selain itu, penelitian yang telah diulas belum banyak mengeksplorasi penerapan \textit{pipeline} BERTopic pada percakapan grup WhatsApp berbahasa Indonesia yang bersifat \textit{multi-turn}, tidak terstruktur, banyak emoji, dan kaya \textit{code-mixing}. Di sisi lain, penelitian terdahulu masih berfokus pada evaluasi metodologi tanpa menyediakan sistem aplikasi yang dapat digunakan langsung oleh pengguna akhir untuk menganalisis percakapan mereka sendiri.
+Berdasarkan penelitian terdahulu yang diulas pada Tabel~\ref{tab:tinjauan}, dapat disimpulkan bahwa meskipun BERTopic terbukti unggul dibandingkan metode konvensional (seperti LDA dan NMF), penerapan \textit{default} berbasis model \textit{multilingual} dan algoritma HDBSCAN masih menghasilkan proporsi \textit{outlier} yang tinggi serta rentan menghasilkan klaster semu pada teks pendek. Penelitian terdahulu membuktikan potensi integrasi IndoBERT dan BIRCH pada teks monolog media sosial \citep{iaes2025indobert}, namun belum menyentuh karakteristik percakapan grup WhatsApp berbahasa Indonesia yang memiliki pola \textit{multi-turn dialog}, bahasa tidak baku, serta ketiadaan sistem terintegrasi bagi pengguna akhir.
 
 % --- BAGIAN 2.2: LANDASAN TEORI ---
 \section{Landasan Teori}
@@ -29,22 +26,14 @@ Selain itu, penelitian yang telah diulas belum banyak mengeksplorasi penerapan \
 \subsection{Aplikasi WhatsApp}
 \label{subsec:theory-first}
 
-WhatsApp merupakan aplikasi pesan instan yang memungkinkan pengguna berkomunikasi melalui pesan teks, suara, gambar, video, serta fitur grup yang mendukung komunikasi banyak pengguna dalam satu ruang diskusi \citep{prayogi2025dinamika}.
-Fitur grup memungkinkan pengguna tergabung dalam banyak kelompok sekaligus untuk kepentingan personal, bisnis, maupun keamanan, sehingga volume pesan sering menjadi besar dan tumpang tindih. Kondisi ini membuat percakapan grup bersifat tidak terstruktur, melibatkan banyak partisipan, dan topik pembahasan dapat berubah dengan cepat \citep{rani2022whatsapp}.
-Akibatnya, pengguna sering kesulitan mengikuti arah percakapan secara menyeluruh. Permasalahan inilah yang menjadi latar belakang penelitian ini, yaitu mengembangkan sistem analisis percakapan grup WhatsApp yang dapat mengidentifikasi dan memetakan topik pembahasan secara otomatis.
+WhatsApp merupakan aplikasi pesan instan yang mendukung komunikasi personal maupun kelompok melalui fitur grup diskusi \citep{prayogi2025dinamika}. Karakteristik komunikasi grup yang dinamis, melibatkan banyak partisipan, dan bervolume tinggi menyebabkan alur percakapan berlangsung cepat serta kerap kali tumpang tindih \citep{rani2022whatsapp}. Akibatnya, anggota grup sering kali kesulitan mengikuti atau merangkum perkembangan topik pembahasan secara menyeluruh.
 
-Secara linguistik, pesan WhatsApp memiliki karakteristik yang berbeda signifikan dari teks formal. Struktur kalimatnya cenderung sederhana, pendek, dan bersifat eliptis, yaitu menghilangkan unsur wajib seperti subjek atau predikat demi efisiensi (misalnya \textit{"Mau makan?"} alih-alih \textit{"Apakah kamu mau makan?"}), serta sering ditulis tanpa tanda baca dan secara fragmentaris ke dalam beberapa baris terpisah \citep{siregar2025}. Dari sisi morfologi dan diksi, penggunaan singkatan tidak baku, bahasa gaul, serta campur kode (\textit{code-mixing}) antara bahasa Indonesia, bahasa daerah, dan bahasa asing juga lazim ditemukan dalam satu kalimat yang sama \citep{sutarma2017}. Karakteristik-karakteristik inilah yang menjadi dasar pertimbangan dalam merancang tahapan \textit{preprocessing} pada penelitian ini, khususnya dalam menangani normalisasi teks tidak baku, penggabungan pesan multi-baris, serta penanganan simbol dan tanda baca sebelum data diproses oleh model \textit{embedding}.
+Secara linguistik, percakapan WhatsApp memiliki karakteristik khas teks obrolan informal yaitu struktur kalimat eliptis atau fragmentaris tanpa kelengkapan subjek-predikat formal, minim tanda baca, serta sarat akan singkatan tidak baku, bahasa gaul (\textit{slang}), dan campur kode (\textit{code-mixing}) lintas bahasa \citep{siregar2025,sutarma2017}. Kompleksitas leksikal ini mendasari perlunya perancangan tahapan praproses teks yang adaptif sebelum data ditransformasikan ke dalam ruang representasi vektor.
 
 \subsection{BERTopic}
 \label{subsec:theory-second}
 
-BERTopic adalah \textit{framework topic modeling} berbasis \textit{transformer}
-yang membentuk \textit{embedding} dokumen dan merepresentasikan topik melalui
-prosedur TF-IDF berbasis kelas, sehingga dokumen dengan makna semantik serupa
-dapat dipetakan saling berdekatan dalam ruang vektor \citep{grootendorst2022bertopic}.
-Pendekatan ini relevan untuk percakapan grup WhatsApp yang umumnya berupa teks
-pendek, berisik (\textit{noisy}), dan tidak terstruktur, yang cenderung menimbulkan
-masalah kelangkaan data (\textit{data sparsity}) pada metode pemodelan topik konvensional.
+BERTopic adalah \textit{framework topic modeling} berbasis \textit{transformer} yang merepresentasikan topik melalui prosedur TF-IDF berbasis kelas (c-TF-IDF), sehingga dokumen dengan makna semantik serupa dipetakan saling berdekatan dalam ruang vektor \citep{grootendorst2022bertopic}. Pendekatan ini efektif menangani kelangkaan data (\textit{data sparsity}) pada teks pendek informal.
 
 \begin{figure}[h]
 	\centering
@@ -53,228 +42,111 @@ masalah kelangkaan data (\textit{data sparsity}) pada metode pemodelan topik kon
 	\label{fig:framework-bertopic}
 \end{figure}
 
-Berdasarkan Gambar \ref{fig:framework-bertopic}, arsitektur modular \textit{framework} BERTopic terdiri dari lima tahap utama. Tahap pertama adalah
-\textit{document embedding} yang mengubah dokumen teks menjadi representasi vektor numerik berdimensi tinggi menggunakan model bahasa kontekstual seperti IndoBERTweet yang dilatih khusus pada korpus media sosial berbahasa Indonesia \citep{koto2021indobertweet}. Tahap kedua adalah
-\textit{dimensionality reduction} menggunakan UMAP untuk mereduksi dimensi vektor hasil \textit{embedding} tanpa menghilangkan struktur topologi manifold lokal dan global data \citep{mcinnes2018umap}.
-Tahap ketiga adalah \textit{clustering} yang mengelompokkan dokumen berdimensi rendah berdasarkan kemiripan semantiknya, di mana penelitian ini merancang algoritma usulan BIRCH \textit{clustering} sebagai pengganti HDBSCAN standar \citep{iaes2025indobert,IJECE25896,Ramadhani_2020}.
-Tahap keempat adalah \textit{topic representation} yang mengekstrak kata kunci paling representatif dari setiap klaster melalui skema pembobotan BM25 yang diperkaya penyaringan leksikal \citep{iaes2025indobert}.
-Tahap kelima adalah \textit{hierarchical topic reduction} yang menyederhanakan jumlah topik secara otomatis melalui penggabungan klaster topik berkerapatan semantik serupa guna mencegah fragmentasi topik mikro yang redundan \citep{grootendorst2022bertopic,11271424}.
+Sebagaimana disajikan pada Gambar~\ref{fig:framework-bertopic}, modularitas BERTopic mencakup lima tahapan: (1) \textit{document embedding} untuk menghasilkan representasi vektor semantik, (2) \textit{dimensionality reduction} via UMAP guna memproyeksikan vektor ke dimensi rendah, (3) \textit{clustering} dokumen berbasis kemiripan ruang, (4) \textit{topic representation} untuk mengekstraksi kata kunci representatif, dan (5) \textit{hierarchical topic reduction} untuk memadatkan topik mikro yang redundan \citep{grootendorst2022bertopic,iaes2025indobert}.
 
-% --- BAGIAN 2.3: KERANGKA KONSEPTUAL (OPSIONAL) ---
 \subsection{IndoBERTweet}
 \label{subsec:indobertweet}
 
-Model IndoBERTweet merupakan model bahasa pra-latih berskala besar pertama yang dirancang khusus untuk memproses data Twitter (X) berbahasa Indonesia.
-Model ini dikembangkan melalui pendekatan \textit{domain-adaptive pretraining} dengan fondasi IndoBERT yang semula dilatih pada korpus formal, kemudian diadaptasi ke domain Twitter yang lebih informal.
-Dalam proses adaptasi tersebut, peneliti melakukan penyesuaian kosakata domain-spesifik dan melaporkan 14.584 kosakata baru (46\% dari total kosakata) yang tidak tercakup pada IndoBERT umum \citep{koto2021indobertweet}.
-
-\input{tables/02-literature/tabel-indobertweet-kinerja.tex}
-
-Berdasarkan Tabel \ref{tab:kinerja-indobertweet} yang diadaptasi dari \cite{koto2021indobertweet}, model IndoBERTweet dan variannya secara konsisten mencapai performa tinggi pada tujuh tugas NLP berbahasa Indonesia, meliputi \textit{sentiment analysis}, \textit{emotion classification}, \textit{hate speech detection}, dan \textit{named entity recognition}.
-Hasil terbaik secara rata-rata ditunjukkan oleh varian IndoBERT dengan adaptasi kosakata dan pelatihan lanjutan 200K langkah (86{,}5), sedangkan IndoBERTweet yang dilatih dari awal juga menunjukkan kinerja kompetitif (86{,}1).
-Temuan ini memperkuat asumsi bahwa model berbasis domain media sosial berpotensi lebih sesuai untuk teks pendek, informal, dan bising seperti percakapan grup WhatsApp berbahasa Indonesia, meskipun efektivitas akhirnya tetap perlu divalidasi pada penelitian ini.
-
+Model IndoBERTweet merupakan model bahasa pra-latih berskala besar yang dirancang khusus untuk domain media sosial berbahasa Indonesia melalui pendekatan \textit{domain-adaptive pretraining} \citep{koto2021indobertweet}. Model ini mengakomodasi 14.584 kosakata domain-spesifik baru yang tidak tercakup pada IndoBERT formal.
+Berdasarkan pengujian komparatif oleh \citet{koto2021indobertweet}, IndoBERTweet secara konsisten mencapai performa tinggi pada tujuh tugas hilir NLP berbahasa Indonesia (meliputi \textit{sentiment analysis}, \textit{emotion classification}, \textit{hate speech detection}, dan NER). IndoBERTweet mencatatkan rata-rata skor F1 sebesar 86{,}1\%, mengungguli model bertaraf multilingual seperti mBERT (79{,}6\%) dan IndoBERT umum (83{,}4\%). Rincian perbandingan skor performa komparatif antar-model bahasa pada tujuh tugas hilir tersebut disajikan pada Lampiran~\ref{appx:kinerja-indobertweet}. Temuan empiris ini memperkuat dasar pemilihan IndoBERTweet sebagai ekstraktor \textit{embedding} yang adaptif terhadap teks obrolan WhatsApp yang sarat istilah percakapan informal.
 
 \subsection{BIRCH \textit{Clustering}}
 \label{subsec:birch}
 
-BIRCH (\textit{Balanced Iterative Reducing and Clustering using Hierarchies}) merupakan algoritma \textit{clustering} hierarkis berbasis pohon yang dirancang untuk menangani \textit{dataset} berskala besar secara efisien dengan meringkas data ke dalam struktur \textit{Clustering Feature} (CF) di memori utama (\textit{in-memory}) \citep{10.1145/235968.233324}. Sebagai landasan teoretis orisinil, pembentukan algoritma BIRCH pertama kali diperkenalkan oleh \citet{10.1145/235968.233324} dan kemudian diformalkan secara komprehensif oleh \citet{10.1023/A:1009783824328}. Keunggulan mendasar dari BIRCH terletak pada kemampuannya memproses seluruh data masukan hanya dalam satu kali pemindaian (\textit{single pass}) dengan kompleksitas waktu dan ruang linear $O(N)$, menjadikannya sangat hemat memori dan cepat pada volume data masif \citep{10.1023/A:1009783824328}.
-
-Dalam konteks penerapannya pada pemodelan topik teks pendek berbahasa Indonesia, \citet{iaes2025indobert} menggunakan BIRCH sebagai alternatif pengganti algoritma berbasis kepadatan seperti HDBSCAN dalam \textit{framework} BERTopic guna mengurangi dokumen yang terbuang sebagai pencilan. Meskipun demikian, algoritma BIRCH memiliki tantangan teknis tersendiri, khususnya sensitivitas terhadap parameter ambang batas (\textit{threshold}) serta kecenderungan menghasilkan partisi klaster berbentuk hiper-sferis \citep{10.1023/A:1009783824328}. Keterbatasan terkait dimensi tinggi data teks diatasi melalui reduksi dimensi UMAP sebelum klasterisasi dilakukan.
-
-Pada tataran implementasi komputasi modern, formulasi matematis entri ringkasan tiap subklaster disimpan dalam bentuk vektor \textit{Clustering Feature} (CF) sebagaimana didefinisikan pada studi seminal \citep{10.1145/235968.233324} dan dipaparkan kembali pada kajian optimasi modern \citep{IJECE25896,Ramadhani_2020}:
+BIRCH (\textit{Balanced Iterative Reducing and Clustering using Hierarchies}) adalah algoritma \textit{clustering} hierarkis yang efisien untuk memproses data berskala besar dalam satu kali pemindaian (\textit{single pass}) dengan kompleksitas waktu dan memori linier $O(N)$ \citep{10.1145/235968.233324,10.1023/A:1009783824328}. Keunggulan komputasi BIRCH bertumpu pada peringkasan data ke dalam struktur pohon fitur (\textit{CF-Tree}), di mana setiap subklaster direpresentasikan secara ringkas dalam memori utama melalui tripel \textit{Clustering Feature} (CF):
 
 \begin{equation}
 	CF = (N, LS, SS)
 \end{equation}
 
-\noindent dengan $N$ menyatakan jumlah total titik data dalam subklaster, $LS = \sum_{i=1}^{N} x_i$ merupakan jumlah linier (\textit{linear sum}) dari seluruh titik data berdimensi $d$, dan $SS = \sum_{i=1}^{N} \lVert x_i \rVert^2$ merupakan jumlah kuadrat skalar (\textit{square sum}) dari seluruh titik data.
-
-Dari vektor rangkuman CF tersebut, titik pusat atau \textit{centroid} ($\mu$) dari subklaster dapat dihitung secara langsung tanpa perlu menyimpan seluruh titik data individual \citep{IJECE25896}:
+\noindent di mana $N$ menyatakan jumlah total titik data dalam subklaster, $LS = \sum_{i=1}^{N} x_i$ merupakan jumlah linier (\textit{linear sum}) dari seluruh titik data berdimensi $d$, dan $SS = \sum_{i=1}^{N} \lVert x_i \rVert^2$ adalah jumlah kuadrat skalar (\textit{square sum}). Dari vektor ringkasan CF tersebut, titik pusat (\textit{centroid}) $\mu$ dan radius kerapatan $R$ dapat dihitung secara langsung tanpa perlu menyimpan seluruh titik data individual di memori \citep{IJECE25896}:
 
 \begin{equation}
-	\mu = \frac{LS}{N}
+	\mu = \frac{LS}{N}, \qquad R = \sqrt{\frac{SS}{N} - \left\lVert \frac{LS}{N} \right\rVert^2}
 \end{equation}
 
-Kekompakan (\textit{compactness}) subklaster diukur berdasarkan nilai radius ($R$), yaitu jarak rata-rata dari seluruh titik data terhadap \textit{centroid} \citep{10.1145/235968.233324,IJECE25896}:
-
-\begin{equation}
-	R = \sqrt{\frac{SS}{N} - \left\lVert \frac{LS}{N} \right\rVert^2}
-\end{equation}
-
-Ketika sebuah titik data baru $x$ hendak dimasukkan ke dalam subklaster, radius baru ($R'$) dihitung dengan memanfaatkan prinsip aditivitas aljabar CF tanpa menghitung ulang seluruh data dari awal \citep{10.1145/235968.233324,IJECE25896}:
+Ketika data baru $x$ diserap ke dalam pohon, radius pembaruan ($R'$) dihitung secara instan memanfaatkan sifat aditivitas aljabar CF:
 
 \begin{equation}
 	R' = \sqrt{\frac{SS + \lVert x \rVert^2}{N+1} - \left\lVert \frac{LS + x}{N+1} \right\rVert^2}
 \end{equation}
 
-Titik baru $x$ hanya dapat diserap ke dalam subklaster daun (\textit{CF-Leaf}) apabila nilai $R' \le T$, di mana $T$ adalah parameter ambang batas (\textit{threshold}) yang ditentukan. Parameter faktor percabangan (\textit{branching factor}, $B$) membatasi jumlah maksimum anak pada tiap simpul non-daun pohon fitur (\textit{CF-Tree}).
+Titik baru diserap ke dalam simpul daun pohon fitur (\textit{CF-Leaf}) apabila nilai $R' \le T$, dengan $T$ sebagai parameter ambang batas (\textit{threshold}), serta percabangan simpul non-daun dibatasi oleh faktor percabangan $B$.
 
-Terkait perilaku parameter tersebut, kajian empiris dari \citet{Ramadhani_2020} pada pengelompokan data besar membuktikan bahwa algoritma BIRCH berbasis \textit{scikit-learn} mengeksekusi data jauh lebih cepat dibandingkan K-Means. Namun, \citet{Ramadhani_2020} dan \citet{IJECE25896} secara kritis mencatat bahwa penentuan nilai \textit{threshold} ($T$) yang bersifat kaku atau statis berisiko menghasilkan penurunan kualitas klaster yang drastis (\textit{poor cluster quality}), terutama apabila titik-titik data marjinal dipaksa bergabung ke dalam daun \textit{CF-Tree}. Di sisi lain, algoritma BIRCH standar konvensional bekerja murni sebagai \textit{hard-clustering} (0\% pencilan) yang memaksakan seluruh dokumen masuk ke klaster terdekat, sedangkan studi pemodelan teks pendek \citep{iaes2025indobert} membuktikan perlunya toleransi pencilan terukur pada rentang 1\%--5\% guna menyaring pesan derau tanpa membuang banyak data.
-
-Untuk mengatasi kelemahan tersebut, penelitian ini merancang model pengklasteran usulan \textit{ImprovedBirch} yang mensintesiskan tiga studi acuan \citep{IJECE25896,Ramadhani_2020,iaes2025indobert}. Setelah pohon \textit{CF-Tree} terbentuk (baik dengan \textit{threshold} tetap maupun penentuan ambang batas otomatis berbasis konvergensi rata-rata \citep{IJECE25896}), jarak kosinus setiap dokumen $x$ terhadap titik pusat (\textit{centroid}) $c_k$ dari klaster penugasannya dihitung sebagai:
+Meskipun sangat efisien, algoritma BIRCH standar bekerja secara kaku sebagai pengklasteran tegas (\textit{hard clustering}) dengan proporsi pencilan 0\%, sehingga memaksakan seluruh dokumen masuk ke klaster terdekat meskipun jarak semantiknya sangat jauh \citep{Ramadhani_2020}. Sebaliknya, algoritma klasterisasi berbasis kepadatan seperti HDBSCAN pada teks pendek membuang pencilan secara terlampau agresif ($>50\%$), yang mengakibatkan hilangnya sebagian besar informasi obrolan \citep{iaes2025indobert}. Guna menjembatani keterbatasan tersebut, penelitian ini merumuskan landasan modifikasi algoritma BIRCH yang mengintegrasikan penyaringan pencilan terukur berbasis deviasi standar jarak kosinus dokumen terhadap titik pusat klaster penugasannya ($c_k$):
 
 \begin{equation}
 	d_{\cos}(x, c_k) = 1 - \frac{x \cdot c_k}{\lVert x \rVert \lVert c_k \rVert}
 \end{equation}
 
-Selanjutnya, untuk mengeliminasi dokumen marjinal yang menyimpang secara ekstrem tanpa mengorbankan kepadatan klaster, diterapkan mekanisme pemotongan berbasis deviasi standar 2-sigma ($2\sigma$) \citep{iaes2025indobert,IJECE25896}:
+\noindent dengan nilai ambang batas dinamis $\tau_k$ yang dirumuskan secara adaptif berdasarkan distribusi statistik:
 
 \begin{equation}
-	\tau_k = \mu_{d, k} + \alpha \cdot \sigma_{d, k}
+	\tau_k = \mu_{d, k} + 2{,}0 \cdot \sigma_{d, k}
 \end{equation}
 
-\noindent di mana $\mu_{d, k}$ dan $\sigma_{d, k}$ masing-masing menyatakan rata-rata dan simpangan baku jarak kosinus pada klaster ke-$k$, serta $\alpha = 2{,}0$ merupakan faktor pengali deviasi. Dokumen yang melampaui batas $\tau_k$ dialokasikan sebagai pencilan (\textit{outlier} $-1$). Terakhir, subklaster kerdil yang jumlah anggotanya kurang dari batas minimum ($|C_k| < \text{min\_size}$) dibersihkan dan dilebur ke label $-1$ sesuai rekomendasi pemurnian daun pohon fitur \citep{Ramadhani_2020}:
-
-\begin{equation}
-	y(x) = \begin{cases}
-		-1, & \text{jika } d_{\cos}(x, c_k) > \tau_k \quad \text{atau} \quad |C_k| < \text{min\_size} \\
-		k,  & \text{lainnya}
-	\end{cases}
-\end{equation}
-
-Sintesis matematis ini memastikan representasi subklaster tetap kompak, bebas dari derau periferal, dan memiliki stabilitas tematik yang tinggi sebelum diproses ke tahap representasi kata kunci.
-
-
+\noindent di mana $\mu_{d,k}$ dan $\sigma_{d,k}$ masing-masing melambangkan nilai rata-rata dan simpangan baku dari jarak kosinus seluruh dokumen dalam klaster ke-$k$. Dokumen marjinal yang memiliki jarak $d_{\cos}(x, c_k) > \tau_k$ dialokasikan sebagai pencilan (\textit{outlier}), menghasilkan klaster topik yang padat sekaligus mempertahankan toleransi pencilan terukur pada rentang $1\%$--$5\%$ \citep{iaes2025indobert}.
 
 \subsection{\textit{Topic Representation} dengan BM25}
 \label{subsec:bm25}
 
-Skema pembobotan BM25 adalah algoritma fungsi peringkat (\textit{ranking
-function}) yang banyak digunakan dalam pencarian informasi (\textit{information
-retrieval}) dan dapat diadaptasi untuk tahap representasi topik
-\citep{doi.org/10.1111/coin.12248,DBLP:journals/corr/abs-2007-05186}.
-c-TF-IDF kesulitan menangkap hubungan semantik secara utuh dan cenderung
-menghasilkan topik yang kurang koheren ketika distribusi frekuensi kata sangat
-timpang atau tidak merata \citep{iaes2025indobert}. Oleh karena itu, sejumlah
-penelitian menerapkan BM25 pada tahap \textit{topic representation}, baik
-sebagai pengganti penuh maupun sebagai modifikasi dari skema c-TF-IDF.
-
-Pada penelitian \citet{iaes2025indobert}, c-TF-IDF bawaan BERTopic digantikan
-sepenuhnya dengan BM25 pada tingkat klaster. Skor representasi kata $t$ untuk
-klaster $C_k$ dirumuskan sebagai:
+Skema pembobotan BM25 (\textit{Best Matching 25}) merupakan fungsi peringkat temu balik informasi berbasis probabilistik yang diadaptasikan pada pemodelan topik untuk mengatasi kelemahan c-TF-IDF pada distribusi frekuensi istilah yang timpang \citep{doi.org/10.1111/coin.12248,iaes2025indobert}. Pada pemodelan teks obrolan, partikel kata percakapan kerap muncul dengan frekuensi lokal yang sangat tinggi namun tidak informatif. Pembobotan kata $t$ pada klaster topik $C_k$ dirumuskan sebagai:
 
 \begin{equation}
-    w_{t,C_k} = \text{BM25}(t, C_k) =
-    \sum_{d \in C_k}
-    \mathrm{IDF}(t) \cdot
-    \frac{f(t,d) \cdot (k_1 + 1)}
-         {f(t,d) + k_1 \!\left(1 - b + b \cdot \dfrac{|d|}{\mathit{avgdl}}\right)},
+    w_{t,C_k} = \sum_{d \in C_k} \mathrm{IDF}(t) \cdot \frac{f(t,d) \cdot (k_1 + 1)}{f(t,d) + k_1 \!\left(1 - b + b \cdot \dfrac{|d|}{\mathit{avgdl}}\right)}
     \label{eq:bm25-cluster}
 \end{equation}
 
-\noindent dengan fungsi \textit{inverse document frequency} didefinisikan sebagai:
+\noindent dengan fungsi pembobotan inversi frekuensi dokumen ($\mathrm{IDF}$):
 
 \begin{equation}
-    \mathrm{IDF}(t) = \log\!\left(\frac{N - n(t) + 0.5}{n(t) + 0.5}\right).
+    \mathrm{IDF}(t) = \log\!\left(\frac{N - n(t) + 0{,}5}{n(t) + 0{,}5}\right)
     \label{eq:idf-bm25}
 \end{equation}
 
-Skor $w_{t,C_k}$ pada Persamaan~\ref{eq:bm25-cluster} dihitung dengan
-menjumlahkan kontribusi seluruh dokumen $d \in C_k$, yaitu himpunan dokumen
-anggota klaster ke-$k$. Untuk setiap dokumen tersebut, $f(t,d)$ menyatakan
-frekuensi kemunculan kata $t$ di dalam dokumen $d$, sedangkan $|d|$
-menyatakan panjang dokumen $d$ yang dinormalisasi terhadap $\mathit{avgdl}$,
-yakni rata-rata panjang dokumen dalam korpus. Nilai $\mathrm{IDF}(t)$ pada
-Persamaan~\ref{eq:idf-bm25} diperoleh dari $n(t)$, yaitu jumlah dokumen dalam
-korpus yang memuat kata $t$, dan $N$, yaitu jumlah total dokumen dalam korpus.
-Dua parameter tambahan, $k_1$ dan $b$, masing-masing berfungsi mengatur
-saturasi frekuensi istilah agar pengaruh kata yang berulang tidak meningkat
-secara linear, serta mengatur normalisasi panjang dokumen agar dokumen yang
-lebih panjang tidak secara otomatis memperoleh skor lebih tinggi. Perlu
-dicatat bahwa rumus IDF pada Persamaan~\ref{eq:idf-bm25} dapat menghasilkan
-nilai negatif apabila suatu kata muncul pada lebih dari separuh dokumen dalam
-korpus ($n(t) > N/2$), sehingga secara otomatis menekan peran kata-kata umum
-dalam representasi topik.
-
-Dalam konteks studi tersebut, pendekatan ini dilaporkan memberikan representasi
-topik yang lebih stabil dibandingkan c-TF-IDF pada korpus teks pendek
-berbahasa Indonesia \citep{iaes2025indobert}.
-Meskipun komponen IDF pada BM25 secara inheren mampu meredam bobot kata-kata yang frekuensinya merata di seluruh korpus, kajian temu balik informasi (\textit{information retrieval}) dan pemodelan teks pendek menegaskan bahwa skema pembobotan statistik tetap rentan terhadap derau leksikal spesifik domain \citep{doi.org/10.1111/coin.12248,10.1145/3507900}. Pada data percakapan instan seperti WhatsApp, partikel obrolan harian (\textit{filler}), ekspresi tawa, kata penegas, dan singkatan gaul kerap kali muncul secara sporadis dengan frekuensi lokal yang sangat tinggi di beberapa dokumen tanpa terdistribusi merata di $>50\%$ total dokumen korpus. Akibatnya, nilai IDF kata-kata obrolan tersebut tidak otomatis nol dan berisiko merebut peringkat kata kunci teratas. Oleh karena itu, diperlukan integrasi penyaringan kosakata derau (\textit{domain-specific stopword filtering}) pada lapisan \textit{CountVectorizer} sebelum pembobotan BM25 dihitung, agar kata-kata yang terpilih sebagai representasi topik benar-benar merefleksikan kata informatif bermakna substansial (\textit{content words}) \citep{doi.org/10.1111/coin.12248}.
+\noindent di mana $f(t,d)$ menyatakan frekuensi kemunculan kata $t$ di dalam dokumen $d$, $|d|$ merepresentasikan panjang dokumen $d$, $\mathit{avgdl}$ melambangkan rata-rata panjang seluruh dokumen dalam korpus klaster, $N$ adalah jumlah total dokumen, dan $n(t)$ merupakan jumlah dokumen yang memuat kata $t$. Parameter $k_1$ mengatur saturasi frekuensi istilah non-linier agar kata berfrekuensi tinggi tidak mendominasi secara berlebih, sedangkan parameter $b$ mengontrol tingkat penalti normalisasi panjang dokumen \citep{doi.org/10.1111/coin.12248}. Integrasi penyaringan kosakata derau (\textit{domain stopwords}) pada lapisan ekstraksi fitur memastikan bahwa kata kunci terpilih murni merefleksikan konten tematik esensial.
 
 \subsection{Reduksi Topik Hierarkis (\textit{Hierarchical Topic Reduction})}
 \label{subsec:topic-reduction}
 
-Pada pemodelan topik modular berbasis klaster mikro, jumlah topik awal yang terbentuk sering kali sangat banyak dan mengalami fragmentasi semantik yang tinggi, di mana beberapa klaster berbeda sebenarnya membahas tema yang serupa \citep{grootendorst2022bertopic}. Guna menyederhanakan struktur topik tersebut paska-pelatihan (\textit{after training}), BERTopic menyediakan modul reduksi topik hierarkis (\textit{Hierarchical Topic Reduction}) yang bekerja secara berkesinambungan tanpa perlu melatih ulang model bahasa atau matriks \textit{embedding} dari awal \citep{grootendorst2022bertopic}.
-
-Mekanisme ini mengevaluasi kemiripan semantik antar-topik berdasarkan vektor representasi kata (BM25 atau c-TF-IDF) menggunakan metrik kemiripan kosinus (\textit{cosine similarity}) \citep{11271424}:
+Pada data obrolan informal berskala besar, algoritma klasterisasi sering kali menghasilkan banyak klaster mikro yang memiliki kemiripan semantik tinggi sehingga terjadi redundansi topik. Modul reduksi topik hierarkis mengatasi fragmentasi tersebut dengan mengevaluasi kemiripan semantik antartopik menggunakan kesamaan kosinus berbasis representasi vektor pembobotan kata \citep{grootendorst2022bertopic,11271424}:
 
 \begin{equation}
 	\text{Sim}(T_i, T_j) = \frac{\mathbf{v}_i \cdot \mathbf{v}_j}{\lVert \mathbf{v}_i \rVert \lVert \mathbf{v}_j \rVert}
 \end{equation}
 
-\noindent di mana $\mathbf{v}_i$ dan $\mathbf{v}_j$ merupakan vektor pembobotan kata dari topik ke-$i$ dan ke-$j$. Pasangan topik dengan nilai kesamaan tertinggi secara bertahap digabungkan (\textit{hierarchical agglomerative merging}), diikuti oleh penghitungan ulang representasi kata pada klaster gabungan baru. Kajian komparatif mutakhir dari \citet{11271424} membuktikan bahwa alur reduksi topik hierarkis otomatis (\textit{automatic topic reduction}) mampu memadatkan klaster berlebih secara efisien hingga mencapai titik jenuh optimal (\textit{knee point}), sekaligus secara signifikan meningkatkan koherensi semantik topik dan mengeliminasi redundansi kata kunci.
+\noindent di mana $\mathbf{v}_i$ dan $\mathbf{v}_j$ masing-masing merupakan vektor representasi pembobotan istilah dari topik ke-$i$ dan ke-$j$. Pasangan topik dengan nilai kesamaan kosinus tertinggi digabungkan secara aglomeratif bertahap (\textit{hierarchical agglomerative merging}), diikuti oleh penghitungan ulang representasi istilah pada klaster gabungan baru. Proses penyusutan berlangsung secara otomatis hingga mencapai titik jenuh optimal (\textit{knee point}), secara efektif mengeliminasi topik redundan dan meningkatkan koherensi semantik tanpa memerlukan proses pelatihan ulang matriks \textit{embedding} dari awal \citep{11271424}.
 
-\subsection{\textit{Topic Coherence}}
-\label{subsec:topic-coherence}
+\subsection{Metrik Evaluasi Pemodelan Topik}
+\label{subsec:eval-metrics}
 
-\textit{Topic coherence} digunakan untuk mengukur keterkaitan semantik antar kata teratas dalam topik. Dari banyaknya \textit{topic coherence}, penelitian ini menggunakan \textit{Normalized Pointwise Mutual Information} (NPMI) karena memberikan korelasi tertinggi dengan penilaian manusia dalam konteks context vectors \citep{2685324}:
+Kualitas hasil pemodelan topik dievaluasi secara kuantitatif melalui empat metrik komprehensif yang mengukur aspek keterbacaan semantik leksikal dan kekohesifan geometri dokumen pada ruang representasi:
 
-\begin{equation}
-    \text{NPMI}(w_i, w_j) =
-    \frac{
-        \log \dfrac{P(w_i, w_j)}{P(w_i) \cdot P(w_j)}
-    }{
-        -\log P(w_i, w_j)
-    }
-    \label{eq:npmi-standalone}
-\end{equation}
+\begin{enumerate}[label=\alph*.]
+	\item \textit{Topic Coherence} ($C_{\text{NPMI}}$) mengukur tingkat keterkaitan semantik antarkata kunci teratas dalam suatu topik berdasarkan nilai probabilitas ko-okurensi ternormalisasi (\textit{Normalized Pointwise Mutual Information}) \citep{2685324}:
+	\begin{equation}
+		\text{NPMI}(w_i, w_j) = \frac{\log \dfrac{P(w_i, w_j)}{P(w_i) \cdot P(w_j)}}{-\log P(w_i, w_j)}
+	\end{equation}
+	di mana $P(w_i, w_j)$ menyatakan probabilitas bersama kemunculan pasangan kata $w_i$ dan $w_j$ dalam jendela geser teks acuan, sedangkan $P(w_i)$ dan $P(w_j)$ adalah probabilitas marjinal masing-masing kata. Metrik ini bernilai pada rentang $[-1, 1]$, di mana nilai mendekati 1 merefleksikan koherensi semantik yang kuat antarkata kunci penyusun topik \citep{11271424}.
 
-\noindent dengan $P(w_i,w_j)$ sebagai probabilitas ko-okurensi, serta $P(w_i)$ dan $P(w_j)$ sebagai probabilitas
-marjinal kemunculan kata. Nilai dari NPMI berkisar antara [-1, 1], dengan nilai 1 menunjukkan keterkaitan semantik yang sempurna, 0 menunjukkan tidak ada keterkaitan, dan nilai negatif menunjukkan keterkaitan yang berlawanan \citep{11271424}.
+	\item \textit{Topic Diversity} (TD) mengukur variasi dan keunikan leksikal antartopik berdasarkan proporsi kata unik pada $N$ kata teratas dari seluruh $K$ topik yang terbentuk \citep{dieng2020topic}:
+	\begin{equation}
+		TD = \frac{|\text{kata unik dalam } N \text{ kata teratas seluruh topik}|}{N \times K}
+	\end{equation}
+	Nilai TD berkisar antara 0 hingga 1. Nilai yang mendekati 1 mengindikasikan bahwa setiap topik memiliki kata kunci yang distingtif tanpa tumpang tindih leksikal yang berlebihan antar-klaster.
 
-\subsection{\textit{Topic Diversity}}
-\label{subsec:topic-diversity}
+	\item \textit{Embedding Density} (ED) mengukur tingkat kerapatan dan konsentrasi sebaran dokumen di sekitar titik pusat (\textit{centroid}) klaster $\bar{\mathbf{e}}_k$ dengan memadukan fungsi kernel Gaussian spasial $k(\cdot)$ dan bobot semantik representasi kata $w_{k,i}$ \citep{2009-00672}:
+	\begin{equation}
+		\rho_k = \frac{\sum_{i=1}^{N_k} k\!\left(\dfrac{\bar{\mathbf{e}}_k - \mathbf{e}_i}{h}\right) w_{k,i}}{\sum_{i=1}^{N_k} k\!\left(\dfrac{\bar{\mathbf{e}}_k - \mathbf{e}_i}{h}\right)}
+	\end{equation}
+	di mana $\bar{\mathbf{e}}_k$ adalah vektor titik pusat topik ke-$k$, $\mathbf{e}_i$ merupakan vektor \textit{embedding} dokumen ke-$i$, $k(u) = (2\pi)^{-d/2} \exp(-\lVert u \rVert^2 / 2)$ adalah fungsi kernel Gaussian berdimensi $d$, $h$ melambangkan parameter lebar pita (\textit{bandwidth}), dan $w_{k,i}$ adalah bobot representasi semantik dokumen ke-$i$ ternormalisasi. Penyebut berfungsi sebagai faktor normalisasi agar nilai kerapatan tidak terdistorsi oleh variasi ukuran jumlah dokumen klaster \citep{2009-00672}.
 
-\textit{Topic diversity} didefinisikan dengan keberagaman topik sebagai persentase kata unik dalam 25 kata teratas dari semua topik. Keberagaman mendekati 0 menunjukan bahwa topik yang berlebihan dan keberagaman mendekati 1 menunjukkan topik yang beragam \citep{dieng2020topic}. Nilainya dihitung
-melalui rumus berikut:
-
-\begin{equation}
-	TD = \frac{|\text{unique words in top } N \text{ words of all topics}|}{N \times K}
-\end{equation}
-
-\subsection{\textit{Embedding Density}}
-\label{subsec:embedding-density}
-
-\textit{Embedding Density} adalah metrik evaluasi yang mengukur kepadatan representasi \textit{embedding} fitur/dokumen dalam suatu klaster dengan menggabungkan jarak spasial (fungsi kernel) dan bobot semantik \citep{2009-00672}. Kepadatan pada titik sampel $z$ (misalnya \textit{centroid} topik) dihitung dengan rumus:
-
-\begin{equation}
-\rho_k = \frac{\sum_{i=1}^{N_k} k\!\left(\frac{\bar{\mathbf{e}}_k - \mathbf{e}_i}{h}\right) w_{k,i}}
-         {\sum_{i=1}^{N_k} k\!\left(\frac{\bar{\mathbf{e}}_k - \mathbf{e}_i}{h}\right)}
-\label{eq:embedding-density}
-\end{equation}
-
-\noindent Keterangan variabel spasial:
-\begin{itemize}[nosep] % Pastikan paket enumitem dimuat di preamble: \usepackage{enumitem}
-    \item $\bar{\mathbf{e}}_k$: Vektor \textit{centroid} topik ke-$k$ (pengganti titik sampel $z$), dihitung sebagai rata-rata \textit{embedding} dokumen dalam klaster tersebut.
-    \item $\mathbf{e}_i$: Vektor \textit{embedding} dokumen ke-$i$ (pengganti $x_i$) dalam klaster $k$.
-    \item $k(y)$: Fungsi kernel Gaussian, yaitu $k(y) = (2\pi)^{-d/2} \exp(-|y|^2/2)$, untuk mengukur kedekatan spasial.
-    \item $h$: Parameter \textit{bandwidth}. Dalam implementasi, digunakan estimasi berbasis volume ($h_V$) dengan kuantil radius 0.1 dan 0.9 untuk mengurangi sensitivitas terhadap \textit{outlier}, serta mekanisme \textit{fallback} Silverman jika terjadi degenerasi klaster.
-    \item $w_{k,i}$: Bobot semantik dokumen ke-$i$ terhadap topik ke-$k$. Nilai ini dihitung dari total skor representasi kata-kata topik (c-TF-IDF untuk BERTopic \textit{default}, atau BM25 untuk BERTopic termodifikasi) yang muncul pada dokumen tersebut, kemudian dinormalisasi per topik ke rentang $[0,1]$.
-\end{itemize}
-\noindent Penyebut pada persamaan berfungsi sebagai konstanta normalisasi sehingga nilai $\rho_k$ tidak bergantung pada jumlah dokumen dalam klaster \citep{2009-00672}.
-
-\subsection{\textit{Intra-topic Similarity}}
-\label{subsec:intra-topic-similarity}
-
-\textit{Intra-topic similarity} merupakan metrik evaluasi yang mengukur kemiripan
-semantik antar dokumen di dalam satu topik, diadaptasi dari konsep
-\textit{intra-list similarity} (ILS) sebagai rata-rata kemiripan berpasangan
-seluruh item dalam sebuah daftar \citep{10.1007/s11257-022-09351-w}. \cite{zhao2018inter} menekankan bahwa struktur intra-topik berbasis
-\textit{word embeddings} mampu menangkap aspek tematik yang lebih halus dan
-bermakna. Dalam konteks evaluasi model topik, \textit{intra-topic similarity} untuk
-topik $k$ dengan $N_k$ dokumen dirumuskan sebagai berikut:
-\begin{equation}
-    \text{ITS}(k) = \frac{1}{N_k(N_k - 1)}
-        \sum_{\substack{i,j=1 \\ i \neq j}}^{N_k}
-        \cos\!\left(\mathbf{e}_i^{(k)},\, \mathbf{e}_j^{(k)}\right)
-    \label{eq:intra-topic-similarity}
-\end{equation}
-
-\noindent di mana $\mathbf{e}_i^{(k)}$ dan $\mathbf{e}_j^{(k)}$ adalah
-\textit{embedding} dokumen ke-$i$ dan ke-$j$ dalam topik $k$. Nilai akhir diperoleh
-dengan merata-ratakan $\text{ITS}(k)$ di seluruh $K$ topik; semakin tinggi
-nilainya, semakin kohesif topik yang dihasilkan.
+	\item \textit{Intra-topic Similarity} (ITS) mengukur rata-rata kemiripan kosinus berpasangan dari seluruh vektor representasi dokumen dalam satu klaster topik guna mengevaluasi kekompakan geometris internal dokumen \citep{10.1007/s11257-022-09351-w}:
+	\begin{equation}
+		\text{ITS}(k) = \frac{1}{N_k(N_k - 1)} \sum_{\substack{i,j=1 \\ i \neq j}}^{N_k} \cos\!\left(\mathbf{e}_i^{(k)},\, \mathbf{e}_j^{(k)}\right)
+	\end{equation}
+	di mana $\mathbf{e}_i^{(k)}$ dan $\mathbf{e}_j^{(k)}$ merupakan pasangan vektor \textit{embedding} dokumen di dalam topik ke-$k$, dan $N_k$ menyatakan jumlah dokumen dalam klaster tersebut. Nilai ITS global dihitung sebagai rata-rata makro di seluruh topik aktif; semakin tinggi skor ITS, semakin padat dan kompak asosiasi dokumen dalam klaster topik yang dihasilkan.
+\end{enumerate}
 
 % Gunakan diagram jika tersedia (lihat contoh di bawah):
 % \begin{figure}[h]

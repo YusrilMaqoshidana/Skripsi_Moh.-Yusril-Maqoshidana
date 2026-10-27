@@ -1,9 +1,9 @@
 # Fasilkom UNEJ Thesis Compliance Audit Report
-Generated at: 2026-10-19 23:04:09
+Generated at: 2026-10-27 21:06:36
 
 ## Summary Statistics
-- **PASS:** 45
-- **WARNING:** 1
+- **PASS:** 46
+- **WARNING:** 0
 - **FAIL:** 0
 - **INFO:** 1
 
@@ -56,8 +56,8 @@ Generated at: 2026-10-19 23:04:09
 | PASS | RULE-FLT-07 | `chapters/04-results.tex` | Judul gambar diletakkan di BAWAH gambar |
 | PASS | RULE-CIT-03 | `daftar_pustaka.bib` | Total pustaka 31 referensi memenuhi batas minimal 15 pustaka |
 | PASS | RULE-CIT-05 | `daftar_pustaka.bib` | Pustaka 10 tahun terakhir (2016-2026) mencapai 90.3% (syarat min 50%) |
-| WARNING | RULE-PAG-08 | `main.aux / chapters/04-results.tex` | Bagian Utama berbobot 49 halaman (Bab 4: 20 hlm, batas anjuran: 20 hlm Bab 4 / 40 hlm total). KEBIJAKAN KETAT: JANGAN MENGUBAH TEKS EKSISTING SECARA SEPIHAK. Beri warning pada teks berpotensi redundan atau tawarkan relokasi tabel/gambar besar ke Lampiran HANYA atas persetujuan pengguna. |
+| PASS | RULE-PAG-08 | `main.aux` | Total halaman bagian utama (35 halaman) berada dalam batas kuota 40 halaman |
 | INFO | RULE-PAG-08 | `chapters/04-results.tex` | Deteksi Potensi Pembahasan Ganda: Bab 4 memuat pembahasan arsitektur model IndoBERTweet. Pastikan fokus Bab 4 adalah hasil pengolahan data empiris dan bukan mengulang definisi teoretis Bab 2. Gunakan rujukan silang ke Bab 2 tanpa menghapus teks secara sepihak. |
 
 ## Recommended Action Items
-1. **[RULE-PAG-08]** (WARNING): Bagian Utama berbobot 49 halaman (Bab 4: 20 hlm, batas anjuran: 20 hlm Bab 4 / 40 hlm total). KEBIJAKAN KETAT: JANGAN MENGUBAH TEKS EKSISTING SECARA SEPIHAK. Beri warning pada teks berpotensi redundan atau tawarkan relokasi tabel/gambar besar ke Lampiran HANYA atas persetujuan pengguna. (Lokasi: `main.aux / chapters/04-results.tex`)
+- Selamat! Seluruh kriteria kepatuhan otomatis berhasil terpenuhi.

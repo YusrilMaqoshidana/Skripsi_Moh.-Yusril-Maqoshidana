@@ -37,12 +37,11 @@ Waktu penelitian dilakukan pada bulan April 2026 hingga Agustus 2026, dengan tah
 \section{Tahapan Penelitian}
 \label{sec:stages}
 
-Tahapan penelitian yang dilakukan dalam penelitian ini secara keseluruhan
-digambarkan pada Gambar~\ref{fig:tahapan-penelitian}:
+Tahapan penelitian yang dirancang dalam penelitian ini secara keseluruhan digambarkan pada Gambar~\ref{fig:tahapan-penelitian}:
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.85\textwidth]{images/alur_penelitian.png}
+	\includegraphics[width=0.7\textwidth]{images/alur_penelitian.png}
 	\caption{Tahapan Penelitian}
 	\label{fig:tahapan-penelitian}
 \end{figure}
@@ -50,167 +49,88 @@ digambarkan pada Gambar~\ref{fig:tahapan-penelitian}:
 \subsection{Identifikasi Masalah dan Studi Literatur}
 \label{subsec:problem-identification}
 
-Tahap pertama dalam penelitian ini adalah identifikasi masalah dan studi literatur.
-Pada tahap identifikasi masalah, peneliti melakukan eksplorasi terhadap percakapan grup WhatsApp untuk memahami tantangan dalam menangkap topik pembicaraan secara menyeluruh, termasuk dinamika percakapan, karakteristik teks pendek, serta kebutuhan pengguna dalam mengelola informasi yang besar dan tidak terstruktur.
-Selanjutnya, studi literatur dilakukan untuk memperoleh landasan teoritis dan memahami perkembangan terkini terkait metode \textit{topic modeling}, khususnya BERTopic, IndoBERTweet, BIRCH \textit{clustering}, BM25, serta metrik evaluasi yang relevan. Hasil dari tahap ini digunakan sebagai dasar dalam mengidentifikasi \textit{research gap}, merumuskan masalah penelitian, serta menentukan metode dan arsitektur sistem yang dikembangkan.
+Tahap identifikasi masalah mengeksplorasi tantangan dalam menangkap dinamika topik pada percakapan grup WhatsApp yang tidak terstruktur, bervolume tinggi, dan rentan terhadap distorsi derau leksikal. Studi literatur dilakukan untuk mengkaji landasan teoretis pemodelan topik modular BERTopic, representasi bahasa IndoBERTweet, efisiensi klasterisasi BIRCH, fungsi pembobotan kata BM25, serta empat metrik evaluasi kuantitatif guna merumuskan celah penelitian dan arsitektur usulan yang adaptif.
 
 \subsection{Pengumpulan Data}
 \label{subsec:data-collection}
-Tahap pengumpulan data dilakukan dengan mengekspor riwayat percakapan dari grup WhatsApp menggunakan fitur \textit{export chat} yang tersedia secara bawaan pada aplikasi WhatsApp.
-Data yang diekspor berupa file berformat \textit{.txt} atau \textit{.zip} yang memuat informasi tanggal, waktu, nama pengirim, dan isi pesan.
-Proses pengumpulan data memperhatikan aspek etika penelitian, termasuk permintaan izin kepada admin grup terkait, mengingat data percakapan bersifat personal dan sensitif.
+
+Data percakapan diekspor dari aplikasi WhatsApp grup Komunitas Buku menggunakan fitur bawaan \textit{export chat} dalam format berkas teks (\textit{.txt}). Berkas mencakup rekaman stempel waktu, nama pengirim, dan isi pesan. Pengumpulan data dilaksanakan dengan mematuhi etika penelitian melalui permohonan izin resmi dari pihak fakultas dan persetujuan pengelola grup.
 
 \subsection{Praproses Data}
 \label{subsec:data-preprocessing}
 
-Tahap praproses data bertujuan untuk membersihkan dan mempersiapkan data pesan dari obrolan mentah WhatsApp agar siap diolah oleh model pemodelan topik BERTopic. Percakapan grup WhatsApp memiliki karakteristik teks informal yang sangat khas, seperti teks pendek, banyaknya notifikasi sistem otomatis, penyebutan (\textit{mention}) pengguna, alamat email dan nomor telepon sensitif, penggunaan emoji, kata tidak baku (\textit{slang}), pemanjangan karakter berulang (\textit{elongation}), serta derau (\textit{noise}) berupa pranala luar (URL) dan artefak ekspor. Secara runtut, alur praproses data yang diimplementasikan terdiri dari sembilan tahapan sub-proses berikut:
+Tahap praproses data dirancang untuk mentransformasikan teks obrolan mentah WhatsApp menjadi korpus terstruktur yang bersih dari derau serta menjamin privasi partisipan. Alur praproses mencakup sembilan tahapan sekuensial:
 
-\subsubsection{Penguraian (\textit{Parsing}) Chat Mentah WhatsApp dan Deteksi Format}
-
-Mengurai berkas riwayat percakapan mentah berformat \textit{.txt} atau \textit{.zip} dengan mendeteksi format file dan mengkonversi timestamp mentah ke standar baku ISO 8601 (\textit{YYYY-MM-DDTHH:MM:SS}), serta menyusun data ke dalam struktur tabel (\textit{dataframe}) dengan kolom \textit{Timestamp}, \textit{pengirim}, dan \textit{pesan}.
-
-\subsubsection{Anonimisasi Identitas Pengirim dan Penyebutan (\textit{Mention}) pada Teks Pesan}
-
-Mengenkripsi nama pengirim asli dan penyebutan (\textit{mention}) pengguna (\textit{@nama} atau \textit{@nomor}) di dalam teks pesan menjadi kode samaran terenkripsi (seperti \textit{@User-[hash]}) menggunakan algoritma \textit{hashing} SHA-256. Proses ini dilakukan di sisi klien demi menjamin etika privasi dan kerahasiaan identitas pengguna tanpa menghilangkan struktur interaksi penyebutan pada percakapan.
-
-\subsubsection{Penyaringan Pesan Notifikasi, Berkas Kontak, dan Duplikat}
-
-Memfilter dan mengeliminasi notifikasi otomatis bawaan sistem WhatsApp (seperti \textit{``pesan ini telah dihapus''}, \textit{``panggilan suara tak terjawab''}, \textit{``media tidak disertakan''}, dan sejenisnya), membuang lampiran berkas kartu kontak (\textit{.vcf}), serta menghapus baris pesan mentah duplikat persis.
-
-\subsubsection{Penghapusan Metadata Sistem, Tag Format, dan URL}
-
-Menhapus teks penanda metadata sistem dalam kurung sudut \textit{<...>} (seperti \textit{<Media tidak disertakan>}), kurung siku \textit{[...]}, tag HTML, simbol tagar (\textit{\#...}), serta membuang URL seperti \textit{https://...} atau \textit{www...} dari isi pesan agar tidak menjadi \textit{noise}.
-
-\subsubsection{\textit{Case Folding} dan Normalisasi Unicode}
-
-Mengubah seluruh huruf kapital pada pesan menjadi huruf kecil (\textit{lowercase}) untuk menyeragamkan bentuk kata serta melakukan standardisasi Unicode guna mengeliminasi karakter tersembunyi, karakter kontrol keyboard seluler, dan merapikan spasi ganda.
-
-\subsubsection{Anonimisasi Data Sensitif Teks}
-
-Menghapus dan mengeliminasi alamat email serta nomor telepon independen yang berada di dalam isi pesan untuk mencegah kebocoran kontak pribadi di dalam representasi topik tanpa menyisipkan token buatan yang tidak informatif.
-
-\subsubsection{Transliterasi Emoji dan Emotikon (\textit{Demojize})}
-
-Menerjemahkan karakter emoji visual dan emotikon menjadi teks deskriptif yang setara (misalnya emoji \textit{smiling face} menjadi \textit{smiling\_face}) agar nilai emosi tetap terekstraksi tanpa merusak representasi kata oleh model bahasa.
-
-\subsubsection{Normalisasi Pemanjangan Karakter dan Kata Tidak Baku}
-
-Menyederhanakan penulisan 3 atau lebih karakter berulang secara berturut-turut menjadi 2 karakter serta memetakan kata-kata informal, singkatan, dan variasi ekspresi tawa tidak baku ke bentuk kata baku bahasa Indonesia menggunakan kamus rujukan normalisasi.
-
-\subsubsection{Penyaringan Panjang Dokumen Minimal (\textit{Min Word Count Filter})}
-
-Mengeliminasi baris dokumen yang setelah melalui tahap praproses memiliki jumlah kata kurang dari 3 kata pada kolom pesan yang telah di proses agar setiap dokumen yang akan dikelompokkan oleh BERTopic memiliki substansi informasi semantik yang memadai.
-
-Melalui rangkaian tahapan praproses tunggal tersebut, data percakapan WhatsApp mentah yang tidak terstruktur diubah menjadi masukan teks terproses (\textit{Pesan\_Preprocessed}) yang siap digunakan pada tahap pemodelan topik BERTopic.
+\begin{enumerate}[label=\alph*., leftmargin=*, itemsep=2pt]
+	\item Penguraian (\textit{parsing}) obrolan mentah dari berkas \textit{.txt}, mengonversi stempel waktu ke format standar ISO 8601 (\textit{YYYY-MM-DDTHH:MM:SS}), dan menyusunnya ke dalam struktur tabel (\textit{Timestamp}, Pengirim, dan Pesan).
+	\item Anonimisasi identitas pada sisi klien (\textit{client-side}) dengan menyamarkan nama pengirim serta penyebutan (\textit{@mention}) menjadi kode unik terenkripsi SHA-256 guna melindungi kerahasiaan partisipan sebelum data dikirim ke peladen.
+	\item Penyaringan notifikasi dan berkas kontak dengan mengeliminasi pesan sistem otomatis bawaan WhatsApp, lampiran kartu kontak (\textit{.vcf}), serta baris pesan duplikat identik.
+	\item Pembersihan metadata dan pranala dengan menghapus tag sistem kurung sudut \textit{<...>}, kurung siku \textit{[...]}, tag HTML, tagar (\textit{\#...}), serta alamat URL luar dari tubuh pesan.
+	\item \textit{Case folding} dan normalisasi karakter melalui konversi seluruh huruf menjadi huruf kecil (\textit{lowercase}), standardisasi representasi Unicode, dan pemangkasan spasi ganda.
+	\item Penyensoran informasi sensitif dengan mendeteksi dan menghapus nomor telepon serta alamat surat elektronik pribadi dari teks percakapan.
+	\item Transliterasi emoji (\textit{demojize}) dengan mengubah simbol emoji visual menjadi representasi teks padanan deskriptif agar informasi afektif dan emosional tetap tertangkap oleh model bahasa.
+	\item Normalisasi kata slang dan pemendekan elongasi huruf dengan mereduksi pengulangan karakter berurutan ($\ge 3$ huruf) menjadi dua huruf serta memetakan kosakata informal non-baku ke bentuk standar berbasis kamus leksikon bahasa Indonesia.
+	\item Penyaringan panjang minimal dokumen dengan mengeliminasi pesan yang setelah melalui pembersihan memiliki panjang kurang dari tiga kata bermakna.
+\end{enumerate}
 
 \subsection{Pembuatan Model}
 \label{subsec:create-model}
 
-\begin{figure}[h]
+Tahap pembuatan model merealisasikan arsitektur modifikasi BERTopic yang dirancang secara khusus untuk teks percakapan pendek informal, sebagaimana diilustrasikan pada Gambar~\ref{fig:framework-bertopic-modifikasi}:
+
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.85\textwidth]{images/bab-3-pipeline-bertopic-proposed.png}
-	\caption{Rancangan \textit{framework} BERTopic yang dimodifikasi pada tahap pembuatan model}\label{fig:framework-bertopic-modifikasi}
+	\includegraphics[width=0.7\textwidth]{images/bab-3-pipeline-bertopic-proposed.png}
+	\caption{Rancangan \textit{framework} BERTopic yang dimodifikasi pada tahap pembuatan model}
+	\label{fig:framework-bertopic-modifikasi}
 \end{figure}
 
-Tahap pemodelan topik merupakan tahap inti dari penelitian ini, dengan data yang telah melalui pra-pemrosesan dianalisis menggunakan \textit{framework} BERTopic yang telah dimodifikasi seperti pada Gambar \ref{fig:framework-bertopic-modifikasi}.
-Penentuan parameter pada tiap komponen dilakukan dengan dua skenario, yaitu mengacu pada \textit{baseline} dari penelitian terdahulu dan eksperimen penalaan parameter untuk memperoleh kinerja terbaik berdasarkan metrik evaluasi.
-Sebagaimana ditunjukkan pada Gambar \ref{fig:framework-bertopic-modifikasi}, alur pembuatan model ini terdiri dari lima komponen utama:
+Alur pemodelan dirancang secara modular dengan mengintegrasikan lima komponen berurutan:
 
-\subsubsection{\textit{Document Embedding} menggunakan IndoBERTweet}
-
-Setiap dokumen (pesan) diubah menjadi representasi vektor numerik
-berdimensi tinggi menggunakan model IndoBERTweet yang telah diadaptasi
-untuk teks media sosial berbahasa Indonesia. Representasi \textit{embedding} ini
-mampu menangkap makna semantik dan konteks kata secara lebih akurat
-dibandingkan model \textit{multilingual} \citep{koto2021indobertweet}.
-
-\subsubsection{\textit{Dimensionality Reduction} menggunakan UMAP}
-
-Vektor \textit{embedding} berdimensi tinggi direduksi menggunakan
-\textit{Uniform Manifold Approximation and Projection} (UMAP) untuk
-mengurangi kompleksitas komputasi sambil mempertahankan struktur lokal
-dan global data dalam ruang berdimensi rendah \citep{mcinnes2018umap}. Parameter UMAP yang
-digunakan meliputi \textit{n\_neighbors}, \textit{n\_components},
-\textit{min\_dist}, dan \textit{metric}.
-
-\subsubsection{\textit{Clustering} menggunakan BIRCH \textit{Algorithm}}
-
-Dokumen yang telah direduksi dimensinya dikelompokkan menggunakan
-algoritma BIRCH (\textit{Balanced Iterative Reducing and Clustering
-using Hierarchies}) sebagai pengganti HDBSCAN standar. BIRCH dipilih
-karena kemampuannya dalam mengalokasikan dokumen ke dalam
-klaster tanpa menghasilkan \textit{outlier} dalam jumlah besar, serta
-efisiensi komputasi dan penggunaan memori yang lebih baik \citep{10.1145/235968.233324,iaes2025indobert,IJECE25896,Ramadhani_2020}. Pada model usulan, algoritma BIRCH dimodifikasi menjadi \textit{ImprovedBirch} yang mengombinasikan inisialisasi ambang otomatis rentang \textit{micro-cluster} $[0{,}20, 0{,}25]$ berbasis konvergensi iteratif \citep{IJECE25896}, pemotongan \textit{outlier} deviasi $2\sigma$ jarak kosinus terhadap \textit{centroid} \citep{iaes2025indobert}, serta eliminasi klaster kerdil ($N < 5$) \citep{Ramadhani_2020}.
-
-\subsubsection{\textit{Topic Representation} menggunakan BM25}
-
-Setiap klaster yang terbentuk direpresentasikan menggunakan skema
-pembobotan BM25 sebagai pengganti c-TF-IDF bawaan BERTopic. BM25
-menerapkan saturasi frekuensi istilah dan normalisasi panjang dokumen,
-sehingga menghasilkan kata kunci representatif yang lebih relevan dan
-stabil secara semantik untuk setiap topik \citep{iaes2025indobert}. Parameter BM25 yang digunakan
-meliputi \textit{k1} dan \textit{b}.
-
-\subsubsection{\textit{Topic Reduction} (Reduksi Topik Otomatis)}
-
-Jumlah topik yang terbentuk disederhanakan secara otomatis (\textit{nr\_topics} = \textit{"auto"}) dengan menggabungkan klaster-klaster topik yang memiliki kemiripan semantik tinggi pada ruang \textit{embedding}, serta menerapkan kondisi pengaman (\textit{safety guard}) untuk menjaga kestabilan pemrosesan apabila jumlah topik unik $\le 1$.
-
+\begin{enumerate}[label=\alph*., leftmargin=*, itemsep=3pt]
+	\item Ekstraksi \textit{embedding} dokumen (\textit{document embedding}), di mana setiap pesan ditransformasikan menjadi representasi vektor numerik berdimensi tinggi menggunakan model IndoBERTweet yang dilatih pada domain media sosial Indonesia \citep{koto2021indobertweet}.
+	\item Reduksi dimensi (\textit{dimensionality reduction}) menggunakan algoritma UMAP guna mereduksi dimensi ruang representasi untuk menekan kompleksitas komputasi klasterisasi sekaligus mempertahankan struktur topologi manifold lokal dan global \citep{mcinnes2018umap}.
+	\item Pengklasteran dokumen menggunakan algoritma BIRCH, yang diterapkan sebagai pengganti HDBSCAN untuk mencegah pengeliminasian data secara berlebih. Model usulan menyematkan mekanisme penyaring pencilan terukur berbasis batas deviasi standar $2\sigma$ terhadap jarak kosinus titik dokumen ke pusat klaster ($c_k$):
+	\begin{equation}
+		d_{\cos}(x, c_k) = 1 - \frac{x \cdot c_k}{\lVert x \rVert \lVert c_k \rVert}, \qquad \tau_k = \mu_{d, k} + 2{,}0 \cdot \sigma_{d, k}
+	\end{equation}
+	Dokumen dengan $d_{\cos}(x, c_k) > \tau_k$ atau klaster kerdil berukuran $|C_k| < 5$ dialokasikan sebagai pencilan (label $-1$), sehingga partisi klaster akhir menjadi padat dan bebas derau marjinal.
+	\item Representasi topik (\textit{topic representation}) berbasis skema pembobotan BM25 pada tingkat klaster \citep{iaes2025indobert}, yang dipadukan dengan penyaringan kosakata pengisi percakapan non-konten (\textit{filler stopwords}) pada tahap ekstraksi frekuensi kata.
+	\item Reduksi topik hierarkis otomatis (\textit{automatic topic reduction}) yang menyederhanakan jumlah klaster berbasis kemiripan kosinus antar-vektor representasi topik, disertai mekanisme pengaman (\textit{safety guard}) untuk mencegah kegagalan algoritma apabila jumlah topik unik $\le 1$.
+\end{enumerate}
 
 \subsection{Evaluasi Model}
 \label{subsec:model-evaluation}
 
-Tahap evaluasi model bertujuan untuk mengukur performa pemodelan topik secara kuantitatif serta memvalidasi efektivitas modifikasi arsitektur yang dikembangkan. Pengujian menggunakan empat metrik performa utama: \textit{Topic Coherence} ($C_{\text{NPMI}}$) dan \textit{Topic Diversity} (TD) untuk dimensi representasi kata kunci, serta \textit{Embedding Density} (ED) dan \textit{Intra-topic Similarity} (ITS) untuk dimensi kekohesifan dokumen pada ruang vektor \textit{embedding}, dengan turut mempertimbangkan rasio data \textit{outlier} (\textit{outlier rate}).
+Pengujian kuantitatif dirancang secara terkontrol (\textit{controlled experiment}) dengan mengevaluasi empat variasi model:
 
-Pengujian komparasi dirancang secara terkontrol (\textit{controlled experiment}) dengan mengevaluasi empat variasi model:
-\begin{enumerate}[nosep]
-	\item Model \textit{Baseline} Standar dengan Arsitektur BERTopic konvensional (\textit{MiniLM}, HDBSCAN, c-TF-IDF) tanpa reduksi topik.
-	\item Model \textit{Baseline Proposed} dengan Arsitektur BERTopic konvensional dengan optimasi parameter seleksi \textit{leaf} dan reduksi topik otomatis sebagai pembanding berimbang.
-	\item Model Modified Referensi \citep{iaes2025indobert} dengan Replikasi metodologi teks pendek berbasis IndoBERTweet, BIRCH \textit{auto-threshold}, dan representasi BM25.
-	\item Model Usulan (\textit{Proposed Model}) dengan Arsitektur usulan yang memadukan IndoBERTweet, \textit{ImprovedBirch} ($2\sigma$ \textit{outlier filter}), BM25 terfilter \textit{stopwords}, dan reduksi topik otomatis berpengaman (\textit{safety guard}).
+\begin{enumerate}[label=\arabic*., leftmargin=*, itemsep=2pt]
+	\item Model \textit{baseline} standar yang menerapkan arsitektur BERTopic konvensional (\textit{MiniLM}, HDBSCAN, dan c-TF-IDF) tanpa reduksi topik otomatis.
+	\item Model \textit{baseline proposed} yang menggunakan arsitektur BERTopic konvensional dengan optimasi parameter seleksi daun (\textit{leaf}) dan reduksi topik otomatis.
+	\item Model modifikasi referensi \citep{iaes2025indobert} yang mereplikasi arsitektur teks pendek berbasis IndoBERTweet, BIRCH, dan representasi kata BM25.
+	\item Model usulan (\textit{proposed model}) yang memadukan IndoBERTweet, algoritma BIRCH dengan penyaring pencilan $2\sigma$, representasi BM25 berpenyaring kosakata derau, dan mekanisme reduksi topik otomatis berpengaman.
 \end{enumerate}
 
-Keempat model diuji pada lima fraksi partisi data latih (20\%, 40\%, 60\%, 80\%, dan 100\%) melalui pendekatan kurva pembelajaran (\textit{learning curve}) guna mengevaluasi stabilitas performa, dinamika konvergensi, serta ketahanan model terhadap pertambahan skala korpus teks obrolan.
+Keempat model dievaluasi pada lima fraksi data latih (20\%, 40\%, 60\%, 80\%, dan 100\%) melalui pendekatan kurva pembelajaran (\textit{learning curve}) menggunakan metrik $C_{\text{NPMI}}$, TD, ED, ITS, dan \textit{outlier rate} guna menguji stabilitas performa terhadap pertambahan skala korpus.
 
-\subsection{Implementasi Sistem}
+\subsection{Rancangan Implementasi dan Pengujian Sistem}
 \label{subsec:system-implementation}
 
-Tahap pengembangan sistem bertujuan untuk mengimplementasikan alur pemodelan topik ke dalam sebuah aplikasi berbasis \textit{web} yang dapat digunakan secara praktis oleh pengguna, sekaligus menjadi validasi terhadap penerapan \textit{pipeline} yang telah dirancang.
+Sebagai bentuk validasi aplikatif, alur pemodelan topik diintegrasikan ke dalam prototipe sistem berbasis web dengan arsitektur \textit{client-server}. Proses pemodelan topik yang membutuhkan komputasi intensif dijalankan sebagai tugas latar belakang (\textit{background task}) dengan pemantauan kemajuan waktu nyata melalui \textit{Server-Sent Events} (SSE). Privasi pengguna dijaga melalui anonimisasi di sisi klien sebelum transmisi data, serta penelusuran konteks (\textit{traceability}) dipertahankan sepanjang \textit{pipeline}.
 
-Sistem dibangun dengan arsitektur \textit{client-server}.
-Pemrosesan pemodelan topik yang bersifat komputasional berat dijalankan pada latar belakang sebagai \textit{background task}, sehingga proses analisis tidak memblokir antarmuka pengguna dan kemajuan pemrosesan dapat dipantau secara \textit{real-time} melalui mekanisme SSE (\textit{Server-Sent Events}).
-Penyimpanan berkas data riwayat obrolan, baik sebelum maupun sesudah pra-pemrosesan, menggunakan \textit{server local filesystem storage} tanpa bergantung pada basis data eksternal, guna menjaga privasi data pengguna.
-
-Desain sistem berpegang pada beberapa prinsip utama. Pertama, privasi pengguna dijaga dengan melakukan anonimisasi identitas pengirim pesan pada sisi \textit{client} sebelum data dikirim ke \textit{server}, sehingga identitas asli pengguna tidak pernah tersimpan di \textit{server}.
-Kedua, \textit{traceability} dijaga dengan mempertahankan kolom \textit{Index} di sepanjang \textit{pipeline}, sehingga setiap hasil topik dapat ditelusuri kembali ke konteks pesan aslinya.
-
-\subsection{Evaluasi Sistem}
-\label{subsec:system-evaluation}
-
-Tahap evaluasi sistem dilakukan untuk mengukur kinerja dan efektivitas aplikasi yang telah dikembangkan.
-Evaluasi dilakukan dengan menggunakan metode \textit{black-box testing}, di mana fokusnya adalah pada masukan (\textit{input}) dan keluaran (\textit{output}) sistem tanpa memperhatikan proses internalnya.
-Pengujian dilakukan dengan menggunakan \textit{dataset} percakapan grup WhatsApp yang berbeda dari \textit{dataset} yang digunakan untuk pelatihan model, untuk memastikan bahwa sistem dapat bekerja secara umum dan tidak hanya pada data tertentu.
-Hasil evaluasi ini akan memberikan gambaran tentang seberapa baik sistem dapat mengidentifikasi dan merepresentasikan topik dalam percakapan grup WhatsApp secara otomatis, serta memberikan umpan balik untuk perbaikan lebih lanjut jika diperlukan.
-
-\subsection{Analisis Hasil}
-\label{subsec:result}
-
-Tahap analisis hasil dilakukan terhadap keluaran model topik dan metrik evaluasi yang diperoleh dari tahap pengujian.
-Analisis kuantitatif dilakukan dengan membandingkan nilai metrik evaluasi (\textit{Embedding Density}, \textit{Intra-topic Similarity}, NPMI, \textit{Topic Diversity}, dan \textit{black-box testing}) antara metode modifikasi BERTopic dengan \textit{baseline} BERTopic. Perbandingan disajikan dalam bentuk tabel dan grafik tren untuk melihat konsistensi performa model seiring penambahan jumlah data.
-
-\subsection{Penarikan Kesimpulan}
-\label{subsec:conclusion}
-
-Berdasarkan hasil analisis, dilakukan penarikan kesimpulan yang menjawab
-rumusan masalah penelitian serta penyusunan saran untuk pengembangan penelitian
-di masa mendatang.
+Pengujian sistem direncanakan menggunakan metode pengujian \textit{black-box testing} untuk memverifikasi fungsionalitas masukan dan keluaran antarmuka pengguna tanpa memandang struktur kode internal.
 
 \section{Etika Penelitian}
 \label{sec:ethics}
 
-Penelitian ini menggunakan data riwayat percakapan grup WhatsApp yang bersifat personal, sehingga proses pengumpulan data memperhatikan aspek etika dan perizinan.
-Pengambilan data dilakukan dengan terlebih dahulu membuat surat izin penelitian di \faculty{} \university{}, kemudian menyerahkan surat izin penelitian kepada admin grup WhatsApp yang menjadi sumber data, sebagaimana ditunjukkan pada Lampiran~\ref{appx:surat-izin-penelitian} (Gambar~\ref{fig:surat-izin-penelitian}).
-Persetujuan admin grup untuk penggunaan data percakapan dalam penelitian ini didokumentasikan melalui tangkapan layar (\textit{screenshot}), sebagaimana ditunjukkan pada Lampiran~\ref{appx:bukti-izin-admin} (Gambar~\ref{fig:bukti-izin-admin}, mencakup Gambar~\ref{fig:bukti-izin-admin-1}, Gambar~\ref{fig:bukti-izin-admin-2}, dan Gambar~\ref{fig:bukti-izin-admin-3}).
-Terdapat beberapa syarat yang diajukan oleh admin grup terkait penggunaan data, yaitu pesan tidak boleh disebarluaskan kepada pihak lain dan nama grup serta identitas partisipan harus disamarkan.
+Penelitian ini memanfaatkan korpus percakapan personal grup WhatsApp yang memuat interaksi antarpengguna, sehingga tata kelola perizinan dan kerahasiaan data pribadi diatur secara ketat berlandaskan regulasi perundang-undangan yang berlaku. Landasan yuridis utama mengacu pada \textbf{Undang-Undang Republik Indonesia Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)}. Berdasarkan Pasal~4 ayat~(3) UU PDP, nama lengkap, nomor telepon seluler, dan informasi personal yang dikombinasikan untuk mengidentifikasi seseorang diklasifikasikan sebagai data pribadi yang wajib dilindungi kerahasiaannya oleh pengolah data.
+
+Guna memenuhi mandat hukum dan standar etika akademik tersebut, protokol penelitian menerapkan prinsip \textit{privacy by design} dan minimasi data (\textit{data minimization}) melalui beberapa tindakan preventif:
+\begin{enumerate}[label=\alph*., leftmargin=*, itemsep=2pt]
+	\item Legalitas dan persetujuan (\textit{informed consent}) telah didukung oleh Surat Izin Penelitian resmi dari Fakultas Ilmu Komputer Universitas Jember (Lampiran~\ref{appx:surat-izin-penelitian}) dan persetujuan tertulis dari administrator grup Komunitas Buku (Lampiran~\ref{appx:bukti-izin-admin}). Kesepakatan yang disetujui melarang penyebarluasan pesan mentah kepada pihak ketiga serta mewajibkan penyamaran identitas komunitas.
+	\item Anonimisasi identitas pada sisi klien: Sebelum berkas riwayat percakapan dikirimkan ke server, seluruh nama pengirim asli dan penyebutan pengguna (\textit{@mention}) dienkripsi menjadi kode unik acak berbasis algoritma \textit{hashing} SHA-256 (seperti \textit{@User-[hash]}) langsung pada peramban web pengguna. Mekanisme ini menjamin bahwa nama asli partisipan tidak pernah tersimpan di server.
+	\item Penyensoran mutlak data sensitif: Seluruh nomor telepon seluler dan alamat surat elektronik pribadi yang muncul di dalam teks percakapan disaring dan dihapus secara menyeluruh pada tahap praproses awal menggunakan pola pencocokan ekspresi reguler (\textit{regular expression}), mencegah kebocoran informasi kontak di dalam klaster kata kunci maupun visualisasi topik akhir.
+\end{enumerate}
 
 % ====================================================================
 % CATATAN PENGISIAN BAB METODOLOGI:

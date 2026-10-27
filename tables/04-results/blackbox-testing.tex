@@ -47,7 +47,7 @@
 		% --- Modul 3: Pemrosesan AI & Pemantauan SSE ---
 		\multicolumn{7}{l}{\textbf{3. Modul Pemrosesan AI \& Pemantauan Komputasi (\textit{/upload} - Step 3)}} \\
 		\hline
-		TC-MVP-06 & Pemrosesan Asinkron AI & Menjalankan pemodelan topik pada utas latar belakang & 1. Backend menerima permintaan analisis. \newline 2. Amati eksekusi pemodelan topik. & Payload CSV Anonim & Backend FastAPI memproses alur IndoBERTweet, \textit{ImprovedBirch}, dan BM25 secara asinkron tanpa memblokir server. & Valid \\
+		TC-MVP-06 & Pemrosesan Asinkron AI & Menjalankan pemodelan topik pada utas latar belakang & 1. Backend menerima permintaan analisis. \newline 2. Amati eksekusi pemodelan topik. & Payload CSV Anonim & Backend FastAPI memproses alur IndoBERTweet, BIRCH, dan BM25 secara asinkron tanpa memblokir server. & Valid \\
 		\hline
 		TC-MVP-07 & Pemantauan SSE \textit{Real-Time} & Memantau aliran log proses komputasi pada simulator terminal & 1. Berada di Step 3. \newline 2. Amati konsol log \textit{TerminalSimulator}. & Aliran Event SSE & Perkembangan setiap tahapan analisis terpancar secara langsung ke antarmuka hingga status selesai (\textit{completed}). & Valid \\
 		\hline

@@ -10,7 +10,7 @@
 Berdasarkan hasil perancangan sistem, pengujian empiris, dan evaluasi performa yang telah dilakukan, dapat ditarik kesimpulan sebagai berikut:
 
 \begin{enumerate}
-    \item Penerapan arsitektur BERTopic yang mengintegrasikan model \textit{embedding} IndoBERTweet, pengklasteran \textit{ImprovedBirch} (ambang adaptif $[0{,}20, 0{,}25]$ dan eliminasi \textit{outlier} $2\sigma$), pembobotan BM25 dengan eliminasi \textit{stopwords} percakapan, serta reduksi topik berbasis kemiripan kosinus berhasil mengekstraksi 40 topik tematik yang terstruktur dari 51.584 pesan teks grup WhatsApp.
+    \item Penerapan arsitektur BERTopic yang mengintegrasikan model \textit{embedding} IndoBERTweet, pengklasteran BIRCH (ambang adaptif $[0{,}20, 0{,}25]$ dan eliminasi \textit{outlier} $2\sigma$), pembobotan BM25 dengan eliminasi \textit{stopwords} percakapan, serta reduksi topik berbasis kemiripan kosinus berhasil mengekstraksi 40 topik tematik yang terstruktur dari 51.584 pesan teks grup WhatsApp.
 
     \item Model usulan menghasilkan kualitas topik yang lebih unggul dibandingkan model acuan pada metrik keberagaman topik ($TD = 0{,}9875$), kekohesifan dokumen internal ($ITS = 0{,}6534$), dan kepadatan klaster ($ED = 0{,}6197$), serta mempertahankan retensi data tertinggi sebesar 92,79\% (hanya menyisakan 7,21\% \textit{outlier}). Sebagai bentuk kompromi (\textit{trade-off}), nilai koherensi semantik ($C_{\text{NPMI}} = +0{,}1075$) sedikit di bawah Model \textit{Baseline Proposed} (+0,1171), namun model usulan berhasil mempertahankan konteks percakapan tanpa membuang 56,66\% data obrolan.
 
