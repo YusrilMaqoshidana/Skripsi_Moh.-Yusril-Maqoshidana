@@ -89,7 +89,7 @@ tags:
 ### Bagian Utama (Main Body)
 - [ ] **Bab 1 Pendahuluan:** Maksimal 4 halaman (`RULE-KEC-02`), rumusan masalah terarah, batasan masalah tegas.
 - [ ] **Bab 2 Tinjauan Pustaka:** Maksimal 8 halaman (`RULE-KEC-03`), tabel komparasi penelitian terdahulu menyertakan minimal 3 jurnal bereputasi/Sinta 1-2.
-- [ ] **Bab 3 Metodologi Penelitian:** Maksimal 4 halaman (`RULE-KEC-04`), diagram alur penelitian (*flowchart*) jelas, spesifikasi dataset WhatsApp 51.584 pesan.
+- [ ] **Bab 3 Metodologi Penelitian:** Maksimal 4 halaman (`RULE-KEC-04`), diagram alur penelitian (*flowchart*) jelas, spesifikasi dataset WhatsApp 51.583 pesan.
 - [ ] **Bab 4 Hasil & Pembahasan:** Maksimal 20 halaman (`RULE-KEC-05`), tabel terbuka (*open-table* / booktabs), metrik kurva pembelajaran ($C_{\text{NPMI}}$, Diversity, Outlier Rate) dianalisis kritis (*What, Why, How*).
 - [ ] **Bab 5 Kesimpulan & Saran:** Maksimal 1 halaman (`RULE-KEC-06`), menjawab rumusan masalah secara lugas tanpa menyalin teks pembahasan.
 - [ ] **Daftar Pustaka (`main.bbl`):** Format APA Style 7th edition, minimal 50% terbitan 10 tahun terakhir, semua sitasi di teks tertaut di daftar pustaka.
@@ -106,10 +106,10 @@ tags:
 - [ ] **Slide 2: Latar Belakang & Masalah** (Fenomena *information overload* WhatsApp grup, urgensi pemodelan topik).
 - [ ] **Slide 3: Paradoks Outlier & Limitasi Model Eksisting** (HDBSCAN membuang 42%–56% pesan; model jurnal tanpa reduksi topik menghasilkan 70+ topik acak).
 - [ ] **Slide 4: Solusi & Kebaruan Arsitektur yang Diusulkan** (Diagram pipeline: IndoBERTweet + UMAP + ImprovedBIRCH + BM25 + Auto Reduction).
-- [ ] **Slide 5: Dataset & Alur Preprocessing** (91.868 pesan mentah $\rightarrow$ 51.584 pesan bersih via deduplikasi, demojize, normalisasi teks).
+- [ ] **Slide 5: Dataset & Alur Preprocessing** (91.868 pesan mentah $\rightarrow$ 51.583 pesan bersih via deduplikasi, demojize, normalisasi teks).
 - [ ] **Slide 6: Algoritma Usulan ImprovedBIRCH** (Threshold dinamis $[0{,}20, 0{,}25]$, pemangkasan outlier $2\sigma$ jarak sentroid, pembersihan klaster kerdil $N<5$).
 - [ ] **Slide 7: Skema Eksperimen Kurva Pembelajaran (Learning Curve)** (Partisi bertahap 20%, 40%, 60%, 80%, 100% data pada 4 model komparasi).
-- [ ] **Slide 8: Hasil Evaluasi Metrik Kuantitatif** (Tabel komparasi 100% data: Outlier 7,21%, $C_{\text{NPMI}}$ +0,1075, Diversity 0,9875).
+- [ ] **Slide 8: Hasil Evaluasi Metrik Kuantitatif** (Tabel komparasi 100% data: Outlier 6,83%, $C_{\text{NPMI}}$ +0,0495, Diversity 0,9653, 150 topik).
 - [ ] **Slide 9: Analisis Grafik Learning Curve** (Grafik tren $C_{\text{NPMI}}$, Outlier Rate, dan Intra-topic Similarity sepanjang pertambahan data).
 - [ ] **Slide 10: Arsitektur Sistem Web Terintegrasi** (Diagram Client-Server: FastAPI backend, Vue.js frontend, Server-Sent Events, Client-Side Anonymization).
 - [ ] **Slide 11: Pengujian Sistem (Black-Box Testing)** (Ringkasan 34 skenario pengujian fungsional dengan tingkat validitas 100%).
@@ -150,7 +150,7 @@ tags:
 ### Pertanyaan 2: Apa kelemahan HDBSCAN bawaan BERTopic dan mengapa memilih BIRCH?
 - **Poin Jawaban:**
   1. HDBSCAN bekerja berdasarkan estimasi kerapatan kepadatan (*density-based*). Pada teks obrolan WhatsApp yang ragam kosakatanya tinggi dan pesan-pesannya pendek, jarak antardokumen renggang, sehingga HDBSCAN menganggap 42%–56% pesan sebagai *outlier* (dibuang).
-  2. BIRCH adalah algoritma hierarkis berkinerja tinggi yang memetakan dokumen ke dalam *Clustering Feature Tree* (CF-Tree) secara bertahap. Melalui modifikasi *ImprovedBIRCH*, kita berhasil menekan outlier menjadi hanya 7,21% (mempertahankan 92,79% data obrolan) tanpa kehilangan resolusi topik.
+  2. BIRCH adalah algoritma hierarkis berkinerja tinggi yang memetakan dokumen ke dalam *Clustering Feature Tree* (CF-Tree) secara bertahap. Melalui modifikasi *ImprovedBIRCH*, kita berhasil menekan outlier menjadi hanya 6,83% (mempertahankan 93,17% data obrolan) tanpa kehilangan resolusi topik.
 
 ### Pertanyaan 3: Apa novelty / kontribusi baru algoritma *ImprovedBirch* yang Anda bangun?
 - **Poin Jawaban:**
@@ -159,7 +159,7 @@ tags:
   3. **Pembersihan Klaster Kerdil:** Mengeliminasi klaster dengan ukuran anggota $N < 5$.
   4. **Reduksi Topik Bertingkat:** Dipadukan dengan *hierarchical topic reduction* otomatis untuk menggabungkan subklaster semantik serupa.
 
-### Pertanyaan 4: Mengapa skor koherensi $C_{\text{NPMI}}$ model usulan bernilai +0,1075 padahal baseline bernilai negatif (-0,0263)?
+### Pertanyaan 4: Mengapa skor koherensi $C_{\text{NPMI}}$ model usulan bernilai +0,0495 padahal baseline bernilai negatif (-0,0210)?
 - **Poin Jawaban:**
   1. Baseline standar menggunakan c-TF-IDF konvensional yang rentan terhadap kata-kata berulang pada dokumen pendek, sehingga kata kunci topik sering kali berupa kata umum yang tidak koheren.
   2. Model usulan menggunakan skema pembobotan BM25 dengan saturasi frekuensi istilah dan normalisasi panjang dokumen, diperkaya kamus penyaring 9 kategori stopwords percakapan WhatsApp. Hal ini memastikan kata kunci topik memiliki asosiasi semantik yang kuat (*co-occurrence high*) di seluruh korpus.

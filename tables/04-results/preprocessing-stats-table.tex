@@ -2,24 +2,28 @@
 \renewcommand{\arraystretch}{1.2}
 \begin{table}[htbp]
 \centering
-\caption{Statistik Hasil Pengolahan Praproses Data Pada Dataset Percakapan WhatsApp}
+\caption{Statistik Hasil Pengolahan Praproses Data pada Korpus Percakapan WhatsApp}
 \label{tab:statistik-praproses}
 \scriptsize
-\begin{tabular}{p{0.5cm} p{6.5cm} c c}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{cp{6.5cm}ccc}
 \toprule
-\textbf{No} & \textbf{Tahap Praproses Data} & \textbf{Jumlah Baris Berdampak} & \textbf{Persentase (\%)} \\
+\textbf{No} & \textbf{Tahap Praproses Data} & \textbf{Pesan Terdampak} & \textbf{Perubahan Token} & \textbf{Persentase Pesan} \\
 \midrule
-1 & Eliminasi Notifikasi Sistem Automatis \& Berkas Kontak (\textit{.vcf}) & 2.415 baris & 2,63\% \\
-2 & Penghapusan Artefak Metadata Sistem (\textit{<...>}) & 14.739 baris & 16,04\% \\
-3 & Penghapusan Pranala Luar (\textit{URL / Hyperlink}) & 3.412 baris & 3,71\% \\
-4 & Anonimisasi Penyebutan (\textit{Mention}) \& Kontak Telepon & 1.306 baris & 1,42\% \\
-5 & Transliterasi Emoji \& Emotikon (\textit{Demojize}) & 41.487 baris & 45,16\% \\
-6 & Normalisasi Ekspresi Tawa (\textit{Laughter Normalization}) & 9.258 baris & 10,08\% \\
-7 & Normalisasi Elongasi Karakter \& Kata Tidak Baku & 18.642 baris & 20,29\% \\
-8 & Penyaringan Pesan Pendek ($< 3$ Kata Substantif) \& Deduplikasi & 40.284 baris & 43,85\% \\
+1 & Eliminasi Berkas Kontak (\textit{.vcf}) & 5 pesan & -18 token & 0,01\% \\
+2 & Eliminasi Duplikasi Pesan (Deduplikasi) & 18.240 pesan & -36.231 token & 19,85\% \\
+3 & Eliminasi Notifikasi Sistem WhatsApp & 3 pesan & -8 token & 0,01\% \\
+4 & Eliminasi \textit{Link} URL Web & 1.342 pesan & -1.405 token & 1,46\% \\
+5 & Eliminasi Tag HTML, \textit{Bracket}, \& Tagar & 1.279 pesan & -4.618 token & 1,39\% \\
+6 & Eliminasi Data Sensitif (Email \& No. HP) & 769 pesan & -975 token & 0,84\% \\
+7 & Transliterasi Emoji (\textit{emoji.demojize}) & 14.184 pesan & +9.128 token & 15,44\% \\
+8 & Normalisasi Karakter Berulang (Elongasi) & 7.490 pesan & 0 token & 8,15\% \\
+9 & Normalisasi \textit{Slang} / Bahasa Gaul & 32.255 pesan & +640 token & 35,11\% \\
+10 & Penyaringan Pesan Pendek ($< 3$ Kata Substantif) & 22.055 pesan & -69.174 token & 24,01\% \\
 \midrule
-\multicolumn{2}{l}{\textbf{Total Dokumen Bersih Siap Pemodelan (\textit{Pesan\_Preprocessed})}} & \textbf{51.584 dokumen} & \textbf{56,15\%} \\
+\multicolumn{2}{l}{\textbf{Total Dokumen Bersih Siap Pemodelan (\textit{Pesan\_Preprocessed})}} & \textbf{51.583 pesan} & \textbf{717.642 token} & \textbf{56,15\%} \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 \endgroup

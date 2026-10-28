@@ -49,7 +49,7 @@ Tahapan penelitian yang dirancang dalam penelitian ini secara keseluruhan digamb
 \subsection{Identifikasi Masalah dan Studi Literatur}
 \label{subsec:problem-identification}
 
-Tahap identifikasi masalah mengeksplorasi tantangan dalam menangkap dinamika topik pada percakapan grup WhatsApp yang tidak terstruktur, bervolume tinggi, dan rentan terhadap distorsi derau leksikal. Studi literatur dilakukan untuk mengkaji landasan teoretis pemodelan topik modular BERTopic, representasi bahasa IndoBERTweet, efisiensi klasterisasi BIRCH, fungsi pembobotan kata BM25, serta empat metrik evaluasi kuantitatif guna merumuskan celah penelitian dan arsitektur usulan yang adaptif.
+Tahap identifikasi masalah mengeksplorasi tantangan dalam menangkap dinamika topik pada percakapan grup WhatsApp yang tidak terstruktur, bervolume tinggi, dan rentan terhadap distorsi \textit{noise} leksikal. Studi literatur dilakukan untuk mengkaji landasan teoretis pemodelan topik modular BERTopic, representasi bahasa IndoBERTweet, efisiensi klasterisasi BIRCH, fungsi pembobotan kata BM25, serta empat metrik evaluasi kuantitatif guna merumuskan celah penelitian dan arsitektur usulan yang adaptif.
 
 \subsection{Pengumpulan Data}
 \label{subsec:data-collection}
@@ -59,13 +59,13 @@ Data percakapan diekspor dari aplikasi WhatsApp grup Komunitas Buku menggunakan 
 \subsection{Praproses Data}
 \label{subsec:data-preprocessing}
 
-Tahap praproses data dirancang untuk mentransformasikan teks obrolan mentah WhatsApp menjadi korpus terstruktur yang bersih dari derau serta menjamin privasi partisipan. Alur praproses mencakup sembilan tahapan sekuensial:
+Tahap praproses data dirancang untuk mentransformasikan teks obrolan mentah WhatsApp menjadi korpus terstruktur yang bersih dari \textit{noise} serta menjamin privasi partisipan. Alur praproses mencakup sembilan tahapan sekuensial:
 
 \begin{enumerate}[label=\alph*., leftmargin=*, itemsep=2pt]
 	\item Penguraian (\textit{parsing}) obrolan mentah dari berkas \textit{.txt}, mengonversi stempel waktu ke format standar ISO 8601 (\textit{YYYY-MM-DDTHH:MM:SS}), dan menyusunnya ke dalam struktur tabel (\textit{Timestamp}, Pengirim, dan Pesan).
 	\item Anonimisasi identitas pada sisi klien (\textit{client-side}) dengan menyamarkan nama pengirim serta penyebutan (\textit{@mention}) menjadi kode unik terenkripsi SHA-256 guna melindungi kerahasiaan partisipan sebelum data dikirim ke peladen.
 	\item Penyaringan notifikasi dan berkas kontak dengan mengeliminasi pesan sistem otomatis bawaan WhatsApp, lampiran kartu kontak (\textit{.vcf}), serta baris pesan duplikat identik.
-	\item Pembersihan metadata dan pranala dengan menghapus tag sistem kurung sudut \textit{<...>}, kurung siku \textit{[...]}, tag HTML, tagar (\textit{\#...}), serta alamat URL luar dari tubuh pesan.
+	\item Pembersihan metadata dan \textit{link} URL dengan menghapus tag sistem kurung sudut \textit{<...>}, kurung siku \textit{[...]}, tag HTML, tagar (\textit{\#...}), serta \textit{link} URL dari tubuh pesan.
 	\item \textit{Case folding} dan normalisasi karakter melalui konversi seluruh huruf menjadi huruf kecil (\textit{lowercase}), standardisasi representasi Unicode, dan pemangkasan spasi ganda.
 	\item Penyensoran informasi sensitif dengan mendeteksi dan menghapus nomor telepon serta alamat surat elektronik pribadi dari teks percakapan.
 	\item Transliterasi emoji (\textit{demojize}) dengan mengubah simbol emoji visual menjadi representasi teks padanan deskriptif agar informasi afektif dan emosional tetap tertangkap oleh model bahasa.
@@ -94,7 +94,7 @@ Alur pemodelan dirancang secara modular dengan mengintegrasikan lima komponen be
 	\begin{equation}
 		d_{\cos}(x, c_k) = 1 - \frac{x \cdot c_k}{\lVert x \rVert \lVert c_k \rVert}, \qquad \tau_k = \mu_{d, k} + 2{,}0 \cdot \sigma_{d, k}
 	\end{equation}
-	Dokumen dengan $d_{\cos}(x, c_k) > \tau_k$ atau klaster kerdil berukuran $|C_k| < 5$ dialokasikan sebagai pencilan (label $-1$), sehingga partisi klaster akhir menjadi padat dan bebas derau marjinal.
+	Dokumen dengan $d_{\cos}(x, c_k) > \tau_k$ atau klaster kerdil berukuran $|C_k| < 5$ dialokasikan sebagai pencilan (label $-1$), sehingga partisi klaster akhir menjadi padat dan bebas \textit{noise} marjinal.
 	\item Representasi topik (\textit{topic representation}) berbasis skema pembobotan BM25 pada tingkat klaster \citep{iaes2025indobert}, yang dipadukan dengan penyaringan kosakata pengisi percakapan non-konten (\textit{filler stopwords}) pada tahap ekstraksi frekuensi kata.
 	\item Reduksi topik hierarkis otomatis (\textit{automatic topic reduction}) yang menyederhanakan jumlah klaster berbasis kemiripan kosinus antar-vektor representasi topik, disertai mekanisme pengaman (\textit{safety guard}) untuk mencegah kegagalan algoritma apabila jumlah topik unik $\le 1$.
 \end{enumerate}
@@ -108,7 +108,7 @@ Pengujian kuantitatif dirancang secara terkontrol (\textit{controlled experiment
 	\item Model \textit{baseline} standar yang menerapkan arsitektur BERTopic konvensional (\textit{MiniLM}, HDBSCAN, dan c-TF-IDF) tanpa reduksi topik otomatis.
 	\item Model \textit{baseline proposed} yang menggunakan arsitektur BERTopic konvensional dengan optimasi parameter seleksi daun (\textit{leaf}) dan reduksi topik otomatis.
 	\item Model modifikasi referensi \citep{iaes2025indobert} yang mereplikasi arsitektur teks pendek berbasis IndoBERTweet, BIRCH, dan representasi kata BM25.
-	\item Model usulan (\textit{proposed model}) yang memadukan IndoBERTweet, algoritma BIRCH dengan penyaring pencilan $2\sigma$, representasi BM25 berpenyaring kosakata derau, dan mekanisme reduksi topik otomatis berpengaman.
+	\item Model usulan (\textit{proposed model}) yang memadukan IndoBERTweet, algoritma BIRCH dengan penyaring pencilan $2\sigma$, representasi BM25 berpenyaring kosakata \textit{noise}, dan mekanisme reduksi topik otomatis berpengaman.
 \end{enumerate}
 
 Keempat model dievaluasi pada lima fraksi data latih (20\%, 40\%, 60\%, 80\%, dan 100\%) melalui pendekatan kurva pembelajaran (\textit{learning curve}) menggunakan metrik $C_{\text{NPMI}}$, TD, ED, ITS, dan \textit{outlier rate} guna menguji stabilitas performa terhadap pertambahan skala korpus.

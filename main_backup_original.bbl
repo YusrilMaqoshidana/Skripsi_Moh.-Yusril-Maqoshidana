@@ -100,11 +100,6 @@ Rushkin, I. (2020).
 \newblock Document similarity from vector space densities.
 \newblock {\em CoRR}, abs/2009.00672.
 
-\bibitem[Shan et~al., 2020]{DBLP:journals/corr/abs-2007-05186}
-Shan, X., Liu, C., Xia, Y., Chen, Q., Zhang, Y., Luo, A., and Luo, Y. (2020).
-\newblock {{BISON}:} {BM25}-weighted self-attention framework for multi-fields document search.
-\newblock {\em CoRR}, abs/2007.05186.
-
 \bibitem[Siregar et~al., 2025]{siregar2025}
 Siregar, U., Ramadani, N., and Siregar, F. (2025).
 \newblock Syntactic analysis in {WhatsApp} conversations among peers.
@@ -134,10 +129,5 @@ Zhang, T., Ramakrishnan, R., and Livny, M. (1996).
 Zhang, T., Ramakrishnan, R., and Livny, M. (1997).
 \newblock {BIRCH}: A new data clustering algorithm and its applications.
 \newblock {\em Data Min. Knowl. Discov.}, 1(2):141--182.
-
-\bibitem[Zhao et~al., 2018]{zhao2018inter}
-Zhao, H., Du, L., Buntine, W., and Zhou, M. (2018).
-\newblock Inter and intra topic structure learning with word embeddings.
-\newblock In {\em International Conference on Machine Learning}, pages 5892--5901. PMLR.
 
 \end{thebibliography}

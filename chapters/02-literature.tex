@@ -104,7 +104,7 @@ Skema pembobotan BM25 (\textit{Best Matching 25}) merupakan fungsi peringkat tem
     \label{eq:idf-bm25}
 \end{equation}
 
-\noindent di mana $f(t,d)$ menyatakan frekuensi kemunculan kata $t$ di dalam dokumen $d$, $|d|$ merepresentasikan panjang dokumen $d$, $\mathit{avgdl}$ melambangkan rata-rata panjang seluruh dokumen dalam korpus klaster, $N$ adalah jumlah total dokumen, dan $n(t)$ merupakan jumlah dokumen yang memuat kata $t$. Parameter $k_1$ mengatur saturasi frekuensi istilah non-linier agar kata berfrekuensi tinggi tidak mendominasi secara berlebih, sedangkan parameter $b$ mengontrol tingkat penalti normalisasi panjang dokumen \citep{doi.org/10.1111/coin.12248}. Integrasi penyaringan kosakata derau (\textit{domain stopwords}) pada lapisan ekstraksi fitur memastikan bahwa kata kunci terpilih murni merefleksikan konten tematik esensial.
+\noindent di mana $f(t,d)$ menyatakan frekuensi kemunculan kata $t$ di dalam dokumen $d$, $|d|$ merepresentasikan panjang dokumen $d$, $\mathit{avgdl}$ melambangkan rata-rata panjang seluruh dokumen dalam korpus klaster, $N$ adalah jumlah total dokumen, dan $n(t)$ merupakan jumlah dokumen yang memuat kata $t$. Parameter $k_1$ mengatur saturasi frekuensi istilah non-linier agar kata berfrekuensi tinggi tidak mendominasi secara berlebih, sedangkan parameter $b$ mengontrol tingkat penalti normalisasi panjang dokumen \citep{doi.org/10.1111/coin.12248}. Integrasi penyaringan kosakata \textit{noise} (\textit{domain stopwords}) pada lapisan ekstraksi fitur memastikan bahwa kata kunci terpilih murni merefleksikan konten tematik esensial.
 
 \subsection{Reduksi Topik Hierarkis (\textit{Hierarchical Topic Reduction})}
 \label{subsec:topic-reduction}
