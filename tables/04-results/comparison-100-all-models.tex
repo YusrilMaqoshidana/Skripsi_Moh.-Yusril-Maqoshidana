@@ -1,0 +1,30 @@
+\begingroup
+\renewcommand{\arraystretch}{1.2}
+\begin{table}[htbp]
+\centering
+\caption{Perbandingan Performa 4 Model pada Korpus 100\% WhatsApp}
+\label{tab:comparison-100-all-models}
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Parameter \& Metrik Evaluasi} & \textbf{1. \textit{Baseline} Standar} & \textbf{2. \textit{Baseline Proposed}} & \textbf{3. Model Modified} & \textbf{4. Model Usulan} \\
+ & & \textbf{(HDBSCAN Leaf + Reduksi)} & \textbf{(Muhajir et al., Auto-Thresh)} & \textbf{(Proposed Model)} \\
+\midrule
+Model Embedding & all-MiniLM-L6-v2 & all-MiniLM-L6-v2 & IndoBERTweet & IndoBERTweet \\
+Reduksi Dimensi & UMAP (5 komp.) & UMAP (5 komp.) & UMAP (5 komp.) & UMAP (5 komp.) \\
+Algoritma Klastering & HDBSCAN (\textit{eom}) & HDBSCAN (\textit{leaf}) & BIRCH (\textit{auto}) & BIRCH Usulan (\textit{Auto} $[0{,}20, 0{,}25]$) \\
+Representasi Term & c-TF-IDF & c-TF-IDF & BM25 & BM25 + Wacana WhatsApp \\
+\textit{Pipeline} Reduksi Topik & Tidak & Ya (\textit{auto}) & Tidak & Ya (\textit{auto}) \\
+\midrule
+Jumlah Topik ($N$) & 392 & 151 & 91 & 150 \\
+Outlier Rate (\%) & 40,44\% & 57,36\% & 4,63\% & 6,83\% \\
+Topic Diversity & 0,9316 & 0,9623 & 0,5143 & \textbf{0,9653} \\
+Koherensi ($C_{\text{NPMI}}$) & -0,0210 & \textbf{+0,1534} & +0,0260 & +0,0495 \\
+Intra-Topic Similarity & 0,5778 & 0,4885 & \textbf{0,6445} & 0,6129 \\
+Embedding Density & 0,7089 & 0,5440 & \textbf{0,7464} & 0,5419 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+\endgroup

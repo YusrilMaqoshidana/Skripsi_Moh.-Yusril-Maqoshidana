@@ -34,18 +34,16 @@ Cuplikan baris data mentah hasil ekspor percakapan WhatsApp grup Komunitas Buku 
 \input{tables/04-results/raw-data-example.tex}
 
 \newpage
-\lampiranitem{Contoh Transformasi Teks Praproses Data}
-\label{appx:preprocessing-summary}
-Contoh transformasi teks pesan sebelum dan sesudah tahap praproses yang meliputi eliminasi notifikasi sistem, penghapusan tanda kurung sudut, normalisasi emoji, tawa, elongasi, dan kata tidak baku.
+\lampiranitem{Visualisasi Kurva Pembelajaran Empat Model Pemodelan Topik}
+\label{appx:learning-curve-figure}
+Visualisasi kurva pembelajaran (\textit{learning curve}) yang membandingkan performa empat model pemodelan topik: \textit{Baseline} Standar, \textit{Baseline Proposed}, Model Modified \citep{iaes2025indobert}, dan Model Usulan pada dimensi \textit{Topic Diversity}, \textit{Topic Coherence} ($C_{\text{NPMI}}$), \textit{Embedding Density}, dan \textit{Intra-topic Similarity} dari fraksi data 20\% hingga 100\%.
 
-\input{tables/04-results/preprocessing-summary-table.tex}
-
-\newpage
-\lampiranitem{Rincian Data Evaluasi Kurva Pembelajaran}
-\label{appx:learning-curve-table}
-Rincian kuantitatif metrik evaluasi pemodelan topik pada setiap fraksi partisi data latih (20\%, 40\%, 60\%, 80\%, dan 100\%) yang membandingkan performa Model Modified \citep{iaes2025indobert} terhadap Model Usulan.
-
-\input{tables/04-results/learning-curve-table.tex}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{images/learning_curve_4models_comparison.png}
+\caption{Kurva Pembelajaran (\textit{Learning Curve}) Perbandingan Model Pemodelan Topik}
+\label{fig:learning-curve-4models-comparison}
+\end{figure}
 
 \newpage
 

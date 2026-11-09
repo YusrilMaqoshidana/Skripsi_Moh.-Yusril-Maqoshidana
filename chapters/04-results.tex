@@ -35,123 +35,110 @@ Berdasarkan cuplikan data mentah pada Lampiran~\ref{appx:raw-data-example} terse
 \section{Praproses Data}
 \label{sec:preprocessing}
 
-Tahap praproses data mentransformasikan 91.868 baris log mentah WhatsApp hasil penguraian (\textit{parsing}) menjadi korpus teks terstruktur yang bersih dari \textit{noise} serta siap diolah oleh model BERTopic. Rangkaian praproses merealisasikan tahapan pembersihan bertingkat yang telah dirancang pada Bagian~\ref{subsec:data-preprocessing}. Dampak kuantitatif dari setiap tahapan pembersihan terhadap korpus pesan disajikan pada Tabel~\ref{tab:statistik-praproses}.
+Tahap praproses data mentransformasikan 91.868 baris log mentah WhatsApp hasil penguraian (\textit{parsing}) menjadi korpus teks terstruktur yang bersih dari \textit{noise} serta siap diolah oleh model BERTopic. Rangkaian praproses merealisasikan tahapan pembersihan bertingkat yang telah dirancang pada Bagian~\ref{subsec:data-preprocessing}. Dampak kuantitatif dari setiap tahapan pembersihan terhadap korpus pesan disajikan pada Tabel~\ref{tab:statistik-praproses}, sedangkan contoh perbandingan bentuk teks pesan sebelum dan sesudah praproses disajikan pada Tabel~\ref{tab:contoh-hasil-praproses}.
 
 \input{tables/04-results/preprocessing-stats-table.tex}
 
-Berdasarkan hasil pengolahan data pada Tabel~\ref{tab:statistik-praproses}, analisis hasil dari praproses mencakup:
+\input{tables/04-results/preprocessing-summary-table.tex}
+
+Berdasarkan hasil pengolahan data pada Tabel~\ref{tab:statistik-praproses} dan contoh perbandingan hasil praproses pada Tabel~\ref{tab:contoh-hasil-praproses}, analisis hasil dari praproses mencakup:
 \begin{enumerate}[label=\alph*., leftmargin=*, itemsep=2pt]
 	\item Penyaringan duplikasi pesan (18.240 baris), berkas kontak (\textit{.vcf}), notifikasi sistem, tag simbol, dan \textit{link} URL web berhasil mengeliminasi \textit{noise} struktural non-tekstual pada korpus obrolan. Terkait aspek privasi, seluruh identitas pengirim dan penyebutan (\textit{@mention}) disamarkan menjadi token terenkripsi SHA-256 (\textit{@user-xxxx}) di sisi klien pada implementasi sistem, serta data sensitif kontak telepon dan surat elektronik pada 769 pesan disensor secara mutlak guna mencegah kebocoran informasi personal.
 	\item Normalisasi ragam bahasa dengan transliterasi emoji (\textit{demojize}) mengonversi karakter piktogram menjadi representasi teks deskriptif pada 14.184 pesan (15,44\%) guna mempertahankan konteks semantik bagi model IndoBERTweet. Dilakukan pula normalisasi elongasi karakter berulang pada 7.490 pesan (8,15\%) serta pembakuan kata \textit{slang} informal pada 32.255 pesan (35,11\%) yang secara signifikan berhasil mereduksi variasi leksikal tidak baku dan menekan tingkat kejarangan kosakata (\textit{vocabulary sparsity}).
-	\item Penyaringan pesan substantif dengan mengeliminasi pesan pendek non-substantif ($< 3$ kata bermakna) dan baris redundan secara kumulatif menyaring sebanyak 40.285 baris (43,85\%). Rangkaian tahap ini menyisakan \textbf{51.583 dokumen bersih berkualitas tinggi} (retensi 56,15\% dari pesan mentah) dengan \textbf{717.642 token} (retensi 87,49\% dari total kata). Hasil ini membuktikan bahwa alur praproses efektif mereduksi \textit{noise} percakapan tanpa menghilangkan substansi informasi tematik yang esensial.
+	\item Penyaringan pesan substantif dengan mengeliminasi pesan pendek non-substantif ($< 3$ kata bermakna) dan baris redundan secara kumulatif menyaring sebanyak 40.285 pesan (43,85\%). Rangkaian tahap ini menyisakan 51.583 dokumen pesan bersih siap pemodelan (retensi 56,15\% dari total 91.868 pesan mentah) dengan total akumulasi 717.642 token kata (retensi 87,49\% dari total kata korpus). Rasio ini menunjukkan bahwa setiap pesan bersih rata-rata memuat sekitar 13{,}91 kata ($717.642 / 51.583$), yang mengonfirmasi karakteristik teks pendek (\textit{short text}). Meskipun persentase pesan terpangkas cukup besar (43,85\%), sebagian besar pesan yang tereliminasi hanyalah pesan derau berukuran 1--2 kata, sehingga 87,49\% substansi materi obrolan tetap berhasil dipertahankan secara utuh.
 \end{enumerate}
-
-Contoh perbandingan bentuk teks pesan sebelum dan sesudah melalui rangkaian tahapan praproses disajikan pada Lampiran~\ref{appx:preprocessing-summary} (Tabel~\ref{tab:contoh-hasil-praproses}).
-
 
 \section{Pembuatan Model}
 \label{sec:model-creation-results}
 
-Tahap pembuatan model merealisasikan arsitektur \textit{pipeline} BERTopic modifikasi yang telah dirancang untuk menangani karakteristik khusus data percakapan WhatsApp. Pemodelan topik dijalankan pada 51.583 dokumen bersih hasil praproses. Alur pembuatan model terdiri dari lima tahapan berurutan beserta alasan teknis pemilihan parameternya:
+Tahap pembuatan model merealisasikan arsitektur pemodelan topik BERTopic modifikasi yang telah dirancang untuk menangani karakteristik khusus data percakapan WhatsApp. Model diimplementasikan secara langsung pada 51.583 dokumen pesan bersih hasil praproses mengacu pada berkas eksperimen \textit{notebook}. Alur pembuatan model beserta konfigurasi parameternya mencakup:
+
 \begin{enumerate}[label=\arabic*., leftmargin=*, itemsep=6pt]
-    \item Pembangkitan vektor \textit{embedding} mengonversi setiap dokumen pesan menjadi representasi numerik padat (\textit{dense vector}) berdimensi 768 menggunakan model bahasa pra-latih \textit{indolem/indobertweet-base-uncased}. IndoBERTweet dipilih dibanding model transformer umum karena dilatih secara khusus pada korpus teks media sosial Indonesia berskala besar, sehingga memiliki sensitivitas tinggi terhadap variasi semantik bahasa tidak baku, singkatan informal, dan ekspresi emosional percakapan grup WhatsApp. Ekstraksi vektor dilakukan pada pesan yang mempertahankan kata hubung dan tanda baca alami agar struktur kontekstual teks dapat terpetakan secara utuh ke dalam matriks $N \times 768$.
+    \item Pembangkitan vektor semantik (\textit{embedding}) menerapkan model IndoBERTweet (\textit{indolem/indobertweet-base-uncased}) yang diunduh langsung dari repositori Hugging Face. 
+    IndoBERTweet dipilih karena dilatih khusus pada korpus media sosial berbahasa Indonesia sehingga sangat peka terhadap ragam bahasa informal, singkatan, dan istilah gaul percakapan WhatsApp. 
+    Model ini mengonversi setiap dokumen pesan menjadi representasi vektor numerik berdimensi 768. 
+    Dalam penerapannya, proses \textit{encoding} dijalankan dengan ukuran \textit{batch} (\textit{batch\_size = 32}) yang dilengkapi mekanisme penanganan \textit{safe encode} guna mencegah \textit{error Out of Memory} (OOM).
 
-    \item Reduksi dimensi memproyeksikan vektor \textit{embedding} 768 dimensi ke ruang manifold berdimensi 5 menggunakan algoritma UMAP (\textit{Uniform Manifold Approximation and Projection}). Konfigurasi parameter UMAP mencakup: \textit{n\_neighbors} = 15 guna menjaga keseimbangan pelestarian struktur lokal manifold pesan dan relasi global antartopik, \textit{n\_components} = 5 untuk mengatasi kendala dimensionalitas tinggi (\textit{curse of dimensionality}) tanpa mengorbankan varians semantik esensial, \textit{min\_dist} = 0{,}0 agar dokumen dengan kedekatan makna mengelompok rapat dan membentuk batas klaster yang tegas, serta metrik \textit{cosine} untuk mengukur sudut orientasi vektor secara presisi dan invarian terhadap panjang pesan.
+    \item Reduksi dimensi diimplementasikan menggunakan pustaka \textit{umap-learn}. Vektor berdimensi tinggi (768 dimensi) hasil IndoBERTweet diperkecil dimensinya menjadi 5 dimensi agar proses pengklasteran lebih ringan dan efisien secara komputasi. Konfigurasi parameter UMAP yang diterapkan pada fungsi meliputi:
+    \begin{itemize}[nosep]
+        \item \textit{n\_neighbors = 15}: menentukan jumlah tetangga terdekat untuk menjaga keseimbangan antara hubungan kedekatan lokal antardokumen dan struktur global seluruh topik.
+        \item \textit{n\_components = 5}: mereduksi data menjadi 5 dimensi representatif tanpa menghilangkan informasi semantik utama.
+        \item \textit{min\_dist = 0.0}: memungkinkan dokumen-dokumen yang memiliki kemiripan makna merapat membentuk batas klaster yang tegas.
+        \item \textit{metric = 'cosine'}: mengukur kedekatan antardokumen berdasarkan arah sudut vektor makna teks.
+        \item \textit{random\_state = 42}: memastikan hasil proyeksi acak bersifat konsisten dan selalu sama saat dieksekusi ulang.
+    \end{itemize}
 
-    \item Pengklasteran dokumen mengelompokkan data manifold tereduksi ($N \times 5$) menggunakan algoritma BIRCH yang dikonfigurasi melalui sintesis konseptual studi acuan \citep{IJECE25896,Ramadhani_2020,iaes2025indobert}. Konfigurasi pengklasteran mencakup inisialisasi ambang radius adaptif (\textit{auto-threshold}) berbasis konvergensi rata-rata iteratif Ridler-Calvard dengan batas granular $[0{,}20, 0{,}25]$ untuk membentuk subklaster mikro yang homogen \citep{IJECE25896}, kapasitas percabangan pohon CF-Tree (\textit{branching\_factor} = 50) guna menjamin efisiensi komputasi memori, eliminasi klaster kerdil (\textit{min\_cluster\_size} = 5) untuk menyingkirkan kelompok berukuran kecil yang tidak memenuhi signifikansi statistik tema \citep{Ramadhani_2020}, serta pemotongan deviasi $2\sigma$ jarak kosinus terhadap \textit{centroid} klaster ($\tau_k = \mu_{d, k} + 2\sigma_{d, k}$) yang secara metodologis merekonstruksi batas toleransi \textit{noise} 1\%--5\% pada teks pendek \citep{iaes2025indobert}.
-    Perbandingan kemampuan pemetaan klaster dan reduksi \textit{noise} antara algoritma HDBSCAN standar pada model \textit{baseline} dengan algoritma pengklasteran BIRCH pada model usulan disajikan secara visual pada Gambar~\ref{fig:umap-2d-cluster-comparison}.
+    \item Pengklasteran dokumen menerapkan algoritma BIRCH yang dimodifikasi berbasis pustaka \textit{scikit-learn}. Sesuai dengan perhitungan matematis mengenai pembentukan pohon fitur \textit{CF-Tree}, pemotongan batas jarak kosinus deviasi standar $2\sigma$, serta eliminasi klaster kerdil dijalankan berdasarkan rumus dan mekanisme yang telah dijelaskan secara rinci pada Bab 3. Parameter teknis yang diatur pada implementasi kode program mencakup faktor percabangan pohon \textit{branching\_factor} = 50, batas ambang radius konvergensi dengan range [$0{,}20$ ,$0{,}25$], eliminasi klaster berukuran kecil (\textit{min\_cluster\_size} = 5), dan pengalokasian dokumen marjinal yang melebihi ambang batas jarak $\tau_k$ sebagai \textit{outlier} (label $-1$).
 
-    \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{images/umap_2d_cluster_comparison.png}
-    \caption{Visualisasi Proyeksi 2D UMAP Keterpisahan Klaster dan Reduksi \textit{Outlier Noise}}
-    \label{fig:umap-2d-cluster-comparison}
-    \end{figure}
-
-    Berdasarkan visualisasi proyeksi 2D UMAP pada Gambar~\ref{fig:umap-2d-cluster-comparison}, terlihat perbedaan mendasar antara kedua pendekatan. Pada model \textit{baseline} (panel kiri), algoritma HDBSCAN membuang \textit{outlier noise} dalam porsi besar (\textit{outlier rate} mencapai 16,2\%) yang tersebar tanpa bentuk di seluruh bidang manifold, serta membentuk satu klaster raksasa homogen (\textit{mega-cluster}) yang menelan data secara berlebihan. Sebaliknya, model usulan (panel kanan) berhasil memetakan 135 klaster mikro yang padat, terdefinisi secara tegas, dan terdistribusi merata dengan menekan tingkat \textit{outlier} menjadi hanya 5,6\%. Hal ini membuktikan bahwa pemotongan deviasi $2\sigma$ jarak kosinus mampu memurnikan batas tepi klaster tanpa mengorbankan sebagian besar data riwayat obrolan.
-
-    \item Ekstraksi kata kunci topik menerapkan skema pembobotan BM25 (\textit{BM25Representation}) dengan rentang \textit{n-gram} unigram dan bigram $(1, 2)$, parameter saturasi istilah $k_1 = 1{,}2$, parameter normalisasi panjang $b = 0{,}5$ mengacu pada Persamaan~\eqref{eq:bm25-cluster} dan~\eqref{eq:idf-bm25}, serta diintegrasikan dengan kamus penyaring 9 kategori \textit{stopwords} wacana percakapan WhatsApp (kata hubung formal, kata tanya/deiktik, sapaan/pronomina, partikel \textit{filler}/tawa, singkatan gaul, kata fungsi tambahan, \textit{noise} Bahasa Inggris, kata emoji, dan \textit{noise} sistem). Kombinasi BM25 dan penyaring wacana mencegah partikel obrolan berfrekuensi tinggi mendominasi peringkat kata kunci.
+    \item Ekstraksi kata kunci topik menerapkan skema pembobotan BM25 kustom (\textit{BM25Representation}) untuk menggantikan fungsi bawaan \textit{c-TF-IDF} pada BERTopic. Perhitungan nilai bobot keterwakilan kata pada setiap klaster topik dijalankan berdasarkan rumus BM25 yang telah dijelaskan pada Bab 3. Konfigurasi parameter yang diterapkan pada kode program meliputi parameter saturasi frekuensi kata $k_1 = 1{,}2$, parameter normalisasi panjang pesan $b = 0{,}5$, serta rentang ekstraksi kata tunggal dan gabungan dua kata (\textit{ngram\_range} = (1, 2)). Representasi BM25 ini dipadukan dengan kamus penyaring 9 kategori \textit{stopwords} wacana WhatsApp agar kata-kata obrolan harian yang umum tidak ikut mendominasi kata kunci topik.
     
-    Contoh sebaran bobot relatif kata kunci representatif BM25 untuk enam topik utama yang terbentuk disajikan pada Gambar~\ref{fig:topic-keywords-distribution}.
-
     \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{images/topic_keywords_distribution.png}
-    \caption{Distribusi 5 Kata Kunci Teratas Berbobot BM25 pada Topik Utama WhatsApp}
+    \caption{Distribusi 5 Kata Kunci Teratas Berbobot BM25 pada 6 Topik Teratas WhatsApp}
     \label{fig:topic-keywords-distribution}
     \end{figure}
 
-    Visualisasi pada Gambar~\ref{fig:topic-keywords-distribution} membuktikan bahwa representasi BM25 yang diperkaya kamus \textit{stopwords} wacana percakapan menghasilkan kata kunci yang sangat interpretatif secara semantik. Topik 0, Topik 21, dan Topik 28 merepresentasikan wacana literasi komunitas dengan bobot tinggi pada istilah buku dan sastra (seperti minat baca \textit{buku}, novelis populer \textit{tere liye}, serta bedah karya Franz Kafka \textit{metamorphosis}). Di sisi lain, Topik 11, Topik 13, dan Topik 101 menangkap dinamika interaksi sosial percakapan WhatsApp secara akurat (seperti dokumentasi kegiatan komunitas, ajakan temu kopdar \textit{yok/joinn}, hingga ungkapan apresiasi komunitas \textit{salut jaya/abangkuu}) tanpa terdistorsi oleh partikel obrolan harian.
+    Visualisasi pada Gambar~\ref{fig:topic-keywords-distribution} membuktikan bahwa representasi BM25 yang diperkaya kamus \textit{stopwords} wacana percakapan menghasilkan kata kunci yang sangat interpretatif secara semantik. Topik 1, Topik 4, dan Topik 5 merepresentasikan wacana literasi komunitas dengan bobot tinggi pada istilah buku dan sastra (seperti minat baca \textit{buku}, novelis populer \textit{tere liye}, serta bedah karya Franz Kafka \textit{metamorphosis}). Di sisi lain, Topik 2, Topik 3, dan Topik 6 menangkap dinamika interaksi sosial percakapan WhatsApp secara akurat (seperti dokumentasi kegiatan komunitas, ajakan temu kopdar \textit{yok/joinn}, hingga ungkapan apresiasi komunitas \textit{abangkuu/gila kelass}) tanpa terdistorsi oleh partikel obrolan harian.
 
-    \item Reduksi topik otomatis menyederhanakan klaster-klaster mikro yang berdekatan secara semantik pada ruang \textit{embedding} menjadi kumpulan topik utama yang koheren melalui parameter \textit{nr\_topics} = \textit{"auto"}. Proses ini dilengkapi mekanisme pengaman (\textit{safety guard}) yang secara dinamis memeriksa jumlah topik unik non-\textit{outlier}; apabila jumlah topik $\le 1$, pemanggilan reduksi otomatis dilewati guna menghindari galat pembagian kosong (\textit{division by zero}) atau kegagalan iterasi pada pustaka BERTopic saat memproses korpus berukuran sangat kecil atau didominasi oleh \textit{noise}.
+    \item Reduksi topik otomatis dan perakitan model menyatukan seluruh modul di atas ke dalam kerangka kerja \textit{BERTopic} dengan menyambungkan komponen \textit{embedding}, UMAP, BIRCH, dan representasi BM25. Penyatuan topik yang memiliki kemiripan makna dilakukan secara otomatis melalui parameter \texttt{nr\_topics = "auto"}. Tahapan ini dilengkapi pengaman program (\textit{safety guard}) yang secara dinamis memeriksa jumlah topik unik; apabila jumlah topik yang terbentuk hanya berjumlah $\le 1$, pemanggilan fungsi reduksi dilewati secara aman guna menghindari galat pembagian kosong (\textit{division by zero}) atau kegagalan iterasi pada pustaka BERTopic.
 \end{enumerate}
 
 \section{Hasil Evaluasi Model}
 \label{sec:model-evaluation-results}
 
-Tahap evaluasi model bertujuan untuk mengukur performa pemodelan topik secara kuantitatif serta menguji efektivitas modifikasi arsitektur yang dikembangkan. Pengujian dilakukan menggunakan korpus riwayat percakapan grup WhatsApp Komunitas Buku berbahasa Indonesia hasil praproses dengan total 51.583 dokumen bersih (\textit{Pesan\_Preprocessed}). Evaluasi diukur melalui empat metrik performa utama: \textit{Topic Coherence} ($C_{\text{NPMI}}$) dan \textit{Topic Diversity} (TD) untuk dimensi representasi leksikal kata kunci, serta \textit{Embedding Density} (ED) dan \textit{Intra-topic Similarity} (ITS) untuk dimensi kekohesifan dokumen di ruang vektor \textit{embedding}, dengan mempertimbangkan rasio kelengkapan data melalui tingkat \textit{outlier} (\textit{outlier rate}).
+Tahap evaluasi model bertujuan untuk mengukur performa pemodelan topik secara kuantitatif serta menguji efektivitas modifikasi arsitektur yang dikembangkan. Pengujian dilakukan menggunakan korpus riwayat percakapan grup WhatsApp Komunitas Buku berbahasa Indonesia hasil praproses dengan total 51.583 dokumen bersih. Evaluasi diukur melalui empat metrik performa utama: \textit{Topic Coherence} ($C_{\text{NPMI}}$) dan \textit{Topic Diversity} (TD) untuk dimensi representasi leksikal kata kunci, serta \textit{Embedding Density} (ED) dan \textit{Intra-topic Similarity} (ITS) untuk dimensi kekohesifan dokumen di ruang vektor \textit{embedding}, dengan mempertimbangkan rasio kelengkapan data melalui tingkat \textit{outlier} (\textit{outlier rate}).
 
-\subsection{Perbandingan Kinerja Empiris Model Acuan dan Model Usulan}
+\subsection{Perbandingan Evaluasi Model Baseline dan Model Usulan}
 \label{subsec:evaluasi-komparasi-model}
 
-Evaluasi komparatif dilakukan terhadap empat arsitektur pemodelan topik pada korpus penuh (100\% data / 51.583 dokumen), yang meliputi: \textbf{Model \textit{Baseline} Standar} (arsitektur bawaan BERTopic dengan model bahasa \textit{all-MiniLM-L6-v2}, algoritma pengklasteran HDBSCAN, dan representasi c-TF-IDF); \textbf{Model \textit{Baseline Proposed}} (pengembangan \textit{baseline} dengan pemilihan klaster \textit{leaf} dan reduksi hierarkis otomatis); \textbf{Model Modified} \citep{iaes2025indobert} (replika arsitektur acuan teks pendek dengan IndoBERTweet, algoritma BIRCH inisialisasi ambang otomatis Ridler-Calvard, dan representasi BM25 tanpa filter wacana obrolan); serta \textbf{Model Usulan (\textit{Proposed Model})} yang mengintegrasikan algoritma BIRCH (ambang otomatis mikro $[0{,}20, 0{,}25]$, pemotongan \textit{outlier} deviasi $2\sigma$, eliminasi klaster kerdil $N < 5$), representasi BM25 diperkaya kamus 9 kategori \textit{stopwords} wacana WhatsApp, dan reduksi topik otomatis hierarkis.
+Evaluasi dilakukan terhadap empat arsitektur pemodelan topik pada korpus penuh (100\% data / 51.583 dokumen), yang meliputi: \textbf{Model \textit{Baseline} Standar} (arsitektur bawaan BERTopic dengan model bahasa \textit{all-MiniLM-L6-v2}, algoritma pengklasteran HDBSCAN, representasi c-TF-IDF, tanpa reduksi topik); \textbf{Model \textit{Baseline Proposed}} (pengembangan \textit{baseline} dengan pemilihan klaster \textit{leaf} dan penambahan \textit{pipeline} reduksi topik otomatis); \textbf{Model Modified} (replika arsitektur acuan teks pendek karya \cite{iaes2025indobert} dengan IndoBERTweet, UMAP, algoritma BIRCH inisialisasi ambang otomatis rentang $[0{,}3, 0{,}6]$ yang dilengkapi pasca-klasterisasi pemotongan deviasi $2\sigma$ dan eliminasi klaster kerdil $N < 5$, representasi BM25 tanpa penyaring wacana WhatsApp, serta tanpa reduksi topik); serta \textbf{Model Usulan (\textit{Proposed Model})} yang mengintegrasikan model IndoBERTweet, UMAP, algoritma BIRCH dengan optimasi ambang mikro $[0{,}20, 0{,}25]$ yang diperkaya pasca-klasterisasi pemotongan deviasi $2\sigma$ dan eliminasi klaster kerdil $N < 5$, representasi BM25 diperkaya kamus 9 kategori \textit{stopwords} wacana WhatsApp, serta penambahan \textit{pipeline} reduksi topik otomatis.
 Hasil perbandingan kinerja empiris keempat model disajikan pada Tabel~\ref{tab:comparison-100-all-models}.
 
-\begin{table}[htbp]
-\centering
-\caption{Perbandingan Performa 4 Model pada Korpus 100\% WhatsApp}
-\label{tab:comparison-100-all-models}
-\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Parameter \& Metrik Evaluasi} & \textbf{1. \textit{Baseline} Standar} & \textbf{2. \textit{Baseline Proposed}} & \textbf{3. Model Modified} & \textbf{4. Model Usulan} \\
- & & \textbf{(HDBSCAN Leaf + Reduksi)} & \textbf{(Muhajir et al., Auto-Thresh)} & \textbf{(Proposed Model)} \\
-\midrule
-Model Embedding & all-MiniLM-L6-v2 & all-MiniLM-L6-v2 & IndoBERTweet & IndoBERTweet \\
-Reduksi Dimensi & UMAP (5 komp.) & UMAP (5 komp.) & UMAP (5 komp.) & UMAP (5 komp.) \\
-Algoritma Klastering & HDBSCAN (\textit{eom}) & HDBSCAN (\textit{leaf}) & BIRCH (\textit{auto}) & BIRCH Usulan (\textit{Auto} $[0{,}20, 0{,}25]$) \\
-Representasi Term & c-TF-IDF & c-TF-IDF & BM25 & BM25 + Wacana WhatsApp \\
-\textit{Pipeline} Reduksi Topik & Tidak & Ya (\textit{auto}) & Tidak & Ya (\textit{auto}) \\
-\midrule
-Jumlah Topik ($N$) & 392 & 151 & 91 & \textbf{150} \\
-Outlier Rate (\%) & 40,44\% & 57,36\% & 4,63\% & \textbf{6,83\%} \\
-Topic Diversity & 0,9316 & 0,9623 & 0,5143 & \textbf{0,9653} \\
-Koherensi ($C_{\text{NPMI}}$) & -0,0210 & +0,1534 & +0,0260 & \textbf{+0,0495} \\
-Intra-Topic Similarity & 0,5778 & 0,4885 & 0,6445 & \textbf{0,6129} \\
-Embedding Density & 0,7089 & 0,5440 & 0,7464 & \textbf{0,5419} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
+\input{tables/04-results/comparison-100-all-models.tex}
 
-Berdasarkan data kuantitatif pada Tabel~\ref{tab:comparison-100-all-models}, analisis kritis terhadap faktor penyebab struktural performa model dijabarkan ke dalam dua poros utama:
+Berdasarkan data kuantitatif pada Tabel~\ref{tab:comparison-100-all-models}, evaluasi komparatif performa keempat model dianalisis secara objektif per metrik evaluasi dari peringkat tertinggi hingga terendah beserta faktor penyebab teknisnya:
 
-\begin{enumerate}[label=\alph*., leftmargin=*, itemsep=4pt]
-    \item \textbf{Akar Kegagalan dan Keterbatasan Model Acuan:}
-    Model \textit{Baseline} Standar mengalami kegagalan semantik yang nyata, tercermin dari koherensi bernilai negatif ($C_{\text{NPMI}} = -0{,}0210$) dan tingkat pembuangan data (\textit{outlier rate}) yang masif mencapai 40,44\%. Hal ini berakar pada ketidakmampuan model bahasa umum \textit{MiniLM} yang dilatih pada teks formal bahasa Inggris dalam menangkap morfologi percakapan informal Indonesia, serta sifat skema pembobotan c-TF-IDF yang rentan terdistorsi oleh partikel obrolan berfrekuensi tinggi. Meskipun Model \textit{Baseline Proposed} mencatat kenaikan koherensi ($C_{\text{NPMI}} = +0{,}1534$), peningkatan tersebut menuntut kompromi destruktif berupa lonjakan \textit{outlier} hingga \textbf{57,36\%} (mengabaikan lebih dari separuh isi riwayat obrolan grup). 
+\begin{enumerate}[label=\alph*., leftmargin=*, itemsep=6pt]
+    \item \textbf{Tingkat \textit{Outlier} (\textit{Outlier Rate} / Retensi Dokumen):}
+    Pada metrik tingkat pembuangan data (\textit{outlier rate}), urutan performa model dari yang terendah (retensi data terbaik) hingga tertinggi (pembuangan data terbanyak) adalah: (1) Model Modified ($4{,}63\%$), (2) Model Usulan ($6{,}83\%$), (3) \textit{Baseline} Standar ($40{,}44\%$), dan (4) \textit{Baseline Proposed} ($57{,}36\%$). 
     
-    Di sisi lain, Model Modified \citep{iaes2025indobert} membuktikan keunggulan algoritma BIRCH dalam mereduksi \textit{noise} secara efisien dengan mempertahankan \textit{outlier} sangat rendah (4,63\%) dan $ITS$ yang homogen (0,6445). Namun, model ini mengalami kelemahan fatal pada dimensi leksikal: nilai \textit{Topic Diversity} merosot drastis hingga ke angka \textbf{0,5143}. Tanpa adanya kamus penyaring wacana khusus percakapan WhatsApp, sekitar 49\% kata kunci representatif saling bertumpuk dan muncul berulang di puluhan topik berbeda, menyebabkan nilai koherensi terhenti di dekat angka nol ($C_{\text{NPMI}} = +0{,}0260$).
+    Secara mendasar, algoritma BIRCH merupakan metode pengklasteran hierarkis berbasis pohon fitur (\textit{CF-Tree}) yang secara alami tidak memiliki mekanisme penandaan derau (\textit{noise/outlier}) seperti halnya algoritma berbasis densitas DBSCAN atau HDBSCAN; seluruh data masukan secara bawaan akan dipetakan ke dalam klaster daun. Munculnya persentase \textit{outlier} pada Model Modified ($4{,}63\%$) dan Model Usulan ($6{,}83\%$) berasal dari mekanisme pasca-klasterisasi (\textit{post-processing}) yang diterapkan secara identik pada kedua model, yaitu:
+    \begin{itemize}[nosep]
+        \item \textit{Dwarf Cluster Cleanup}: pembubaran klaster kerdil beranggotakan dokumen $|C_k| < 5$ dan pengalokasian anggotanya ke label $-1$ guna menyingkirkan kelompok semu yang tidak representatif.
+        \item \textit{2-Sigma Local Distance-to-Centroid Cutoff}: pemotongan dokumen marjinal yang jarak kosinusnya melampaui batas toleransi deviasi lokal klaster ($d_{\cos}(x, c_k) > \tau_k = \mu_{d, k} + 2{,}0\sigma_{d, k}$).
+    \end{itemize}
+    Model Usulan menghasilkan persentase \textit{outlier} sedikit lebih tinggi ($6{,}83\%$) dibanding Model Modified ($4{,}63\%$) akibat penerapan batas ambang radius konvergensi mikro $[0{,}20, 0{,}25]$ yang lebih restriktif. Sebaliknya, kedua model \textit{baseline} berbasis HDBSCAN membuang data dalam proporsi yang sangat masif ($40{,}44\%$ dan $57{,}36\%$) karena mekanisme kerapatan densitas alaminya mengklasifikasikan ragam percakapan yang bervariasi sebagai titik derau.
 
-    \item \textbf{Keunggulan Pareto-Optimal Model Usulan:}
-    Model Usulan berhasil memecahkan dilema (\textit{trade-off}) retensi data dan koherensi semantik secara optimal. Model usulan mampu mempertahankan tingkat koherensi positif yang stabil ($C_{\text{NPMI}} = \textbf{+0{,}0495}$) dengan mempertahankan \textbf{93,17\%} pesan asli (menekan tingkat \textit{outlier} menjadi hanya \textbf{6,83\%}). Keberhasilan ini ditopang oleh inisialisasi ambang radius mikro adaptif $\theta \in [0{,}20, 0{,}25]$ pada algoritma BIRCH yang memetakan klaster lokal homogen, dipadukan dengan pemotongan deviasi $2\sigma$ jarak kosinus terhadap \textit{centroid} klaster yang secara metodologis merekonstruksi toleransi \textit{noise} alami teks pendek. 
+    \item \textbf{Keragaman Topik (\textit{Topic Diversity} / TD):}
+    Pada dimensi keragaman leksikal kata kunci, urutan performa model dari peringkat tertinggi hingga terendah adalah: (1) Model Usulan ($0{,}9653$), (2) \textit{Baseline Proposed} ($0{,}9623$), (3) \textit{Baseline} Standar ($0{,}9316$), dan (4) Model Modified ($0{,}5143$).
     
-    Pada aspek leksikal, Model Usulan mencatat keberagaman tertinggi ($TD = \textbf{0{,}9653}$), membuktikan bahwa integrasi kamus penyaring 9 kategori \textit{stopwords} WhatsApp efektif membersihkan kata obrolan harian sehingga kata kunci yang diekstrak BM25 benar-benar unik dan informatif. Sementara pada ruang \textit{embedding}, Model Usulan mempertahankan kekohesifan dokumen internal yang kokoh ($ITS = \textbf{0{,}6129}$ dan $ED = \textbf{0{,}5419}$), membuktikan bahwa klaster topik yang terbentuk memiliki kepadatan bentuk yang kompak serta keselarasan semantik antardokumen yang sangat tinggi.
+    Model Usulan mencatatkan skor diversitas tertinggi ($0{,}9653$) karena integrasi fungsi pembobotan BM25 yang dipadukan dengan kamus penyaring 9 kategori \textit{stopwords} wacana percakapan WhatsApp efektif mengeliminasi partikel obrolan harian, sehingga kata kunci yang terpilih di setiap klaster bersifat unik dan tidak tumpang tindih. Sebaliknya, Model Modified karya \cite{iaes2025indobert} mengalami kegagalan performa leksikal paling buruk secara mutlak dengan nilai $TD$ hanya sebesar $0{,}5143$. Tanpa adanya filter wacana obrolan, kata-kata pengisi percakapan informal mendominasi pembobotan BM25 dan muncul berulang kali di hampir separuh daftar kata kunci antartopik yang berbeda.
+
+    \item \textbf{Koherensi Semantik (\textit{Topic Coherence} / $C_{\text{NPMI}}$):}
+    Pada metrik keterkaitan semantik kata kunci, urutan performa model dari nilai tertinggi hingga terendah adalah: (1) \textit{Baseline Proposed} ($+0{,}1534$), (2) Model Usulan ($+0{,}0495$), (3) Model Modified ($+0{,}0260$), dan (4) \textit{Baseline} Standar ($-0{,}0210$).
+    
+    Secara kuantitatif, Model \textit{Baseline Proposed} menempati peringkat tertinggi dengan skor $+0{,}1534$. Namun, tingginya koherensi ini merupakan akibat dari anomali pembuangan data ekstrem (\textit{cherry-picking effect}), di mana model membuang $57{,}36\%$ dokumen sebagai \textit{outlier} sehingga pengujian koherensi hanya dievaluasi pada klaster-klaster sempit yang sangat homogen. Model Usulan berada di peringkat kedua ($+0{,}0495$) dan berhasil mempertahankan skor koherensi positif yang valid pada korpus riil dengan mempertahankan $93{,}17\%$ dokumen asli. Model Modified berada di peringkat ketiga ($+0{,}0260$), terhambat oleh keberadaan kata-kata percakapan umum yang mengaburkan asosiasi semantik topik, sedangkan Model \textit{Baseline} Standar menempati peringkat terendah dengan skor negatif ($-0{,}0210$) akibat keterbatasan model bahasa umum \textit{MiniLM} dan ketiadaan reduksi topik.
+
+    \item \textbf{Kemiripan Internal Klaster (\textit{Intra-Topic Similarity} / ITS):}
+    Pada metrik kemiripan sudut kosinus dokumen di dalam klaster, urutan performa model dari peringkat tertinggi hingga terendah adalah: (1) Model Modified ($0{,}6445$), (2) Model Usulan ($0{,}6129$), (3) \textit{Baseline} Standar ($0{,}5778$), dan (4) \textit{Baseline Proposed} ($0{,}4885$).
+    
+    Model Modified mencatatkan nilai $ITS$ tertinggi ($0{,}6445$) karena tidak menyertakan \textit{pipeline} reduksi topik otomatis (\textit{nr\_topics="auto"}), sehingga pembagian dokumen terisolasi pada $91$ mikro-klaster berukuran kecil yang sangat homogen antaranggotanya. Pada Model Usulan, penambahan tahapan reduksi topik otomatis menggabungkan subklaster yang memiliki kemiripan semantik menjadi topik tematik yang lebih makro, yang secara matematis meluaskan dispersi sudut dokumen internal (menjadi $0{,}6129$) demi keterbacaan interpretasi wacana. Sementara itu, \textit{Baseline Proposed} berada di peringkat terendah ($0{,}4885$) karena penggabungan klaster daun HDBSCAN menyatukan dokumen-dokumen yang memiliki jarak keterpisahan kosinus yang lebar di ruang \textit{embedding}.
+
+    \item \textbf{Kepadatan Ruang \textit{Embedding} (\textit{Embedding Density} / ED):}
+    Pada metrik kerapatan spasial dokumen di sekitar titik pusat topik, urutan performa model dari peringkat tertinggi hingga terendah adalah: (1) Model Modified ($0{,}7464$), (2) \textit{Baseline} Standar ($0{,}7089$), (3) \textit{Baseline Proposed} ($0{,}5440$), dan (4) Model Usulan ($0{,}5419$).
+    
+    Model Usulan menempati peringkat terendah pada metrik $ED$ ($0{,}5419$). Fakta kuantitatif ini merupakan konsekuensi langsung dari integrasi reduksi topik otomatis dan tingginya retensi korpus obrolan ($93{,}17\%$), yang menyebabkan sebaran spasial dokumen di sekitar titik pusat klaster Gaussian menjadi lebih menyebar. Sebaliknya, Model Modified mencatatkan nilai $ED$ tertinggi ($0{,}7464$) karena mikro-klaster BIRCH tanpa reduksi topik mempertahankan titik-titik dokumen pada ruang proyeksi UMAP dalam konsentrasi yang sangat pekat di sekitar sentroid aslinya.
 \end{enumerate}
 
 \subsection{Dinamika Konvergensi dan Stabilitas Model}
 \label{subsec:evaluasi-learning-curve}
 
-Stabilitas performa dan dinamika konvergensi model diuji menggunakan metode kurva pembelajaran (\textit{learning curve}) dengan mempartisi data dari 20\% (10.316 dokumen) hingga 100\% (51.583 dokumen) dengan interval 20\%. Dinamika kurva pembelajaran keempat model disajikan secara visual pada Gambar~\ref{fig:learning-curve-4models-comparison}, dengan rincian data kuantitatif disajikan pada Lampiran~\ref{appx:learning-curve-table} (Tabel~\ref{tab:birch-learning-curve}).
+Stabilitas performa dan dinamika konvergensi model diuji menggunakan metode kurva pembelajaran (\textit{learning curve}) dengan mempartisi data dari 20\% (10.316 dokumen) hingga 100\% (51.583 dokumen) dengan interval 20\%. Rincian data kuantitatif evaluasi kurva pembelajaran keempat model disajikan pada Tabel~\ref{tab:birch-learning-curve}, sedangkan visualisasi grafik trajektori konvergensi disajikan pada Lampiran~\ref{appx:learning-curve-figure} (Gambar~\ref{fig:learning-curve-4models-comparison}).
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{images/learning_curve_4models_comparison.png}
-\caption{Kurva Pembelajaran (\textit{Learning Curve}) Perbandingan Model Pemodelan Topik}
-\label{fig:learning-curve-4models-comparison}
-\end{figure}
+\input{tables/04-results/learning-curve-table.tex}
 
-Berdasarkan visualisasi kurva pembelajaran pada Gambar~\ref{fig:learning-curve-4models-comparison}, analisis dinamika konvergensi model usulan memperlihatkan empat keunggulan stabilitas yang konsisten:
+Berdasarkan data kuantitatif pada Tabel~\ref{tab:birch-learning-curve} serta visualisasi grafik kurva pembelajaran pada Gambar~\ref{fig:learning-curve-4models-comparison} (Lampiran~\ref{appx:learning-curve-figure}), analisis dinamika konvergensi model usulan memperlihatkan empat keunggulan stabilitas yang konsisten:
 
 \begin{enumerate}[label=\alph*., leftmargin=*, itemsep=4pt]
     \item \textbf{Stabilitas Keberagaman Topik (\textit{Topic Diversity}):}
@@ -165,6 +152,11 @@ Berdasarkan visualisasi kurva pembelajaran pada Gambar~\ref{fig:learning-curve-4
 
     \item \textbf{Kekohesifan Sudut Kosinus Dokumen (\textit{Intra-Topic Similarity}):}
     Model Usulan konsisten mempertahankan derajat kemiripan internal klaster yang kokoh pada rentang 0,61--0,64 di seluruh partisi (0,6129 pada korpus penuh). Karakteristik ini menegaskan bahwa penambahan volume korpus percakapan tidak mengaburkan batas semantik antartopik, melainkan menjaga homogenitas dokumen di dalam klaster yang terbentuk secara stabil.
+
+    \item \textbf{Karakteristik Saturasi Ambang Radius Konvergensi BIRCH pada Kurva Pembelajaran:}
+    Evaluasi longitudinal terhadap parameter ambang radius konvergensi BIRCH menghasilkan sebuah temuan empiris kritis: pada seluruh partisi kurva pembelajaran (dari 20\%, 40\%, 60\%, 80\%, hingga 100\% data), proses optimasi adaptif pada Model Usulan (yang mengeksplorasi rentang pencarian $[0{,}20, 0{,}25]$) secara konsisten selalu konvergen memilih nilai batas atas tertinggi, yaitu $0{,}25$. Fenomena saturasi batas atas yang persis sama juga terbukti terjadi pada Model Modified karya \cite{iaes2025indobert} yang mengeksplorasi rentang acuan $[0{,}3, 0{,}6]$, di mana pada seluruh partisi 20\%--100\% algoritma secara persisten selalu memilih batas atas tertinggi, yaitu $0{,}60$.
+    
+    Kecenderungan saturasi ini berakar pada karakteristik intrinsik teks percakapan singkat yang diproyeksikan oleh UMAP ke dalam ruang 5 dimensi: sebaran spasial dokumen membentuk manifold yang menyebar (\textit{diffuse manifold}) dengan variansi lokal yang luas. Akibatnya, struktur pohon fitur \textit{CF-Tree} pada algoritma BIRCH memerlukan batas ambang radius yang paling toleran (batas atas rentang) guna mencegah pemecahan dokumen menjadi ratusan klaster tunggal (\textit{singleton clusters}) yang tidak representatif. Fakta empiris ini membuktikan bahwa skema pencarian ambang adaptif berbasis rentang tertutup tersebut tidak memberikan variabilitas dinamis sepanjang penambahan volume korpus, melainkan berperilaku statis ekuivalen dengan penetapan parameter langsung pada batas atasnya ($0{,}25$ untuk model usulan dan $0{,}60$ untuk model acuan Muhajir et al.). Dengan demikian, keunggulan performa Model Usulan bukan ditentukan oleh proses pencarian adaptif ambang tersebut, melainkan oleh pemilihan radius mikro $0{,}25$ itu sendiri yang dipadukan secara presisi dengan mekanisme pasca-klasterisasi pemotongan deviasi $2\sigma$, eliminasi klaster kerdil, kamus \textit{stopwords} wacana WhatsApp, dan \textit{pipeline} reduksi topik otomatis.
 \end{enumerate}
 
 \section{Implementasi Sistem}

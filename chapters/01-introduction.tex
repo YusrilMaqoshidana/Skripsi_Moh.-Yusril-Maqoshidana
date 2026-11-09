@@ -17,21 +17,25 @@
 \section{Latar Belakang}
 \label{sec:intro-background}
 
-WhatsApp merupakan salah satu aplikasi pesan instan terpopuler di dunia yang banyak dimanfaatkan sebagai wadah diskusi komunitas, koordinasi tim, dan komunikasi organisasi \citep{WhatsAppAbout,prayogi2025dinamika}.
+WhatsApp merupakan salah satu aplikasi pesan instan terpopuler di dunia yang banyak dimanfaatkan sebagai wadah diskusi komunitas, koordinasi tim, dan komunikasi organisasi \citep{WhatsAppAbout}.
 Pada grup WhatsApp yang sangat aktif dengan volume percakapan tinggi, arus pertukaran informasi berlangsung sangat cepat dan dinamis.
 Akumulasi pesan yang masif ini kerap menimbulkan fenomena \textit{information overload}, di mana pengguna mengalami kesulitan dalam mengikuti alur diskusi, menyaring informasi penting, maupun mengetahui topik yang sedang dibahas tanpa membaca keseluruhan riwayat obrolan secara manual \citep{rani2022whatsapp}.
-Oleh karena itu, diperlukan sistem yang mampu memodelkan dan mengekstraksi topik percakapan grup WhatsApp secara otomatis.
 
-\textit{Topic modeling} merupakan teknik dalam \textit{Natural Language Processing} (NLP) untuk menemukan struktur tematik laten dari sekumpulan dokumen teks \citep{ABDELRAZEK2023102131}.
-Namun, penerapan pemodelan topik pada percakapan grup WhatsApp menghadapi tantangan besar akibat karakteristik data yang berupa teks pendek, tidak terstruktur, mengandung \textit{noise} tinggi, serta sarat fenomena \textit{code-mixing} dan struktur kalimat eliptis yang fragmentaris \citep{10.1145/3507900,9243443,sutarma2017,siregar2025}.
+Kondisi tersebut tercermin secara nyata pada grup WhatsApp Komunitas Buku, sebuah grup diskusi \textit{online} berskala besar dengan interaksi harian yang sangat intensif.
+Percakapan pada grup komunitas ini memiliki karakteristik linguistik yang sangat kompleks, yaitu didominasi oleh pesan teks pendek (\textit{short text}), struktur kalimat fragmentaris atau eliptis, serta tingginya penggunaan ragam bahasa informal, singkatan tidak baku, dan campur kode (\textit{code-mixing}) \citep{10.1145/3507900,9243443,sutarma2017,siregar2025}.
+Selain itu, riwayat obrolan dipenuhi oleh \textit{conversational noise} seperti variasi tawa, piktogram emoji, sapaan pembuka, hingga pesan konfirmasi singkat yang tidak memuat substansi topik utama.
+Karakteristik data yang tidak terstruktur dan \textit{noise} tinggi ini menuntut adanya mekanisme pemrosesan otomatis guna mereduksi informasi tanpa menghilangkan esensi diskusi kelompok.
 
+Salah satu pendekatan komputasi yang relevan untuk mengatasi permasalahan tersebut adalah pemodelan topik (\textit{topic modeling}).
+Teknik ini memungkinkan ringkasan tema utama suatu percakapan diperoleh tanpa membaca seluruh pesan secara manual \citep{ABDELRAZEK2023102131}.
 Meskipun arsitektur modular BERTopic terbukti unggul pada teks pendek dibandingkan metode konvensional berbasis \textit{bag-of-words} seperti LDA dan NMF \citep{grootendorst2022bertopic,10.3389/fsoc.2022.886498}, algoritma klasterisasi bawaannya, yaitu HDBSCAN, secara inheren mengeliminasi dokumen yang tidak memenuhi ambang stabilitas kepadatan sebagai \textit{outlier} \citep{grootendorst2022bertopic,11271424}.
-Akibatnya, hingga 23\%--24\% pesan obrolan dapat terbuang dan tidak terpetakan ke dalam topik manapun \citep{iaes2025indobert}.
+Akibatnya, hingga 23\%--40\% pesan obrolan dapat terbuang dan tidak terpetakan ke dalam topik manapun \citep{iaes2025indobert}.
+Di samping itu, model representasi bahasa bawaan (\textit{all-MiniLM-L6-v2}) dilatih pada teks formal bahasa Inggris sehingga rentan mengalami kegagalan semantik terhadap kosakata informal lokal, sedangkan skema pembobotan c-TF-IDF rentan terdistorsi oleh partikel obrolan berfrekuensi tinggi.
 
-Untuk mengatasi keterbatasan tersebut, penelitian ini mengusulkan modifikasi pada \textit{framework} BERTopic dengan mengganti HDBSCAN menggunakan algoritma BIRCH (\textit{Balanced Iterative Reducing and Clustering using Hierarchies}) \citep{10.1145/235968.233324} dan mengganti c-TF-IDF dengan skema BM25 \citep{doi.org/10.1111/coin.12248}.
-Algoritma BIRCH mampu mengelompokkan dokumen berukuran besar secara efisien ke dalam struktur \textit{CF-Tree} dan menugaskan data ke klaster yang valid sehingga menekan proporsi \textit{outlier} hingga rentang 1\%--5\% pada teks pendek \citep{10.1145/235968.233324,Ramadhani_2020,iaes2025indobert}.
-Pada lapisan \textit{embedding}, IndoBERTweet dimanfaatkan karena dilatih secara khusus pada korpus media sosial berbahasa Indonesia, sehingga mampu menangkap konteks semantik bahasa percakapan informal secara lebih optimal \citep{koto2021indobertweet,iaes2025indobert}.
-Sementara itu, penerapan BM25 pada tahap representasi topik menyempurnakan c-TF-IDF dengan memperhitungkan saturasi frekuensi kata dan normalisasi panjang dokumen, sehingga kata-kata yang mendominasi frekuensi tidak mengaburkan kata kunci yang informatif \citep{doi.org/10.1111/coin.12248,iaes2025indobert}.
+Untuk mengatasi keterbatasan tersebut, penelitian ini mengusulkan modifikasi pada \textit{framework} BERTopic melalui tiga penggantian komponen utama. Pertama, model bahasa bawaan diganti dengan IndoBERTweet, yang dilatih secara khusus pada korpus media sosial bahasa Indonesia berskala besar dengan inisialisasi lebih dari 14.000 kosakata domain-spesifik. Model ini terbukti secara empiris mengungguli model formal dan multibahasa dengan capaian rata-rata skor F1 sebesar 86{,}1\% pada berbagai tolok ukur NLP percakapan lokal \citep{koto2021indobertweet}.
+Kedua, HDBSCAN diganti dengan algoritma BIRCH (\textit{Balanced Iterative Reducing and Clustering using Hierarchies}) \citep{10.1145/235968.233324}. BIRCH mampu mengelompokkan dokumen berukuran besar secara efisien ke dalam struktur \textit{CF-Tree} dengan kompleksitas linier $\mathcal{O}(N)$ \citep{10.1145/235968.233324}. Penelitian terdahulu membuktikan bahwa selain menekan proporsi \textit{outlier} hingga rentang 1\%--5\%, integrasi BIRCH pada teks pendek bahasa Indonesia menghasilkan struktur klaster yang lebih padat (\textit{embedding density} stabil), kohesivitas semantik internal (\textit{intra-topic similarity}) yang lebih konsisten tinggi, serta stabilitas topik yang lebih unggul dibandingkan HDBSCAN \citep{Ramadhani_2020,iaes2025indobert}.
+Ketiga, c-TF-IDF diganti dengan skema BM25 \citep{doi.org/10.1111/coin.12248}. Pada tahap representasi topik, BM25 menyempurnakan c-TF-IDF dengan memperhitungkan saturasi frekuensi kata dan normalisasi panjang dokumen, sehingga kata-kata yang mendominasi frekuensi tidak mengaburkan kata kunci yang informatif \citep{doi.org/10.1111/coin.12248,iaes2025indobert}.
+Selain itu, rancang bangun sistem berbasis \textit{web} dikembangkan untuk mengintegrasikan model pemodelan topik tersebut ke dalam antarmuka interaktif yang dapat diakses secara praktis oleh pengguna akhir.
 
 % --- BAGIAN 1.2: RUMUSAN MASALAH ---
 \section{Rumusan Masalah}
@@ -39,9 +43,9 @@ Sementara itu, penerapan BM25 pada tahap representasi topik menyempurnakan c-TF-
 
 \noindent Berdasarkan latar belakang tersebut, rumusan masalah dalam penelitian ini adalah sebagai berikut:
 \begin{enumerate}[nosep]
-	\item Bagaimana penerapan BERTopic dengan integrasi IndoBERTweet, BIRCH \textit{clustering}, dan representasi topik BM25 untuk mengidentifikasi topik pada percakapan grup WhatsApp berbahasa Indonesia?
-	\item Bagaimana kualitas topik yang dihasilkan oleh BERTopic yang diajukan dibandingkan dengan model \textit{baseline} BERTopic berdasarkan evaluasi metrik \textit{Topic Coherence}, \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity}?
-	\item Bagaimana merancang dan mengimplementasikan sistem berbasis \textit{web} untuk analisis topik percakapan grup WhatsApp menggunakan BERTopic dengan IndoBERTweet, BIRCH \textit{clustering}, dan BM25?
+    \item Bagaimana proporsi \textit{outlier} pada pemodelan topik data percakapan grup WhatsApp berbahasa Indonesia menggunakan model BERTopic modifikasi?
+    \item Bagaimana performa model BERTopic modifikasi yang diusulkan dibandingkan dengan model \textit{baseline} berdasarkan empat metrik evaluasi kualitas topik (\textit{Topic Coherence}, \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity})?
+    \item Bagaimana tingkat keberhasilan fitur MVP sistem analisis topik grup WhatsApp berbasis web dalam memenuhi kebutuhan fungsional berdasarkan pengujian black-box?
 \end{enumerate}
 
 % --- BAGIAN 1.3: TUJUAN PENELITIAN ---
@@ -50,9 +54,9 @@ Sementara itu, penerapan BM25 pada tahap representasi topik menyempurnakan c-TF-
 
 \noindent Berdasarkan rumusan masalah tersebut, tujuan penelitian ini dirumuskan sebagai berikut:
 \begin{enumerate}[nosep]
-	\item Menerapkan BERTopic dengan model \textit{embedding} IndoBERTweet, algoritma BIRCH sebagai metode \textit{clustering}, dan skema BM25 sebagai representasi topik untuk mengidentifikasi topik pada percakapan grup WhatsApp berbahasa Indonesia.
-	\item Mengevaluasi dan membandingkan performa BERTopic yang diajukan dengan \textit{baseline} BERTopic berdasarkan metrik \textit{Topic Coherence}, \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity}.
-	\item Merancang dan mengimplementasikan sistem berbasis \textit{web} untuk analisis topik percakapan grup WhatsApp yang memanfaatkan BERTopic dengan IndoBERTweet, BIRCH \textit{clustering}, dan BM25 agar dapat digunakan secara praktis oleh pengguna akhir.
+    \item Mengetahui proporsi \textit{outlier} pada pemodelan topik data percakapan grup WhatsApp berbahasa Indonesia menggunakan model BERTopic modifikasi.
+    \item Mengetahui performa model BERTopic modifikasi yang diusulkan dibandingkan dengan model \textit{baseline} berdasarkan empat metrik evaluasi kualitas topik (\textit{Topic Coherence}, \textit{Topic Diversity}, \textit{Embedding Density}, dan \textit{Intra-topic Similarity}).
+    \item Mengetahui tingkat keberhasilan fitur MVP sistem analisis topik grup WhatsApp berbasis \textit{web} dalam memenuhi kebutuhan fungsional berdasarkan pengujian \textit{black-box}.
 \end{enumerate}
 
 % --- BAGIAN 1.4: MANFAAT PENELITIAN ---

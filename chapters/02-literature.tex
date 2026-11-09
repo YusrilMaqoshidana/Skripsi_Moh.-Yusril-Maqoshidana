@@ -17,7 +17,7 @@
 
 \input{tables/02-literature/tinjauan-penelitian-terdahulu.tex}
 
-Berdasarkan penelitian terdahulu yang diulas pada Tabel~\ref{tab:tinjauan}, dapat disimpulkan bahwa meskipun BERTopic terbukti unggul dibandingkan metode konvensional (seperti LDA dan NMF), penerapan \textit{default} berbasis model \textit{multilingual} dan algoritma HDBSCAN masih menghasilkan proporsi \textit{outlier} yang tinggi serta rentan menghasilkan klaster semu pada teks pendek. Penelitian terdahulu membuktikan potensi integrasi IndoBERT dan BIRCH pada teks monolog media sosial \citep{iaes2025indobert}, namun belum menyentuh karakteristik percakapan grup WhatsApp berbahasa Indonesia yang memiliki pola \textit{multi-turn dialog}, bahasa tidak baku, serta ketiadaan sistem terintegrasi bagi pengguna akhir.
+Berdasarkan penelitian terdahulu yang diulas pada Tabel~\ref{tab:tinjauan}, dapat disimpulkan bahwa BERTopic terbukti unggul dibandingkan metode konvensional seperti LDA dan NMF. Namun, penerapan \textit{default} berbasis model \textit{multilingual} dan algoritma HDBSCAN masih menghasilkan proporsi \textit{outlier} yang tinggi serta rentan membentuk klaster semu pada teks pendek. Beberapa penelitian telah menunjukkan potensi integrasi IndoBERTweet dan BIRCH untuk mengatasi keterbatasan tersebut, tetapi pengujiannya masih terbatas pada teks monolog media sosial seperti \textit{Twitter}. Dengan demikian, terdapat dua celah penelitian yang belum terjawab. Pertama, pendekatan tersebut belum diuji pada data percakapan grup WhatsApp berbahasa Indonesia yang memiliki karakteristik \textit{multi-turn dialog}. Kedua, penelitian terdahulu masih sebatas pada tahap metodologi dan belum menyediakan sistem berbasis \textit{web} yang dapat digunakan secara \textit{end-to-end} oleh pengguna.
 
 % --- BAGIAN 2.2: LANDASAN TEORI ---
 \section{Landasan Teori}
@@ -26,7 +26,7 @@ Berdasarkan penelitian terdahulu yang diulas pada Tabel~\ref{tab:tinjauan}, dapa
 \subsection{Aplikasi WhatsApp}
 \label{subsec:theory-first}
 
-WhatsApp merupakan aplikasi pesan instan yang mendukung komunikasi personal maupun kelompok melalui fitur grup diskusi \citep{prayogi2025dinamika}. Karakteristik komunikasi grup yang dinamis, melibatkan banyak partisipan, dan bervolume tinggi menyebabkan alur percakapan berlangsung cepat serta kerap kali tumpang tindih \citep{rani2022whatsapp}. Akibatnya, anggota grup sering kali kesulitan mengikuti atau merangkum perkembangan topik pembahasan secara menyeluruh.
+WhatsApp merupakan aplikasi pesan instan yang mendukung komunikasi personal maupun kelompok melalui fitur grup. Karakteristik komunikasi grup yang dinamis, melibatkan banyak partisipan, dan bervolume tinggi menyebabkan alur percakapan berlangsung cepat serta kerap kali tumpang tindih \citep{rani2022whatsapp}. Akibatnya, anggota grup sering kali kesulitan mengikuti atau merangkum perkembangan topik pembahasan secara menyeluruh.
 
 Secara linguistik, percakapan WhatsApp memiliki karakteristik khas teks obrolan informal yaitu struktur kalimat eliptis atau fragmentaris tanpa kelengkapan subjek-predikat formal, minim tanda baca, serta sarat akan singkatan tidak baku, bahasa gaul (\textit{slang}), dan campur kode (\textit{code-mixing}) lintas bahasa \citep{siregar2025,sutarma2017}. Kompleksitas leksikal ini mendasari perlunya perancangan tahapan praproses teks yang adaptif sebelum data ditransformasikan ke dalam ruang representasi vektor.
 
@@ -73,7 +73,7 @@ Ketika data baru $x$ diserap ke dalam pohon, radius pembaruan ($R'$) dihitung se
 
 Titik baru diserap ke dalam simpul daun pohon fitur (\textit{CF-Leaf}) apabila nilai $R' \le T$, dengan $T$ sebagai parameter ambang batas (\textit{threshold}), serta percabangan simpul non-daun dibatasi oleh faktor percabangan $B$.
 
-Meskipun sangat efisien, algoritma BIRCH standar bekerja secara kaku sebagai pengklasteran tegas (\textit{hard clustering}) dengan proporsi pencilan 0\%, sehingga memaksakan seluruh dokumen masuk ke klaster terdekat meskipun jarak semantiknya sangat jauh \citep{Ramadhani_2020}. Sebaliknya, algoritma klasterisasi berbasis kepadatan seperti HDBSCAN pada teks pendek membuang pencilan secara terlampau agresif ($>50\%$), yang mengakibatkan hilangnya sebagian besar informasi obrolan \citep{iaes2025indobert}. Guna menjembatani keterbatasan tersebut, penelitian ini merumuskan landasan modifikasi algoritma BIRCH yang mengintegrasikan penyaringan pencilan terukur berbasis deviasi standar jarak kosinus dokumen terhadap titik pusat klaster penugasannya ($c_k$):
+Meskipun sangat efisien, algoritma BIRCH standar bekerja secara kaku sebagai pengklasteran tegas (\textit{hard clustering}) dengan proporsi \textit{outlier} 0\%, sehingga memaksakan seluruh dokumen masuk ke klaster terdekat meskipun jarak semantiknya sangat jauh \citep{Ramadhani_2020}. Sebaliknya, algoritma klasterisasi berbasis kepadatan seperti HDBSCAN pada teks pendek membuang \textit{outlier} secara terlampau agresif ($>50\%$), yang mengakibatkan hilangnya sebagian besar informasi obrolan \citep{iaes2025indobert}. Guna menjembatani keterbatasan tersebut, penelitian ini merumuskan landasan modifikasi algoritma BIRCH yang mengintegrasikan penyaringan \textit{outlier} terukur berbasis deviasi standar jarak kosinus dokumen terhadap titik pusat klaster penugasannya ($c_k$):
 
 \begin{equation}
 	d_{\cos}(x, c_k) = 1 - \frac{x \cdot c_k}{\lVert x \rVert \lVert c_k \rVert}
@@ -85,7 +85,7 @@ Meskipun sangat efisien, algoritma BIRCH standar bekerja secara kaku sebagai pen
 	\tau_k = \mu_{d, k} + 2{,}0 \cdot \sigma_{d, k}
 \end{equation}
 
-\noindent di mana $\mu_{d,k}$ dan $\sigma_{d,k}$ masing-masing melambangkan nilai rata-rata dan simpangan baku dari jarak kosinus seluruh dokumen dalam klaster ke-$k$. Dokumen marjinal yang memiliki jarak $d_{\cos}(x, c_k) > \tau_k$ dialokasikan sebagai pencilan (\textit{outlier}), menghasilkan klaster topik yang padat sekaligus mempertahankan toleransi pencilan terukur pada rentang $1\%$--$5\%$ \citep{iaes2025indobert}.
+\noindent di mana $\mu_{d,k}$ dan $\sigma_{d,k}$ masing-masing melambangkan nilai rata-rata dan simpangan baku dari jarak kosinus seluruh dokumen dalam klaster ke-$k$. Dokumen marjinal yang memiliki jarak $d_{\cos}(x, c_k) > \tau_k$ dialokasikan sebagai \textit{outlier}, menghasilkan klaster topik yang padat sekaligus mempertahankan toleransi \textit{outlier} terukur pada rentang $1\%$--$5\%$ \citep{iaes2025indobert}.
 
 \subsection{\textit{Topic Representation} dengan BM25}
 \label{subsec:bm25}

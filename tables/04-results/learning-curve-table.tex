@@ -2,28 +2,38 @@
 \renewcommand{\arraystretch}{1.2}
 \begin{table}[htbp]
 \centering
-\caption{Perbandingan Metrik Evaluasi Kurva Pembelajaran Model Modified vs. Model Usulan}
+\caption{Perbandingan Metrik Evaluasi Kurva Pembelajaran Empat Model Pemodelan Topik (20\%--100\%)}
 \label{tab:birch-learning-curve}
 \scriptsize
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{clccccc}
+\begin{tabular}{clcccccc}
 \toprule
-\textbf{Split Data} & \textbf{Model Evaluasi} & \textbf{Jumlah Topik} & \textbf{Topic Diversity} & \textbf{$C_{\text{NPMI}}$} & \textbf{Intra-Topic Sim} & \textbf{Outlier Rate (\%)} \\
+\textbf{Split Data} & \textbf{Model Evaluasi} & \textbf{Jumlah Topik} & \textbf{Outlier Rate (\%)} & \textbf{Topic Diversity} & \textbf{$C_{\text{NPMI}}$} & \textbf{Intra-Topic Sim} & \textbf{Embedding Density} \\
 \midrule
-\multirow{2}{*}{20\% (10.316)} & Modified (Muhajir et al.) & 57 & 0,6333 & -0,1271 & 0,6513 & 4,63\% \\
- & Model Usulan & 91 & 0,9604 & -0,0242 & 0,6243 & 15,08\% \\
+\multirow{4}{*}{20\% (10.316)} & \textit{Baseline} Standar & 107 & 44,02\% & 0,9262 & -0,1153 & 0,5501 & 0,6970 \\
+ & \textit{Baseline Proposed} & 36 & 49,38\% & \textbf{0,9917} & \textbf{+0,0448} & 0,3789 & 0,5194 \\
+ & Model Modified & 57 & \textbf{4,63\%} & 0,6333 & -0,1271 & \textbf{0,6513} & \textbf{0,7505} \\
+ & Model Usulan & 91 & 15,08\% & 0,9604 & -0,0242 & 0,6243 & 0,5131 \\
 \midrule
-\multirow{2}{*}{40\% (20.633)} & Modified (Muhajir et al.) & 73 & 0,5616 & -0,0708 & 0,6462 & 4,40\% \\
- & Model Usulan & 84 & 0,9595 & +0,0235 & 0,6206 & 11,05\% \\
+\multirow{4}{*}{40\% (20.633)} & \textit{Baseline} Standar & 198 & 42,68\% & 0,9237 & -0,0810 & 0,5539 & 0,6988 \\
+ & \textit{Baseline Proposed} & 62 & 52,33\% & 0,9581 & \textbf{+0,0539} & 0,3851 & 0,4883 \\
+ & Model Modified & 73 & \textbf{4,40\%} & 0,5616 & -0,0708 & \textbf{0,6462} & \textbf{0,7473} \\
+ & Model Usulan & 84 & 11,05\% & \textbf{0,9595} & +0,0235 & 0,6206 & 0,5130 \\
 \midrule
-\multirow{2}{*}{60\% (30.949)} & Modified (Muhajir et al.) & 69 & 0,5667 & -0,0233 & 0,6461 & 4,79\% \\
- & Model Usulan & 57 & 0,9719 & +0,0706 & 0,6298 & 8,10\% \\
+\multirow{4}{*}{60\% (30.949)} & \textit{Baseline} Standar & 278 & 39,47\% & 0,9245 & -0,0467 & 0,5629 & 0,7030 \\
+ & \textit{Baseline Proposed} & 77 & 55,01\% & 0,9714 & \textbf{+0,1098} & 0,4060 & 0,5311 \\
+ & Model Modified & 69 & \textbf{4,79\%} & 0,5667 & -0,0233 & \textbf{0,6461} & \textbf{0,7474} \\
+ & Model Usulan & 57 & 8,10\% & \textbf{0,9719} & +0,0706 & 0,6298 & 0,6363 \\
 \midrule
-\multirow{2}{*}{80\% (41.266)} & Modified (Muhajir et al.) & 93 & 0,5452 & -0,0268 & 0,6557 & 5,01\% \\
- & Model Usulan & 212 & 0,9618 & +0,0528 & 0,6360 & 7,39\% \\
+\multirow{4}{*}{80\% (41.266)} & \textit{Baseline} Standar & 336 & 39,62\% & 0,9268 & -0,0267 & 0,5712 & 0,7064 \\
+ & \textit{Baseline Proposed} & 39 & 56,69\% & 0,9615 & \textbf{+0,0824} & 0,3704 & 0,5798 \\
+ & Model Modified & 93 & \textbf{5,01\%} & 0,5452 & -0,0268 & \textbf{0,6557} & \textbf{0,7524} \\
+ & Model Usulan & 212 & 7,39\% & \textbf{0,9618} & +0,0528 & 0,6360 & 0,4839 \\
 \midrule
-\multirow{2}{*}{100\% (51.583)} & Modified (Muhajir et al.) & 91 & 0,5143 & +0,0260 & 0,6445 & 4,63\% \\
- & Model Usulan & 150 & 0,9653 & +0,0495 & 0,6129 & 6,83\% \\
+\multirow{4}{*}{100\% (51.583)} & \textit{Baseline} Standar & 392 & 40,44\% & 0,9316 & -0,0210 & 0,5778 & 0,7089 \\
+ & \textit{Baseline Proposed} & 151 & 57,36\% & 0,9623 & \textbf{+0,1534} & 0,4885 & 0,5440 \\
+ & Model Modified & 91 & \textbf{4,63\%} & 0,5143 & +0,0260 & \textbf{0,6445} & \textbf{0,7464} \\
+ & Model Usulan & 150 & 6,83\% & \textbf{0,9653} & +0,0495 & 0,6129 & 0,5419 \\
 \bottomrule
 \end{tabular}%
 }
